@@ -6,6 +6,7 @@ puis on fait UNE seule passe LLM pour rédiger. Plus fiable et plus rapide.
 """
 
 import re
+from typing import Optional
 
 from pydantic_ai import Agent
 
@@ -18,7 +19,7 @@ from src.tools_supabase import hybrid_search
 # Agent construit paresseusement (au 1er appel) et non à l'import : ainsi
 # importer ce module n'a aucun effet de bord et ne requiert pas les variables
 # d'environnement (essentiel pour le build serverless Vercel).
-_answer_agent: Agent | None = None
+_answer_agent: Optional[Agent] = None
 
 
 def _get_agent() -> Agent:
@@ -59,7 +60,7 @@ async def warmup() -> None:
     await _get_agent().run("Bonjour")
 
 
-def _social_reply(msg: str) -> str | None:
+def _social_reply(msg: str) -> Optional[str]:
     """Réponse sociale instantanée (salutation/merci/au revoir), sinon None."""
     if len(msg) >= 30:
         return None
@@ -72,7 +73,7 @@ def _social_reply(msg: str) -> str | None:
     return None
 
 
-async def _build_prompt(msg: str) -> str | None:
+async def _build_prompt(msg: str) -> Optional[str]:
     """Recherche dans la base et construit le prompt avec contexte (None si rien)."""
     deps = AgentDependencies()
     await deps.initialize()
