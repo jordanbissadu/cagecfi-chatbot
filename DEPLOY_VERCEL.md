@@ -46,10 +46,14 @@ L'ingestion reste locale (elle a besoin de Docling), mais doit produire des
 embeddings **OpenAI** pour matcher la production :
 
 ```bash
-cp .env.production.example .env   # puis remplir les vraies valeurs
-uv pip install -e .               # docling + deps d'ingestion
+cp .env.production.example .env        # puis remplir les vraies valeurs
+uv pip install -e ".[ingestion]"      # Docling + deps d'ingestion (local uniquement)
 uv run python -m src.ingestion.ingest_supabase -d ./documents
 ```
+
+> Les dépendances lourdes (Docling, Whisper, Streamlit) sont en **extras**
+> (`[ingestion]`, `[ui]`) pour que le build Vercel reste léger : Vercel installe
+> uniquement les dépendances runtime listées dans `[project.dependencies]`.
 
 Vérifier dans Supabase que `cagecfi_chunks` est repeuplée.
 
@@ -63,10 +67,10 @@ vercel --prod          # déploiement production
 ```
 
 Fichiers déjà prêts dans le repo :
-- `api/index.py` — expose l'app FastAPI (`src/api.py`).
+- `api/index.py` — expose l'app FastAPI (`src/api.py`). Vercel détecte la variable `app`.
 - `vercel.json` — route tout le trafic vers la fonction ; `maxDuration: 60`.
-- `requirements.txt` — deps **minimales** (sans docling/torch) pour rester
-  sous la limite de taille serverless.
+- `pyproject.toml` — Vercel (uv) installe **uniquement** `[project.dependencies]`
+  (runtime léger) ; Docling/Whisper/Streamlit sont en extras et restent en local.
 
 ## Étape 5 — Variables d'environnement Vercel
 

@@ -1,27 +1,50 @@
 [project]
-name = "mongodb-rag-agent"
+name = "cagecfi-chatbot"
 version = "0.1.0"
-description = "Agentic RAG system with MongoDB Atlas Vector Search"
+description = "Chatbot RAG CAGECFI : Supabase pgvector + Pydantic AI + OpenAI"
 requires-python = ">=3.10"
+# IMPORTANT : ne lister ici QUE les dépendances nécessaires au runtime de
+# l'API /chat (déployée en serverless sur Vercel). Vercel utilise uv et
+# installe depuis pyproject.toml — toute dépendance lourde ici alourdit /
+# casse le build. Les outils lourds (Docling, Whisper, Streamlit) sont en
+# extras optionnels ci-dessous et ne servent qu'en local.
 dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.29.0",
     "pydantic>=2.10.0",
     "pydantic-settings>=2.7.0",
     "pydantic-ai>=0.1.0",
-    "pymongo>=4.10.0",
     "openai>=1.58.0",
+    "asyncpg>=0.29.0",
+    "pgvector>=0.2.4",
+    "python-dotenv>=1.0.1",
+]
+
+[project.optional-dependencies]
+# Ingestion locale des documents (Docling + transcription audio). JAMAIS sur Vercel.
+#   uv pip install -e ".[ingestion]"
+ingestion = [
     "docling>=2.14.0",
     "docling-core>=2.4.0",
     "transformers>=4.47.0",
-    "rich>=13.9.0",
-    "python-dotenv>=1.0.1",
-    "aiofiles>=24.1.0",
     "openai-whisper>=20240930",
+    "aiofiles>=24.1.0",
+]
+# Interfaces locales (CLI Rich + app Streamlit).
+#   uv pip install -e ".[ui]"
+ui = [
     "streamlit>=1.40.0",
+    "rich>=13.9.0",
 ]
 
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+# Ne packager que le code applicatif `src` (et ses sous-packages). Évite que
+# setuptools tente de packager api/ ou les scripts racine et échoue.
+[tool.setuptools.packages.find]
+include = ["src*"]
 
 [tool.uv]
 dev-dependencies = [

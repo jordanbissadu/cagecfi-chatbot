@@ -15,18 +15,27 @@ from src.providers_supabase import get_llm_model
 from src.settings_supabase import load_settings
 from src.tools_supabase import hybrid_search
 
-_settings = load_settings()
+# Agent construit paresseusement (au 1er appel) et non à l'import : ainsi
+# importer ce module n'a aucun effet de bord et ne requiert pas les variables
+# d'environnement (essentiel pour le build serverless Vercel).
+_answer_agent: Agent | None = None
 
-# Agent de rédaction SANS outils → une seule requête LLM par message.
-_answer_agent = Agent(
-    get_llm_model(),
-    system_prompt=RAG_ANSWER_PROMPT,
-    model_settings={
-        "temperature": _settings.llm_temperature,
-        "top_p": _settings.llm_top_p,
-        "max_tokens": _settings.llm_max_tokens,
-    },
-)
+
+def _get_agent() -> Agent:
+    """Construit (une seule fois) puis renvoie l'agent de rédaction."""
+    global _answer_agent
+    if _answer_agent is None:
+        settings = load_settings()
+        _answer_agent = Agent(
+            get_llm_model(),
+            system_prompt=RAG_ANSWER_PROMPT,
+            model_settings={
+                "temperature": settings.llm_temperature,
+                "top_p": settings.llm_top_p,
+                "max_tokens": settings.llm_max_tokens,
+            },
+        )
+    return _answer_agent
 
 _GREETING = re.compile(r"^\s*(bonjour|bonsoir|salut|hello|hi|coucou|hey)\b", re.IGNORECASE)
 _THANKS = re.compile(r"^\s*(merci|thanks|thank you|d'accord|parfait|super)\b", re.IGNORECASE)
@@ -47,7 +56,7 @@ class _Ctx:
 
 async def warmup() -> None:
     """Précharge le modèle LLM (appelé au démarrage de l'API)."""
-    await _answer_agent.run("Bonjour")
+    await _get_agent().run("Bonjour")
 
 
 def _social_reply(msg: str) -> str | None:
@@ -88,7 +97,7 @@ async def answer(message: str) -> str:
     prompt = await _build_prompt(msg)
     if prompt is None:
         return _NO_INFO
-    result = await _answer_agent.run(prompt)
+    result = await _get_agent().run(prompt)
     return str(result.output)
 
 
@@ -106,6 +115,6 @@ async def answer_stream(message: str):
     if prompt is None:
         yield _NO_INFO
         return
-    async with _answer_agent.run_stream(prompt) as result:
+    async with _get_agent().run_stream(prompt) as result:
         async for delta in result.stream_text(delta=True):
             yield delta
