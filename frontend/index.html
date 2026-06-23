@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CAGECFI — Solutions numériques pour la finance décentralisée</title>
+<meta name="description" content="CAGECFI conçoit des logiciels et solutions digitales pour les systèmes financiers décentralisés : Perfect-Vision, finance digitale, solutions étatiques et ONG. Depuis 2001, certifié ISO 9001:2015." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { overflow-x: hidden; }
+body { font-family: 'Inter', sans-serif; background: #050507; color: #fff; }
+
+:root {
+  --accent: #2C5C88;
+  --accent-hover: #3a7aad;
+  --accent-2: #1c6b7a;
+}
+
+/* ===================== ANIMATED BACKGROUND (no video) ===================== */
+#bg-gradient {
+  position: fixed; inset: 0; z-index: -10; overflow: hidden;
+  background: radial-gradient(circle at 50% -10%, #0e1b29 0%, #050507 60%);
+}
+#bg-gradient .blob {
+  position: absolute; width: 55vmax; height: 55vmax; border-radius: 50%;
+  filter: blur(100px); opacity: 0.45; will-change: transform;
+}
+#bg-gradient .b1 { background: var(--accent);   top: -18%; left: -12%; animation: drift1 20s ease-in-out infinite alternate; }
+#bg-gradient .b2 { background: var(--accent-2); bottom: -22%; right: -12%; animation: drift2 24s ease-in-out infinite alternate; }
+#bg-gradient .b3 { background: #21406b;         top: 28%; left: 38%; opacity: 0.35; animation: drift3 28s ease-in-out infinite alternate; }
+#bg-gradient .overlay { position: absolute; inset: 0; background: rgba(2,2,4,0.35); }
+
+@keyframes drift1 { from { transform: translate(0,0) scale(1); } to { transform: translate(14vw,9vh) scale(1.2); } }
+@keyframes drift2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-12vw,-8vh) scale(1.15); } }
+@keyframes drift3 { from { transform: translate(0,0) scale(1); } to { transform: translate(8vw,-10vh) scale(0.9); } }
+
+/* Particles */
+#particles-canvas {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 3;
+}
+
+/* Nav */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.25rem 2.5rem;
+}
+nav .logo { font-weight: 700; font-size: 1.25rem; color: #fff; letter-spacing: 0.04em; }
+nav .nav-links { display: flex; align-items: center; gap: 1.5rem; }
+nav .nav-links a { font-size: 0.875rem; color: #d1d5db; text-decoration: none; transition: color 0.2s; }
+nav .nav-links a:hover { color: #fff; }
+nav .right { display: flex; align-items: center; gap: 1.25rem; }
+nav .social { display: flex; align-items: center; gap: 1rem; }
+nav .social a { color: #d1d5db; transition: color 0.2s; display: inline-flex; }
+nav .social a:hover { color: #fff; }
+nav .social svg { width: 1.25rem; height: 1.25rem; }
+nav .nav-chat {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(44,92,136,0.15); border: 1px solid rgba(44,92,136,0.6);
+  color: #fff; font-size: 0.8125rem; font-weight: 500; border-radius: 0.5rem;
+  padding: 0.5rem 0.9rem; cursor: pointer; transition: background 0.2s;
+}
+nav .nav-chat:hover { background: rgba(44,92,136,0.35); }
+
+/* Hero */
+#hero { position: relative; height: 100vh; width: 100%; display: flex; flex-direction: column; }
+#hero .gradient-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent, transparent);
+}
+#hero .content {
+  position: relative; z-index: 10; flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end; text-align: center;
+  padding: 0 1.5rem 6rem;
+}
+#hero .subtitle { font-size: 0.875rem; color: #9ca3af; margin-bottom: 1rem; letter-spacing: 0.08em; text-transform: uppercase; }
+#hero h1 { font-size: clamp(1.6rem, 5vw, 3.75rem); font-weight: 600; line-height: 1.15; max-width: 52rem; }
+#hero h1 .underlined { position: relative; display: inline-block; }
+#hero h1 .underlined .line { position: absolute; bottom: 0.25rem; left: 0; width: 100%; height: 10px; background: var(--accent); border-radius: 2px; }
+#hero h1 .underlined span { position: relative; }
+#hero .ctas { display: flex; align-items: center; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center; }
+#hero .chip {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: #141414; border: 1px solid rgba(55,65,81,0.5);
+  border-radius: 0.5rem; padding: 0.875rem 1.5rem; font-size: 0.8125rem; color: #e5e7eb;
+}
+#hero .chip .dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; }
+#hero .cta-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--accent); color: #fff; font-weight: 500; border: none; cursor: pointer;
+  border-radius: 0.5rem; padding: 0.875rem 2rem; font-size: 0.875rem; text-decoration: none; transition: background 0.2s;
+}
+#hero .cta-btn:hover { background: var(--accent-hover); }
+#hero .cta-btn.secondary { background: transparent; border: 1px solid rgba(255,255,255,0.25); }
+#hero .cta-btn.secondary:hover { background: rgba(255,255,255,0.08); }
+#hero .bounce-arrow { position: relative; z-index: 10; display: flex; justify-content: center; padding-bottom: 2rem; }
+#hero .bounce-arrow svg { width: 1.5rem; height: 1.5rem; color: #6b7280; animation: bounce 1s infinite; }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25%); } }
+
+/* Cards */
+#fixed-cards { position: fixed; bottom: 0; left: 0; right: 0; z-index: 4; padding: 2rem 2.5rem; opacity: 0; pointer-events: none; }
+#fixed-cards .grid { max-width: 72rem; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+#fixed-cards .card h3 { font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
+#fixed-cards .card p { color: #d1d5db; font-size: 0.875rem; line-height: 1.6; }
+
+/* Section finale */
+#section-three { position: relative; min-height: 100vh; display: flex; align-items: flex-end; justify-content: center; padding: 0 2.5rem 8rem; }
+#section-three .inner {
+  position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; text-align: center;
+  opacity: 0; transform: translateY(32px); filter: blur(8px);
+  transition: opacity 1s ease-out, transform 1s ease-out, filter 1s ease-out; max-width: 50rem;
+}
+#section-three .inner.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+#section-three .inner p { color: #d1d5db; font-size: 1rem; margin-bottom: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+#section-three .inner h2 { font-size: clamp(1.875rem, 6vw, 4rem); font-weight: 700; line-height: 1.1; }
+
+/* Footer */
+footer { position: relative; z-index: 5; background: rgba(5,5,7,0.85); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 2.5rem; }
+footer .grid { max-width: 72rem; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 2.5rem; }
+footer h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem; color: #fff; }
+footer p, footer a { font-size: 0.85rem; color: #9ca3af; line-height: 1.7; text-decoration: none; }
+footer a:hover { color: #fff; }
+footer .brand { font-weight: 700; font-size: 1.25rem; color: #fff; letter-spacing: 0.04em; margin-bottom: 0.75rem; display: inline-block; }
+footer .badge { display: inline-block; margin-top: 0.75rem; font-size: 0.7rem; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; padding: 0.25rem 0.7rem; }
+footer .copyright { max-width: 72rem; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); font-size: 0.8rem; color: #6b7280; }
+
+/* Content wrapper */
+#content { position: relative; z-index: 2; }
+
+/* ===================== CHAT WIDGET ===================== */
+#chat-bubble {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 60;
+  width: 3.75rem; height: 3.75rem; border-radius: 50%; border: none; cursor: pointer;
+  background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4); transition: background 0.2s, transform 0.2s;
+}
+#chat-bubble:hover { background: var(--accent-hover); transform: translateY(-2px) scale(1.05); }
+#chat-bubble svg { width: 1.7rem; height: 1.7rem; }
+#chat-bubble .notif { position: absolute; top: 2px; right: 2px; width: 12px; height: 12px; border-radius: 50%; background: #4ade80; border: 2px solid var(--accent); }
+#chat-bubble.pulse::after { content: ''; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 0 rgba(44,92,136,0.6); animation: ring 2s ease-out infinite; }
+@keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(44,92,136,0.5); } 100% { box-shadow: 0 0 0 18px rgba(44,92,136,0); } }
+
+#chat-panel {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 61;
+  width: 390px; max-width: calc(100vw - 2rem); height: 600px; max-height: calc(100vh - 3rem);
+  background: #0d0f13; border: 1px solid rgba(255,255,255,0.1); border-radius: 1.1rem;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+  opacity: 0; transform: translateY(16px) scale(0.98); pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+#chat-panel.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+#chat-panel .head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.1rem; background: linear-gradient(135deg, var(--accent), var(--accent-2)); flex-shrink: 0;
+}
+#chat-panel .head .title { display: flex; align-items: center; gap: 0.65rem; }
+#chat-panel .head .title .av { width: 2.3rem; height: 2.3rem; border-radius: 50%; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#chat-panel .head .title .av svg { width: 1.3rem; height: 1.3rem; color: #fff; }
+#chat-panel .head .title b { font-size: 0.95rem; display: block; }
+#chat-panel .head .title small { display: flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; color: rgba(255,255,255,0.85); margin-top: 1px; }
+#chat-panel .head .title small .live { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 0 rgba(74,222,128,0.7); animation: live 2s infinite; }
+@keyframes live { 0% { box-shadow: 0 0 0 0 rgba(74,222,128,0.6); } 70% { box-shadow: 0 0 0 6px rgba(74,222,128,0); } 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); } }
+#chat-panel .head button { background: transparent; border: none; color: #fff; cursor: pointer; font-size: 1.5rem; line-height: 1; opacity: 0.85; }
+#chat-panel .head button:hover { opacity: 1; }
+
+#chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.85rem; background: #0a0c10; }
+#chat-messages::-webkit-scrollbar { width: 6px; }
+#chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+.msg-row { display: flex; align-items: flex-end; gap: 0.5rem; max-width: 90%; }
+.msg-row.bot { align-self: flex-start; }
+.msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
+.msg-row .avatar { width: 1.85rem; height: 1.85rem; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: flex; align-items: center; justify-content: center; }
+.msg-row .avatar svg { width: 1.05rem; height: 1.05rem; color: #fff; }
+.msg-row .bubble-wrap { display: flex; flex-direction: column; }
+.msg-row.user .bubble-wrap { align-items: flex-end; }
+.bubble { padding: 0.65rem 0.9rem; border-radius: 1rem; font-size: 0.86rem; line-height: 1.55; white-space: pre-wrap; word-wrap: break-word; }
+.bubble.bot { background: #1a1d24; color: #e9edf3; border-bottom-left-radius: 0.3rem; }
+.bubble.user { background: var(--accent); color: #fff; border-bottom-right-radius: 0.3rem; }
+.bubble p { margin: 0 0 0.45rem; }
+.bubble p:last-child { margin-bottom: 0; }
+.bubble ul, .bubble ol { margin: 0.35rem 0; padding-left: 1.15rem; }
+.bubble li { margin: 0.18rem 0; }
+.bubble strong { font-weight: 600; }
+.bubble a { color: #7fb3e0; text-decoration: underline; }
+.bubble.user a { color: #fff; }
+.time { font-size: 0.65rem; color: #6b7280; margin-top: 0.25rem; padding: 0 0.3rem; }
+.typing-dots { display: inline-flex; gap: 4px; padding: 0.2rem 0; }
+.typing-dots span { width: 7px; height: 7px; border-radius: 50%; background: #9ca3af; animation: blink 1.3s infinite ease-in-out; }
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%, 80%, 100% { opacity: 0.3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-4px); } }
+
+#chat-quick { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0 1rem 0.75rem; }
+.quick-reply { background: transparent; border: 1px solid rgba(44,92,136,0.7); color: #cfe0ef; border-radius: 999px; padding: 0.4rem 0.75rem; font-size: 0.78rem; font-family: inherit; cursor: pointer; transition: background 0.18s, color 0.18s; }
+.quick-reply:hover { background: rgba(44,92,136,0.3); color: #fff; }
+
+#chat-form { display: flex; gap: 0.5rem; padding: 0.8rem; border-top: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; background: #0d0f13; }
+#chat-form input {
+  flex: 1; background: #16181d; border: 1px solid rgba(255,255,255,0.1); border-radius: 0.7rem;
+  padding: 0.7rem 0.9rem; color: #fff; font-size: 0.86rem; font-family: inherit; outline: none;
+}
+#chat-form input:focus { border-color: var(--accent); }
+#chat-form button {
+  background: var(--accent); border: none; color: #fff; border-radius: 0.7rem; padding: 0 0.95rem; cursor: pointer; display: flex; align-items: center; transition: background 0.2s;
+}
+#chat-form button:hover { background: var(--accent-hover); }
+#chat-form button svg { width: 1.15rem; height: 1.15rem; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  nav .nav-links { display: none; }
+  #hero .content { padding-bottom: 5rem; }
+  #hero .ctas { flex-direction: column; }
+  #fixed-cards .grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  #fixed-cards { padding: 1.5rem 1rem; }
+  #section-three { padding-bottom: 5rem; }
+  footer .grid { grid-template-columns: 1fr; gap: 2rem; }
+  #chat-panel { width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh; bottom: 0; right: 0; border-radius: 0; }
+}
+
+/* Accessibilité : réduire les animations */
+@media (prefers-reduced-motion: reduce) {
+  #bg-gradient .blob { animation: none; }
+  #hero .bounce-arrow svg { animation: none; }
+  #section-three .inner { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Fond animé (remplace la vidéo) -->
+<div id="bg-gradient">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="overlay"></div>
+</div>
+
+<!-- Particules -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- Cartes fixes (piliers) -->
+<div id="fixed-cards">
+  <div class="grid">
+    <div class="card">
+      <h3>Perfect-Vision</h3>
+      <p>Le logiciel de gestion intégré des systèmes financiers décentralisés : clientèle, portefeuille-crédit, épargne, tontine, comptabilité générale et analytique, RH &amp; paie, et édition des états financiers — dans une interface intuitive.</p>
+    </div>
+    <div class="card">
+      <h3>Finance digitale</h3>
+      <p>Digitalisez vos services financiers : e-banking, mobile banking, SMS banking, mobile money, mobile agency, transfert d'argent et monétique, pour rapprocher vos clients de leurs comptes.</p>
+    </div>
+    <div class="card">
+      <h3>Solutions étatiques &amp; ONG</h3>
+      <p>Des plateformes pour les administrations (SIFEN, SIGEP, télédéclaration d'impôts, PAY'TAX, SIG-M, SIG-IFI) et SYCEBNL-ERP pour la transparence financière des ONG et associations.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<nav>
+  <div style="display:flex;align-items:center;gap:2rem;">
+    <span class="logo">CAGECFI</span>
+    <div class="nav-links">
+      <a href="#fixed-cards">Solutions</a>
+      <a href="#section-three">À propos</a>
+      <a href="#footer">Contact</a>
+    </div>
+  </div>
+  <div class="right">
+    <div class="social">
+      <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+      <a href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></a>
+      <a href="https://www.youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
+    </div>
+    <button class="nav-chat" data-chat-open aria-label="Ouvrir l'assistant CAGECFI">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l1.2-3.6A7.9 7.9 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+      Assistant
+    </button>
+  </div>
+</nav>
+
+<!-- Contenu principal -->
+<div id="content">
+  <!-- Section 1 : Hero -->
+  <section id="hero">
+    <div class="gradient-overlay"></div>
+    <div class="content">
+      <p class="subtitle">Notre mission</p>
+      <h1>
+        La gestion intégrée des systèmes financiers décentralisés, enfin
+        <span class="underlined"><span class="line"></span><span>simplifiée</span></span>.
+      </h1>
+      <div class="ctas">
+        <div class="chip">
+          <span class="dot"></span>
+          Certifié ISO 9001:2015 · Depuis 2001
+        </div>
+        <button class="cta-btn" data-chat-open>Discuter avec l'assistant <span>&rarr;</span></button>
+        <a href="mailto:cagecfi@cagecfi.com?subject=Demande%20de%20devis" class="cta-btn secondary">Demander un devis</a>
+      </div>
+    </div>
+    <div class="bounce-arrow">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+    </div>
+  </section>
+
+  <!-- Spacer -->
+  <div style="height:150vh;"></div>
+
+  <!-- Zone de déclenchement des cartes -->
+  <div id="cards-trigger" style="height:200vh;"></div>
+
+  <!-- Spacer -->
+  <div style="height:100vh;"></div>
+
+  <!-- Section finale -->
+  <section id="section-three">
+    <div class="inner" id="section-three-inner">
+      <p>Depuis 2001</p>
+      <h2>Le numérique au service de la finance inclusive en Afrique.</h2>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="grid">
+      <div>
+        <span class="brand">CAGECFI</span>
+        <p>Éditeur de logiciels et de solutions digitales pour les systèmes financiers décentralisés, les administrations et les ONG en Afrique de l'Ouest.</p>
+        <span class="badge">ISO 9001:2015</span>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>
+          <a href="mailto:cagecfi@cagecfi.com">cagecfi@cagecfi.com</a><br />
+          <a href="mailto:cagecfibenin@cagecfi.com">cagecfibenin@cagecfi.com</a><br />
+          <a href="tel:+22822268461">+228 22 26 84 61</a><br />
+          <a href="https://www.cagecfi.com" target="_blank" rel="noopener">www.cagecfi.com</a>
+        </p>
+      </div>
+      <div>
+        <h4>Nos bureaux</h4>
+        <p>
+          <b style="color:#cbd5e1;">Togo (siège)</b><br />
+          409 Rue KONFESS, Tokoin-Tamé, Lomé<br /><br />
+          <b style="color:#cbd5e1;">Bénin</b><br />
+          Fidjrossè Kpota, Cotonou
+        </p>
+      </div>
+    </div>
+    <div class="copyright">© <span id="year"></span> CAGECFI SA — Tous droits réservés.</div>
+  </footer>
+</div>
+
+<!-- Bulle de chat -->
+<button id="chat-bubble" class="pulse" aria-label="Ouvrir le chat CAGECFI">
+  <span class="notif"></span>
+  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l1.2-3.6A7.9 7.9 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+</button>
+
+<!-- Panneau de chat -->
+<div id="chat-panel" role="dialog" aria-label="Chatbot CAGECFI">
+  <div class="head">
+    <div class="title">
+      <span class="av">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l1.2-3.6A7.9 7.9 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+      </span>
+      <div><b>Chatbot CAGECFI</b><small><span class="live"></span>En ligne · répond en quelques secondes</small></div>
+    </div>
+    <button id="chat-close" aria-label="Fermer le chat">&times;</button>
+  </div>
+  <div id="chat-messages"></div>
+  <div id="chat-quick"></div>
+  <form id="chat-form">
+    <input id="chat-input" type="text" placeholder="Écrivez votre message…" autocomplete="off" aria-label="Votre message" />
+    <button type="submit" aria-label="Envoyer">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </form>
+</div>
+
+<script>
+(function() {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ===================== PARTICLES =====================
+  const pCanvas = document.getElementById('particles-canvas');
+  const pCtx = pCanvas.getContext('2d');
+  let particles = [];
+
+  function resizeParticles() {
+    pCanvas.width = window.innerWidth;
+    pCanvas.height = window.innerHeight;
+    createParticles();
+  }
+  function createParticles() {
+    particles = [];
+    const count = Math.floor((pCanvas.width * pCanvas.height) / 12000);
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * pCanvas.width,
+        y: Math.random() * pCanvas.height,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        size: Math.random() * 1.5 + 0.5,
+        opacity: Math.random() * 0.6 + 0.2
+      });
+    }
+  }
+  function animateParticles() {
+    pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = pCanvas.width;
+      if (p.x > pCanvas.width) p.x = 0;
+      if (p.y < 0) p.y = pCanvas.height;
+      if (p.y > pCanvas.height) p.y = 0;
+      pCtx.beginPath();
+      pCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      pCtx.fillStyle = `rgba(255,255,255,${p.opacity})`;
+      pCtx.fill();
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  if (!reduceMotion) {
+    resizeParticles();
+    window.addEventListener('resize', resizeParticles);
+    animateParticles();
+  }
+
+  // ===================== HERO FADE =====================
+  function updateHeroOpacity() {
+    const fade = Math.max(0, 1 - window.scrollY / (window.innerHeight * 0.3));
+    document.getElementById('hero').style.opacity = fade;
+  }
+  window.addEventListener('scroll', updateHeroOpacity, { passive: true });
+
+  // ===================== FIXED CARDS =====================
+  const fixedCards = document.getElementById('fixed-cards');
+  const cardsGrid = fixedCards.querySelector('.grid');
+
+  function tickCards() {
+    const trigger = document.getElementById('cards-trigger');
+    const rect = trigger.getBoundingClientRect();
+    const triggerTop = rect.top + window.scrollY;
+    const triggerHeight = rect.height;
+    const scrollY = window.scrollY;
+    const vh = window.innerHeight;
+
+    const start = triggerTop - vh * 0.5;
+    const end = triggerTop + triggerHeight - vh * 0.3;
+    const range = end - start;
+
+    let progress = range > 0 ? (scrollY - start) / range : 0;
+    progress = Math.max(0, Math.min(1, progress));
+
+    const isActive = scrollY >= start - vh * 0.2 && scrollY <= end + vh * 0.3;
+    const fadeIn = Math.min(1, Math.max(0, (scrollY - (start - vh * 0.2)) / (vh * 0.2)));
+    const fadeOut = Math.min(1, Math.max(0, (end + vh * 0.3 - scrollY) / (vh * 0.3)));
+    const containerOpacity = isActive ? Math.min(fadeIn, fadeOut) : 0;
+
+    fixedCards.style.opacity = containerOpacity;
+    fixedCards.style.pointerEvents = containerOpacity > 0.1 ? 'auto' : 'none';
+
+    const isMobile = window.innerWidth < 768;
+    const revealPct = progress * 130;
+    if (isMobile) {
+      cardsGrid.style.maskImage = `linear-gradient(to bottom, black ${revealPct}%, transparent ${revealPct + 20}%)`;
+      cardsGrid.style.webkitMaskImage = `linear-gradient(to bottom, black ${revealPct}%, transparent ${revealPct + 20}%)`;
+    } else {
+      cardsGrid.style.maskImage = `linear-gradient(to right, black ${revealPct}%, transparent ${revealPct + 15}%)`;
+      cardsGrid.style.webkitMaskImage = `linear-gradient(to right, black ${revealPct}%, transparent ${revealPct + 15}%)`;
+    }
+    requestAnimationFrame(tickCards);
+  }
+  requestAnimationFrame(tickCards);
+
+  // ===================== SECTION FINALE =====================
+  const sectionThreeInner = document.getElementById('section-three-inner');
+  const observer = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      sectionThreeInner.classList.add('visible');
+      observer.unobserve(sectionThreeInner);
+    }
+  }, { threshold: 0.15 });
+  observer.observe(sectionThreeInner);
+
+  // ===================== CHAT WIDGET =====================
+  // TODO: brancher l'API FastAPI (endpoint /chat) du backend CAGECFI.
+  const CHAT_API_URL = "/chat";
+  const panel = document.getElementById('chat-panel');
+  const bubble = document.getElementById('chat-bubble');
+  const messages = document.getElementById('chat-messages');
+  const quick = document.getElementById('chat-quick');
+  const form = document.getElementById('chat-form');
+  const input = document.getElementById('chat-input');
+  let history = [];
+  let welcomed = false;
+
+  const BOT_SVG = '<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l1.2-3.6A7.9 7.9 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>';
+  const SUGGESTIONS = [
+    "Qu'est-ce que CAGECFI ?",
+    "Demander un devis",
+    "Vos formations",
+    "Comment vous contacter ?"
+  ];
+
+  function nowTime() {
+    return new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // Mini-rendu Markdown -> HTML (gras, liens, listes, paragraphes)
+  function renderMarkdown(md) {
+    let s = escapeHtml(md);
+    s = s.replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    s = s.replace(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, '<a href="mailto:$1">$1</a>');
+
+    const lines = s.split(/\r?\n/);
+    let html = '', inUl = false, inOl = false;
+    const closeLists = () => { if (inUl) { html += '</ul>'; inUl = false; } if (inOl) { html += '</ol>'; inOl = false; } };
+    for (const line of lines) {
+      const t = line.trim();
+      const ul = t.match(/^[*\-]\s+(.*)/);
+      const ol = t.match(/^\d+\.\s+(.*)/);
+      if (ul) { if (inOl) { html += '</ol>'; inOl = false; } if (!inUl) { html += '<ul>'; inUl = true; } html += '<li>' + ul[1] + '</li>'; continue; }
+      if (ol) { if (inUl) { html += '</ul>'; inUl = false; } if (!inOl) { html += '<ol>'; inOl = true; } html += '<li>' + ol[1] + '</li>'; continue; }
+      closeLists();
+      if (t !== '') html += '<p>' + line + '</p>';
+    }
+    closeLists();
+    return html || '<p></p>';
+  }
+
+  function addMessage(text, role) {
+    const row = document.createElement('div');
+    row.className = 'msg-row ' + role;
+    if (role === 'bot') {
+      const av = document.createElement('div');
+      av.className = 'avatar';
+      av.innerHTML = BOT_SVG;
+      row.appendChild(av);
+    }
+    const wrap = document.createElement('div');
+    wrap.className = 'bubble-wrap';
+    const bubbleEl = document.createElement('div');
+    bubbleEl.className = 'bubble ' + role;
+    if (role === 'bot') { bubbleEl.innerHTML = renderMarkdown(text); }
+    else { bubbleEl.textContent = text; }
+    const time = document.createElement('div');
+    time.className = 'time';
+    time.textContent = nowTime();
+    wrap.appendChild(bubbleEl);
+    wrap.appendChild(time);
+    row.appendChild(wrap);
+    messages.appendChild(row);
+    messages.scrollTop = messages.scrollHeight;
+    return row;
+  }
+
+  function showTyping() {
+    const row = document.createElement('div');
+    row.className = 'msg-row bot';
+    row.innerHTML = '<div class="avatar">' + BOT_SVG + '</div>'
+      + '<div class="bubble bot"><span class="typing-dots"><span></span><span></span><span></span></span></div>';
+    messages.appendChild(row);
+    messages.scrollTop = messages.scrollHeight;
+    return row;
+  }
+
+  function renderSuggestions() {
+    quick.innerHTML = '';
+    SUGGESTIONS.forEach(q => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'quick-reply';
+      b.textContent = q;
+      b.addEventListener('click', () => send(q));
+      quick.appendChild(b);
+    });
+    quick.style.display = 'flex';
+  }
+  function hideSuggestions() { quick.style.display = 'none'; }
+
+  async function send(text) {
+    text = (text || '').trim();
+    if (!text) return;
+    hideSuggestions();
+    addMessage(text, 'user');
+    history.push({ role: 'user', content: text });
+    input.value = '';
+
+    const typing = showTyping();
+    try {
+      const res = await fetch(CHAT_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, history })
+      });
+      if (!res.ok || !res.body) throw new Error('HTTP ' + res.status);
+
+      // Lecture du flux : on affiche les mots au fur et à mesure
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let full = '', row = null, bubbleEl = null;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        if (!chunk) continue;
+        if (!row) { typing.remove(); row = addMessage('', 'bot'); bubbleEl = row.querySelector('.bubble'); }
+        full += chunk;
+        bubbleEl.textContent = full;            // texte brut pendant le flux
+        messages.scrollTop = messages.scrollHeight;
+      }
+      if (!row) { typing.remove(); row = addMessage('', 'bot'); bubbleEl = row.querySelector('.bubble'); }
+      bubbleEl.innerHTML = renderMarkdown(full || '…');   // rendu Markdown final
+      messages.scrollTop = messages.scrollHeight;
+      history.push({ role: 'assistant', content: full });
+    } catch (err) {
+      typing.remove();
+      addMessage("Le chatbot n'est pas encore connecté. En attendant, écrivez-nous à cagecfi@cagecfi.com ou appelez le +228 22 26 84 61.", 'bot');
+    }
+  }
+
+  function openChat() {
+    panel.classList.add('open');
+    bubble.classList.remove('pulse');
+    const notif = bubble.querySelector('.notif');
+    if (notif) notif.style.display = 'none';
+    if (!welcomed) {
+      welcomed = true;
+      addMessage("Bonjour 👋 Je suis le chatbot de CAGECFI. Posez-moi vos questions sur nos solutions (Perfect-Vision, finance digitale, solutions étatiques), un devis, nos formations ou nos contacts.", 'bot');
+      renderSuggestions();
+    }
+    setTimeout(() => input.focus(), 250);
+  }
+  function closeChat() { panel.classList.remove('open'); }
+
+  document.querySelectorAll('[data-chat-open]').forEach(b => b.addEventListener('click', openChat));
+  bubble.addEventListener('click', () => {
+    panel.classList.contains('open') ? closeChat() : openChat();
+  });
+  document.getElementById('chat-close').addEventListener('click', closeChat);
+
+  form.addEventListener('submit', (e) => { e.preventDefault(); send(input.value); });
+})();
+</script>
+</body>
+</html>

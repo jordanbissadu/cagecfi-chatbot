@@ -1,227 +1,330 @@
-# MongoDB RAG Agent - Intelligent Knowledge Base Search
+# Chatbot Support Client CAGECFI
 
-Agentic RAG system combining MongoDB Atlas Vector Search with Pydantic AI for intelligent document retrieval.
+Assistant conversationnel (RAG) pour le support client de **CAGECFI** ([www.cagecfi.com](https://www.cagecfi.com)).
+Il répond aux questions des visiteurs sur les services et produits de l'agence (logiciel **Perfect Vision**, solutions de finance digitale, solutions étatiques, formations, etc.) en s'appuyant **uniquement** sur une base de connaissances documentée — pas d'invention.
 
-## Features
+> Objectif final : embarquer cet agent comme **chatbot sur le site cagecfi.com**.
+> Phase actuelle : **POC en local** (interfaces CLI et Web Streamlit). L'API web + widget embarquable est la prochaine étape (voir [Feuille de route](#-feuille-de-route)).
 
-- **Hybrid Search**: Combines semantic vector search with full-text keyword search using Reciprocal Rank Fusion (RRF)
-  - Manual RRF implementation provides same quality as MongoDB's `$rankFusion` (which is in preview)
-  - Concurrent execution for minimal latency overhead
-- **Multi-Format Ingestion**: PDF, Word, PowerPoint, Excel, HTML, Markdown, Audio transcription
-- **Intelligent Chunking**: Docling HybridChunker preserves document structure and semantic boundaries
-- **Conversational CLI**: Rich-based interface with real-time streaming and tool call visibility
-- **Multiple LLM Support**: OpenAI, OpenRouter, Ollama, Gemini
-- **Cost Effective**: Runs entirely on MongoDB Atlas free tier (M0)
+---
 
-## Prerequisites
+## 🧱 Stack technique
 
-- Python 3.10+
-- MongoDB Atlas account (**free M0 tier works perfectly!**)
-- LLM provider API key (OpenAI, OpenRouter, etc.)
-- Embedding provider API key (OpenAI or OpenRouter recommended)
-- UV package manager
+| Brique | Technologie |
+|---|---|
+| **Base vectorielle** | Supabase (PostgreSQL + `pgvector`, index HNSW 768-dim) |
+| **LLM** | Ollama **`qwen2.5:7b-instruct-q4_K_M`** (local, OpenAI-compatible, supporte le function calling) |
+| **Embeddings** | Ollama **`nomic-embed-text:v1.5`** (768 dimensions) |
+| **Recherche** | Hybride — vectorielle + full-text français (fonction SQL `hybrid_search`) |
+| **Agent** | Pydantic AI |
+| **Ingestion** | Docling (PDF, Word, PowerPoint, Excel, HTML, Markdown, Audio) |
+| **Interfaces** | CLI (Rich) + Web (Streamlit) |
+| **Gestion de paquets** | UV |
 
-## Quick Start
+Le code est **agnostique au fournisseur** (endpoint OpenAI-compatible) : un basculement futur vers une API cloud (Claude/OpenAI) ne demande que de changer le `.env`.
 
-### 1. Install UV Package Manager
+---
 
-```bash
-# macOS/Linux
-curl -LsSf https://astral.sh/uv/install.sh | sh
+## 🏗️ Architecture
 
-# Windows
+```
+Documents (site cagecfi.com + FAQ rédigée)
+        │
+        ▼
+ Ingestion (Docling + Ollama embeddings)
+        │
+        ▼
+ Supabase (pgvector)  ◀── recherche hybride ──┐
+                                              │
+Utilisateur ──▶ CLI / Streamlit ──▶ Agent Pydantic AI (qwen2.5:7b-instruct-q4_K_M)
+                                              │
+                                              └──▶ réponse ancrée sur la base
+```
+
+---
+
+## ✅ Prérequis
+
+- **Python 3.10+**
+- **UV** (gestionnaire de paquets) — voir étape 1
+- **Ollama** installé localement — [ollama.com](https://ollama.com)
+- Un compte **Supabase** gratuit — [supabase.com](https://supabase.com)
+- ~6 Go de RAM libres pour `qwen2.5:7b-instruct-q4_K_M` (~4,7 Go ; un GPU accélère mais n'est pas obligatoire)
+
+> ⚠️ Le modèle LLM **doit supporter le function calling** (l'agent appelle un outil de recherche). `qwen2.5:7b-instruct-q4_K_M`, `llama3.2:3b`, `llama3.1:8b`, `gemma4:e4b` conviennent — **`gemma3:4b` ne supporte pas les tools**. Sur CPU, privilégiez un modèle léger (`qwen2.5:7b-instruct-q4_K_M` ou `llama3.2:3b`) pour des réponses rapides.
+
+---
+
+## 🚀 Lancement pas-à-pas
+
+### Étape 1 — Installer UV
+
+```powershell
+# Windows (PowerShell)
 powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
-
-### 2. Clone and Setup Project
-
 ```bash
-git clone https://github.com/coleam00/MongoDB-RAG-Agent.git
-cd MongoDB-RAG-Agent
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
-# Create virtual environment and install dependencies
+### Étape 2 — Installer les dépendances du projet
+
+```powershell
 uv venv
-source .venv/bin/activate  # Unix/Mac
-.venv\Scripts\activate     # Windows
-uv sync
+.venv\Scripts\activate          # Windows
+# source .venv/bin/activate     # macOS / Linux
+
+uv pip install -r requirements_supabase.txt
 ```
 
-### 3. Set Up MongoDB Atlas
+> 🪟 **Windows** : la console (cp1252) ne sait pas afficher les emojis des scripts. Préfixez vos commandes par `$env:PYTHONUTF8='1';` (déjà intégré dans les exemples ci-dessous) pour éviter les `UnicodeEncodeError`.
 
-1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) and create a free account
-2. Click **"Create"** → Choose **M0 Free** tier → Select region → Click **"Create Deployment"**
-3. **Quickstart Wizard** appears - configure security:
-   - **Database User**: Create username and password (save these!)
-   - **Network Access**: Click "Add My Current IP Address"
-4. Click **"Connect"** → **"Drivers"** → Copy your connection string
-   - Format: `mongodb+srv://username:<password>@cluster.mongodb.net/?appName=YourApp`
-   - Replace `<password>` with your actual password
+### Étape 3 — Installer Ollama et télécharger les modèles
 
-**Note**: Database (`rag_db`) and collections (`documents`, `chunks`) will be created automatically when you run ingestion in step 6.
+1. Installer Ollama depuis [ollama.com](https://ollama.com), puis démarrer le service :
+   ```powershell
+   ollama serve
+   ```
+2. Dans un autre terminal, télécharger les modèles (LLM compatible *tools* + embeddings) :
+   ```powershell
+   ollama pull qwen2.5:7b-instruct-q4_K_M
+   ollama pull nomic-embed-text:v1.5
+   ```
+3. Vérifier qu'ils sont présents :
+   ```powershell
+   ollama list
+   ```
 
-### 4. Configure Environment Variables
+> ⚠️ Ollama doit rester lancé (`ollama serve`) pendant l'ingestion et l'utilisation du chatbot.
+
+### Étape 4 — Créer le projet Supabase et la base
+
+1. Sur [supabase.com](https://supabase.com) : **New project** → noter le **mot de passe** de la base.
+2. Créer le schéma dédié CAGECFI (tables `cagecfi_documents` / `cagecfi_chunks`, préfixées pour cohabiter sans risque avec d'éventuelles tables existantes). Deux options :
+   - **SQL Editor** → **New query** → coller le contenu de [`supabase_setup_cagecfi.sql`](supabase_setup_cagecfi.sql) → **Run** ; **ou**
+   - une fois le `.env` rempli (étape 5), exécuter :
+     ```powershell
+     $env:PYTHONUTF8='1'; uv run python apply_supabase_setup.py
+     ```
+   Cela crée l'extension `pgvector`, les deux tables et leurs index (HNSW + full-text français).
+
+### Étape 5 — Configurer le fichier `.env`
+
+```powershell
+copy .env.supabase.example .env     # Windows
+# cp .env.supabase.example .env     # macOS / Linux
+```
+
+Récupérer les valeurs Supabase (**Project Settings → API** et **→ Database → Connection string → URI**, mode *Session pooler*) et remplir dans `.env` :
 
 ```bash
-# Copy the example file
-cp .env.example .env
+SUPABASE_URL=https://xxxxxxxx.supabase.co
+SUPABASE_ANON_KEY=eyJhbGc...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
+DATABASE_URL=postgresql://postgres.[ref]:VOTRE-MOT-DE-PASSE@aws-0-...pooler.supabase.com:6543/postgres
 ```
 
-Edit `.env` with your credentials:
-- **MONGODB_URI**: Connection string from step 3
-- **LLM_API_KEY**: Your LLM provider API key (OpenRouter, OpenAI, etc.)
-- **EMBEDDING_API_KEY**: Your API key for embeddings (such as OpenAI or OpenRouter)
-
-### 5. Validate Configuration
+La partie Ollama et les tables dédiées sont déjà configurées (à ne pas changer pour un usage local) :
 
 ```bash
-uv run python -m src.test_config
+LLM_PROVIDER=ollama
+LLM_MODEL=qwen2.5:7b-instruct-q4_K_M
+EMBEDDING_MODEL=nomic-embed-text:v1.5
+EMBEDDING_DIMENSION=768
+POSTGRES_TABLE_DOCUMENTS=cagecfi_documents
+POSTGRES_TABLE_CHUNKS=cagecfi_chunks
 ```
 
-You should see: `[OK] ALL CONFIGURATION CHECKS PASSED`
+### Étape 6 — Vérifier la base
 
-### 6. Run Ingestion Pipeline
+```powershell
+$env:PYTHONUTF8='1'; uv run python apply_supabase_setup.py
+```
+Attendu : `cagecfi_documents: cagecfi_documents (lignes=...)` et `cagecfi_chunks: ...`, puis `OK`.
 
-```bash
-# Add your documents to the documents/ folder
-uv run python -m src.ingestion.ingest -d ./documents
+### Étape 7 — Construire la base de connaissances
+
+La base se compose de trois sources, toutes placées dans [`documents/`](documents/) :
+
+1. **Crawl du site cagecfi.com** (automatique) — récupère toutes les pages du site et les exporte en Markdown dans `documents/cagecfi/` :
+   ```powershell
+   $env:PYTHONUTF8='1'; uv run python -m src.ingestion.crawl_cagecfi
+   ```
+2. **FAQ rédigée** — [`documents/cagecfi-faq.md`](documents/cagecfi-faq.md) : questions clients fréquentes (contacts, devis, formation, produits). Déjà fournie ; complétez-la librement.
+3. **Fiche services** — [`documents/cagecfi-services.md`](documents/cagecfi-services.md) : présentation synthétique des produits. Déjà fournie.
+
+   Vous pouvez aussi déposer vos propres fichiers (PDF, Word, Markdown, HTML…) dans `documents/`.
+
+### Étape 8 — Lancer l'ingestion
+
+```powershell
+$env:PYTHONUTF8='1'; uv run python -m src.ingestion.ingest_supabase -d ./documents
+```
+Cela découpe les documents, génère les embeddings via Ollama et les stocke dans Supabase (tables `cagecfi_*`).
+- Pour ajouter sans effacer l'existant : ajouter `--no-clean`.
+
+### Étape 9 — Lancer le chatbot
+
+**Option A — Interface Web (recommandée pour la démo)**
+```powershell
+$env:PYTHONUTF8='1'; uv run python -m streamlit run src/streamlit_app_supabase.py
+```
+S'ouvre sur `http://localhost:8501`.
+
+**Option B — Terminal (CLI)**
+```powershell
+$env:PYTHONUTF8='1'; uv run python -m src.cli_supabase
 ```
 
-This will:
-- Process your documents (PDF, Word, PowerPoint, Excel, Markdown, etc.)
-- Chunk them intelligently
-- Generate embeddings
-- Store everything in MongoDB (`rag_db.documents` and `rag_db.chunks`)
+Posez vos questions — l'agent recherche dans la base CAGECFI et répond en français.
 
-### 7. Create Search Indexes in MongoDB Atlas
+### Étape 10 — Tester l'agent
 
-**Important**: Only create these indexes AFTER running ingestion - you need data in your `chunks` collection first.
-
-In MongoDB Atlas, go to **Database** → **Search and Vector Search** → **Create Search Index**
-
-**1. Vector Search Index**
-- Pick: **"Vector Search"**
-- Database: `rag_db`
-- Collection: `chunks`
-- Index name: `vector_index`
-- JSON:
-```json
-{
-  "fields": [
-    {
-      "type": "vector",
-      "path": "embedding",
-      "numDimensions": 1536,
-      "similarity": "cosine"
-    }
-  ]
-}
+Vérifiez d'abord que la base est bien remplie :
+```powershell
+$env:PYTHONUTF8='1'; uv run python apply_supabase_setup.py   # cagecfi_chunks (lignes=...) doit être > 0
 ```
 
-**2. Atlas Search Index**
-- Click **"Create Search Index"** again
-- Pick: **"Atlas Search"**
-- Database: `rag_db`
-- Collection: `chunks`
-- Index name: `text_index`
-- JSON:
-```json
-{
-  "mappings": {
-    "dynamic": false,
-    "fields": {
-      "content": {
-        "type": "string",
-        "analyzer": "lucene.standard"
-      }
-    }
-  }
-}
+Puis posez quelques questions de référence (CLI ou Web) pour valider les réponses :
+
+| Question | Réponse attendue (issue de la base) |
+|---|---|
+| « Qu'est-ce que Perfect-Vision ? » | Logiciel de gestion intégré des systèmes financiers décentralisés (SFD). |
+| « Comment demander un devis ? » | Via la page « Demander un devis » du site ou par email à cagecfi@cagecfi.com. |
+| « Comment contacter CAGECFI ? » | cagecfi@cagecfi.com, +228 22 26 84 61, Lomé (Togo). |
+| « Proposez-vous des formations ? » | Oui, via CAGECFI Academy. |
+| « Quelle est la capitale de la France ? » | L'agent doit répondre qu'il n'a pas cette information (hors périmètre). |
+
+Bon réflexe : si une réponse est fausse ou « je n'ai pas trouvé » alors que l'info existe, enrichissez la FAQ ([`documents/cagecfi-faq.md`](documents/cagecfi-faq.md)) puis relancez l'ingestion (étape 8).
+
+Un jeu de **30 questions de test** prêt à l'emploi est disponible dans [`tests/cagecfi-test-questions.md`](tests/cagecfi-test-questions.md).
+
+---
+
+## 🌐 Front-end — Landing page + chatbot
+
+Une page vitrine CAGECFI (sombre, animée) avec une **bulle de chat connectée à l'agent** est fournie dans [`frontend/index.html`](frontend/index.html), servie par l'API FastAPI [`src/api.py`](src/api.py).
+
+### Lancer le chatbot complet (page + chat fonctionnel)
+
+Prérequis : Ollama lancé (`ollama serve`), `.env` configuré et ingestion faite (étapes 3–8).
+
+```powershell
+$env:PYTHONUTF8='1'; uv run uvicorn src.api:app --port 8000
+```
+Puis ouvrez **http://localhost:8000**. La page se charge et le **widget de chat dialogue réellement avec l'agent** (recherche dans la base CAGECFI + réponse en français).
+
+- `GET /` → la landing page · `POST /chat` → réponse **en streaming** · `GET /health` → état du service.
+- Le chat utilise une **recherche forcée** ([`src/rag_chat.py`](src/rag_chat.py)) : il interroge toujours la base puis rédige en une seule passe LLM, et **diffuse la réponse mot à mot** (ressenti immédiat).
+- Les salutations (« Bonjour », « Merci ») répondent instantanément. Pour une vraie question, le 1er mot apparaît après quelques secondes (recherche + modèle sur CPU), puis le texte défile.
+- Le widget appelle `/chat` en même origine — aucune configuration CORS nécessaire en local.
+
+> Aperçu visuel **sans** chat : `uv run python -m http.server 8080 --directory frontend` (le chat affichera alors le message de repli, car l'API n'est pas servie sur ce port).
+
+### Embarquer sur cagecfi.com (plus tard)
+
+Pour héberger l'API ailleurs que la page, modifiez la constante `CHAT_API_URL` dans [`frontend/index.html`](frontend/index.html) (repère `// TODO`) pour pointer vers l'URL publique de l'endpoint `/chat`. Le CORS est déjà activé côté API.
+
+---
+
+## 🧰 Commandes utiles
+
+```powershell
+# Préfixe Windows recommandé pour éviter les erreurs d'encodage :
+$env:PYTHONUTF8='1'
+
+# Créer / vérifier le schéma cagecfi_*
+uv run python apply_supabase_setup.py
+
+# Ingérer des documents
+uv run python -m src.ingestion.ingest_supabase -d ./documents
+
+# Ingérer sans effacer les données existantes
+uv run python -m src.ingestion.ingest_supabase -d ./documents --no-clean
+
+# Lancer l'interface web
+uv run python -m streamlit run src/streamlit_app_supabase.py
+
+# Lancer le CLI
+uv run python -m src.cli_supabase
+
+# Lancer le chatbot complet (landing + chat connecté à l'agent)
+uv run uvicorn src.api:app --port 8000
+
+# Aperçu visuel de la page seule (sans chat)
+uv run python -m http.server 8080 --directory frontend
 ```
 
-Wait 1-5 minutes for both indexes to build (status: "Building" → "Active").
+---
 
-### 8. Run the Agent
+## 🩺 Dépannage
 
-```bash
-uv run python -m src.cli
-```
+| Problème | Solution |
+|---|---|
+| `Ollama connection failed` | Vérifier que `ollama serve` tourne et que `qwen2.5:7b-instruct-q4_K_M` + `nomic-embed-text:v1.5` sont téléchargés (`ollama list`). |
+| `Connection refused` (Supabase) | Vérifier `DATABASE_URL` dans `.env` (mot de passe réel, pas `[YOUR-PASSWORD]`) et que le projet Supabase n'est pas en pause. |
+| `Extension vector not found` | Exécuter `CREATE EXTENSION IF NOT EXISTS vector;` dans le SQL Editor. |
+| `Table does not exist` | Réexécuter `$env:PYTHONUTF8='1'; uv run python apply_supabase_setup.py` (recrée les tables `cagecfi_*`). |
+| Le bot répond « je n'ai pas trouvé » | Vérifier que l'ingestion a réussi (`SELECT COUNT(*) FROM cagecfi_chunks;` > 0). |
+| `does not support tools` (erreur 400) | Le modèle LLM ne gère pas le function calling. Utiliser `qwen2.5:7b-instruct-q4_K_M`, `llama3.2:3b` ou `llama3.1:8b` (pas `gemma3:4b`). |
+| `UnicodeEncodeError` sous Windows | Préfixer la commande par `$env:PYTHONUTF8='1';`. |
+| `prepared statement does not exist` / erreur pgbouncer | Déjà géré dans le code (`statement_cache_size=0`). Vérifier que `DATABASE_URL` pointe bien vers le pooler Supabase. |
+| Dimensions d'embedding incompatibles | `nomic-embed-text:v1.5` = **768**. Si vous changez de modèle d'embedding, recréez la table `cagecfi_chunks` avec la bonne dimension et réingérez. |
+| Le widget de chat répond « pas encore connecté » | Vous avez ouvert la page sans l'API. Lancez `uv run uvicorn src.api:app --port 8000` et ouvrez http://localhost:8000 (pas le port 8080 ni `file://`). |
+| Première réponse du chat très lente | Chargement initial du modèle `qwen2.5:7b-instruct-q4_K_M` en mémoire. Normal au démarrage à froid ; les réponses suivantes sont rapides. |
 
-Now you can ask questions and the agent will search your knowledge base!
+---
 
-## Project Structure
+## 📁 Structure du projet
 
 ```
 MongoDB-RAG-Agent/
-├── src/                           # MongoDB implementation (COMPLETE)
-│   ├── settings.py               # ✅ Configuration management
-│   ├── providers.py              # ✅ LLM/embedding providers
-│   ├── dependencies.py           # ✅ MongoDB connection & AgentDependencies
-│   ├── test_config.py            # ✅ Configuration validation
-│   ├── tools.py                  # ✅ Search tools (semantic, text, hybrid RRF)
-│   ├── agent.py                  # ✅ Pydantic AI agent with search tools
-│   ├── cli.py                    # ✅ Rich-based conversational CLI
-│   ├── prompts.py                # ✅ System prompts
+├── src/
+│   ├── settings_supabase.py        # Configuration (Supabase + Ollama)
+│   ├── providers_supabase.py       # Fournisseurs LLM / embeddings (Ollama)
+│   ├── dependencies_supabase.py    # Connexion PostgreSQL + pgvector
+│   ├── tools_supabase.py           # Outils de recherche (semantic, text, hybrid)
+│   ├── agent_supabase.py           # Agent Pydantic AI (support CAGECFI)
+│   ├── prompts.py                  # Prompts système
+│   ├── cli_supabase.py             # Interface terminal
+│   ├── streamlit_app_supabase.py   # Interface web (Streamlit)
+│   ├── api.py                      # API FastAPI (sert la landing + endpoint /chat en streaming)
+│   ├── rag_chat.py                 # Chat RAG : recherche forcée + rédaction streamée
 │   └── ingestion/
-│       ├── chunker.py            # ✅ Docling HybridChunker wrapper
-│       ├── embedder.py           # ✅ Batch embedding generation
-│       └── ingest.py             # ✅ MongoDB ingestion pipeline
-├── examples/                      # PostgreSQL reference (DO NOT MODIFY)
-│   ├── agent.py                  # Reference: Pydantic AI agent patterns
-│   ├── tools.py                  # Reference: PostgreSQL search tools
-│   └── cli.py                    # Reference: Rich CLI interface
-├── documents/                     # Document folder (13 sample documents included)
-├── .claude/                       # Project documentation
-│   ├── PRD.md                    # Product requirements
-│   └── reference/                # MongoDB/Docling/Agent patterns
-├── .agents/
-│   ├── plans/                    # Implementation plans (all phases)
-│   └── analysis/                 # Technical analysis & decisions
-├── comprehensive_e2e_test.py      # ✅ Full E2E validation (10/10 passed)
-└── pyproject.toml                # UV package configuration
+│       ├── chunker.py              # Découpage Docling HybridChunker
+│       ├── crawl_cagecfi.py        # Crawler du site cagecfi.com → Markdown
+│       └── ingest_supabase.py      # Pipeline d'ingestion → PostgreSQL
+├── documents/                      # Base de connaissances à ingérer
+│   ├── cagecfi-faq.md              # FAQ support (contacts, devis, formation…)
+│   ├── cagecfi-services.md         # Fiche produits/services
+│   └── cagecfi/                    # Pages du site crawlées (Markdown)
+├── frontend/
+│   └── index.html                  # Landing page CAGECFI + widget de chat
+├── tests/
+│   └── cagecfi-test-questions.md   # Jeu de 30 questions de test
+├── supabase_setup_cagecfi.sql      # Schéma + index des tables cagecfi_*
+├── apply_supabase_setup.py         # Crée / vérifie le schéma cagecfi_*
+├── .env.supabase.example           # Template de configuration
+└── requirements_supabase.txt       # Dépendances Python
 ```
 
-## Technology Stack
+---
 
-- **Database**: MongoDB Atlas (Vector Search + Full-Text Search)
-- **Agent Framework**: Pydantic AI 0.1.0+
-- **Document Processing**: Docling 2.14+ (PDF, Word, PowerPoint, Excel, Audio)
-- **Async Driver**: PyMongo 4.10+ with native async API
-- **CLI**: Rich 13.9+ (terminal formatting and streaming)
-- **Package Manager**: UV 0.5.0+ (fast dependency management)
+## 🗺️ Feuille de route
 
-## Hybrid Search Implementation
+- [x] Migration vers Supabase + Ollama (recherche hybride)
+- [x] Repositionnement « support client CAGECFI »
+- [x] **Base de connaissances** : crawl de cagecfi.com + FAQ rédigée
+- [x] **Front-end** : landing page CAGECFI + widget de chat (`frontend/index.html`)
+- [x] **API FastAPI** (`/chat`) connectant le widget à l'agent (`src/api.py`)
+- [x] **Recherche forcée + streaming** (réponses fiables, affichées mot à mot — `src/rag_chat.py`)
+- [ ] Nettoyage du dépôt (canonicalisation des fichiers `*_supabase.py`, retrait du legacy MongoDB)
+- [ ] Hébergement de production (serveur/VPS avec Ollama, ou bascule API cloud)
 
-This project uses **manual Reciprocal Rank Fusion (RRF)** to combine vector and text search results, providing the same quality as MongoDB's `$rankFusion` operator while working on the **free M0 tier** (since $rankFusion is in preview it isn't available on the M0 tier).
+---
 
-### How It Works
+## 📚 Ressources
 
-1. **Semantic Search** (`$vectorSearch`): Finds conceptually similar content using vector embeddings
-2. **Text Search** (`$search`): Finds keyword matches with fuzzy matching for typos
-3. **RRF Merging**: Combines results using the formula: `RRF_score = Σ(1 / (60 + rank))`
-   - Documents appearing in both searches get higher combined scores
-   - Automatic deduplication
-   - Standard k=60 constant (proven effective across datasets)
-
-### Performance
-
-- **Latency**: ~350-600ms per query (both searches run concurrently)
-- **Accuracy**: 100% success rate on validation tests
-- **Cost**: $0/month (works on free M0 tier)
-
-## Usage Examples
-
-### Interactive CLI
-
-```bash
-uv run python -m src.cli
-```
-
-**Example conversation:**
-```
-You: What is NeuralFlow AI's revenue goal for 2025?
-
-  [Calling tool] search_knowledge_base
-    Query: NeuralFlow AI's revenue goal for 2025
-    Type: hybrid
-    Results: 5
-  [Search completed successfully]
+- [Documentation Supabase](https://supabase.com/docs) · [pgvector](https://github.com/pgvector/pgvector)
+- [Pydantic AI](https://ai.pydantic.dev) · [Ollama](https://ollama.com) · [Docling](https://github.com/DS4SD/docling)

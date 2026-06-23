@@ -1,0 +1,41 @@
+# =========================================
+# Dépendances supplémentaires pour Supabase
+# =========================================
+
+# PostgreSQL async driver
+asyncpg>=0.29.0
+
+# pgvector support for Python
+pgvector>=0.2.4
+
+# Supabase Python client (optionnel - pour features avancées)
+supabase>=2.3.0
+
+# API web pour le widget de chat (front-end)
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+
+# =========================================
+# Installation:
+# =========================================
+#
+# Avec UV (recommandé):
+#   uv pip install -r requirements_supabase.txt
+#
+# Ou avec pip:
+#   pip install -r requirements_supabase.txt
+#
+# =========================================
+# IMPORTANT:
+# =========================================
+#
+# Ces dépendances REMPLACENT les dépendances MongoDB:
+# - asyncpg remplace motor/pymongo
+# - pgvector permet le stockage de vecteurs dans PostgreSQL
+# - supabase offre des features supplémentaires (auth, storage, etc.)
+#
+# GARDENT Ollama:
+# - openai (pour l'API compatible Ollama)
+# - Tous les modèles Ollama fonctionnent toujours!
+#
+# =========================================
