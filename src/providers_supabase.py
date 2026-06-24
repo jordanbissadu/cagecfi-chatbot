@@ -2,7 +2,14 @@
 
 from typing import Optional
 from pydantic_ai.providers.openai import OpenAIProvider
-from pydantic_ai.models.openai import OpenAIModel
+
+# pydantic-ai >= 1.x a renommé `OpenAIModel` en `OpenAIChatModel`. On supporte
+# les deux pour être robuste à la version installée (local vs build Vercel).
+try:
+    from pydantic_ai.models.openai import OpenAIModel
+except ImportError:  # pragma: no cover
+    from pydantic_ai.models.openai import OpenAIChatModel as OpenAIModel
+
 from src.settings_supabase import load_settings
 
 
