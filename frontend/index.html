@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CAGECFI — Solutions numériques pour la finance décentralisée</title>
-<meta name="description" content="CAGECFI conçoit des logiciels et solutions digitales pour les systèmes financiers décentralisés : Perfect-Vision, finance digitale, solutions étatiques et ONG. Depuis 2001, certifié ISO 9001:2015." />
+<title>NOVAFIN — Page de démonstration (contenu illustratif)</title>
+<meta name="description" content="Page de démonstration NOVAFIN. Tous les textes sont illustratifs et ne reflètent aucune information réelle — ils servent uniquement à présenter la mise en page." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -67,15 +67,15 @@ nav .nav-chat {
 nav .nav-chat:hover { background: rgba(44,92,136,0.35); }
 
 /* Hero */
-#hero { position: relative; height: 100vh; width: 100%; display: flex; flex-direction: column; }
+#hero { position: relative; min-height: 100vh; width: 100%; display: flex; flex-direction: column; }
 #hero .gradient-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(0,0,0,0.6), transparent, transparent);
 }
 #hero .content {
   position: relative; z-index: 10; flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: flex-end; text-align: center;
-  padding: 0 1.5rem 6rem;
+  align-items: center; justify-content: center; text-align: center;
+  padding: 7rem 1.5rem 4rem;
 }
 #hero .subtitle { font-size: 0.875rem; color: #9ca3af; margin-bottom: 1rem; letter-spacing: 0.08em; text-transform: uppercase; }
 #hero h1 { font-size: clamp(1.6rem, 5vw, 3.75rem); font-weight: 600; line-height: 1.15; max-width: 52rem; }
@@ -101,14 +101,21 @@ nav .nav-chat:hover { background: rgba(44,92,136,0.35); }
 #hero .bounce-arrow svg { width: 1.5rem; height: 1.5rem; color: #6b7280; animation: bounce 1s infinite; }
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25%); } }
 
-/* Cards */
-#fixed-cards { position: fixed; bottom: 0; left: 0; right: 0; z-index: 4; padding: 2rem 2.5rem; opacity: 0; pointer-events: none; }
-#fixed-cards .grid { max-width: 72rem; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-#fixed-cards .card h3 { font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
-#fixed-cards .card p { color: #d1d5db; font-size: 0.875rem; line-height: 1.6; }
+/* Cards (en flux, apparition immédiate au scroll) */
+#cards { position: relative; z-index: 2; padding: 6rem 2.5rem 4rem;
+  opacity: 0; transform: translateY(28px); filter: blur(6px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out, filter 0.7s ease-out; }
+#cards.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+#cards .intro { max-width: 72rem; margin: 0 auto 2.5rem; text-align: center; }
+#cards .intro p { color: #9ca3af; font-size: 0.875rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.75rem; }
+#cards .intro h2 { font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 700; color: #fff; }
+#cards .grid { max-width: 72rem; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+#cards .card { background: rgba(20,20,20,0.5); border: 1px solid rgba(55,65,81,0.4); border-radius: 0.9rem; padding: 1.75rem; }
+#cards .card h3 { font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 0.85rem; }
+#cards .card p { color: #d1d5db; font-size: 0.9rem; line-height: 1.65; }
 
 /* Section finale */
-#section-three { position: relative; min-height: 100vh; display: flex; align-items: flex-end; justify-content: center; padding: 0 2.5rem 8rem; }
+#section-three { position: relative; min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 4rem 2.5rem; }
 #section-three .inner {
   position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; text-align: center;
   opacity: 0; transform: translateY(32px); filter: blur(8px);
@@ -215,11 +222,11 @@ footer .copyright { max-width: 72rem; margin: 2rem auto 0; padding-top: 1.5rem; 
 @media (max-width: 768px) {
   nav { padding: 1rem 1.5rem; }
   nav .nav-links { display: none; }
-  #hero .content { padding-bottom: 5rem; }
+  #hero .content { padding: 6rem 1.25rem 3rem; }
   #hero .ctas { flex-direction: column; }
-  #fixed-cards .grid { grid-template-columns: 1fr; gap: 1.5rem; }
-  #fixed-cards { padding: 1.5rem 1rem; }
-  #section-three { padding-bottom: 5rem; }
+  #cards { padding: 4rem 1.25rem 2rem; }
+  #cards .grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  #section-three { padding: 3rem 1.25rem; }
   footer .grid { grid-template-columns: 1fr; gap: 2rem; }
   #chat-panel { width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh; bottom: 0; right: 0; border-radius: 0; }
 }
@@ -228,7 +235,7 @@ footer .copyright { max-width: 72rem; margin: 2rem auto 0; padding-top: 1.5rem; 
 @media (prefers-reduced-motion: reduce) {
   #bg-gradient .blob { animation: none; }
   #hero .bounce-arrow svg { animation: none; }
-  #section-three .inner { transition: none; }
+  #section-three .inner, #cards { transition: none; }
 }
 </style>
 </head>
@@ -245,41 +252,23 @@ footer .copyright { max-width: 72rem; margin: 2rem auto 0; padding-top: 1.5rem; 
 <!-- Particules -->
 <canvas id="particles-canvas"></canvas>
 
-<!-- Cartes fixes (piliers) -->
-<div id="fixed-cards">
-  <div class="grid">
-    <div class="card">
-      <h3>Perfect-Vision</h3>
-      <p>Le logiciel de gestion intégré des systèmes financiers décentralisés : clientèle, portefeuille-crédit, épargne, tontine, comptabilité générale et analytique, RH &amp; paie, et édition des états financiers — dans une interface intuitive.</p>
-    </div>
-    <div class="card">
-      <h3>Finance digitale</h3>
-      <p>Digitalisez vos services financiers : e-banking, mobile banking, SMS banking, mobile money, mobile agency, transfert d'argent et monétique, pour rapprocher vos clients de leurs comptes.</p>
-    </div>
-    <div class="card">
-      <h3>Solutions étatiques &amp; ONG</h3>
-      <p>Des plateformes pour les administrations (SIFEN, SIGEP, télédéclaration d'impôts, PAY'TAX, SIG-M, SIG-IFI) et SYCEBNL-ERP pour la transparence financière des ONG et associations.</p>
-    </div>
-  </div>
-</div>
-
 <!-- Navigation -->
 <nav>
   <div style="display:flex;align-items:center;gap:2rem;">
-    <span class="logo">CAGECFI</span>
+    <span class="logo">NOVAFIN</span>
     <div class="nav-links">
-      <a href="#fixed-cards">Solutions</a>
+      <a href="#cards">Solutions</a>
       <a href="#section-three">À propos</a>
       <a href="#footer">Contact</a>
     </div>
   </div>
   <div class="right">
     <div class="social">
-      <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
-      <a href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></a>
-      <a href="https://www.youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
+      <a href="#" aria-label="LinkedIn"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+      <a href="#" aria-label="Facebook"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
     </div>
-    <button class="nav-chat" data-chat-open aria-label="Ouvrir l'assistant CAGECFI">
+    <button class="nav-chat" data-chat-open aria-label="Ouvrir l'assistant NOVAFIN">
       <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l1.2-3.6A7.9 7.9 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
       Assistant
     </button>
@@ -292,18 +281,18 @@ footer .copyright { max-width: 72rem; margin: 2rem auto 0; padding-top: 1.5rem; 
   <section id="hero">
     <div class="gradient-overlay"></div>
     <div class="content">
-      <p class="subtitle">Notre mission</p>
+      <p class="subtitle">Texte d'exemple</p>
       <h1>
-        La gestion intégrée des systèmes financiers décentralisés, enfin
-        <span class="underlined"><span class="line"></span><span>simplifiée</span></span>.
+        Des solutions numériques modernes, pensées pour vous
+        <span class="underlined"><span class="line"></span><span>simplifier</span></span> la vie.
       </h1>
       <div class="ctas">
         <div class="chip">
           <span class="dot"></span>
-          Certifié ISO 9001:2015 · Depuis 2001
+          Contenu illustratif · Page de démonstration
         </div>
         <button class="cta-btn" data-chat-open>Discuter avec l'assistant <span>&rarr;</span></button>
-        <a href="mailto:cagecfi@cagecfi.com?subject=Demande%20de%20devis" class="cta-btn secondary">Demander un devis</a>
+        <a href="mailto:contact@novafin.example?subject=Demande%20d'exemple" class="cta-btn secondary">En savoir plus</a>
       </div>
     </div>
     <div class="bounce-arrow">
@@ -311,20 +300,33 @@ footer .copyright { max-width: 72rem; margin: 2rem auto 0; padding-top: 1.5rem; 
     </div>
   </section>
 
-  <!-- Spacer -->
-  <div style="height:150vh;"></div>
-
-  <!-- Zone de déclenchement des cartes -->
-  <div id="cards-trigger" style="height:200vh;"></div>
-
-  <!-- Spacer -->
-  <div style="height:100vh;"></div>
+  <!-- Piliers (apparaissent dès qu'ils entrent dans la vue) -->
+  <section id="cards">
+    <div class="intro">
+      <p>Ce que nous proposons</p>
+      <h2>Trois piliers, expliqués simplement</h2>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>Produit Alpha</h3>
+        <p>Texte d'illustration décrivant un premier produit. Ce paragraphe est volontairement générique : remplacez-le par votre propre contenu pour présenter votre offre. Lorem ipsum, mise en page de démonstration.</p>
+      </div>
+      <div class="card">
+        <h3>Service Bêta</h3>
+        <p>Deuxième bloc illustratif. Il sert uniquement à montrer comment les cartes s'affichent côte à côte. Vous pouvez y mettre les bénéfices, fonctionnalités ou cas d'usage de votre choix.</p>
+      </div>
+      <div class="card">
+        <h3>Solution Gamma</h3>
+        <p>Troisième exemple de contenu. Aucune information réelle ici : ce texte est un simple gabarit destiné à valider l'apparence et la disposition de la page avant intégration du vrai contenu.</p>
+      </div>
+    </div>
+  </section>
 
   <!-- Section finale -->
   <section id="section-three">
     <div class="inner" id="section-three-inner">
-      <p>Depuis 2001</p>
-      <h2>Le numérique au service de la finance inclusive en Afrique.</h2>
+      <p>Notre approche</p>
+      <h2>Un message fort et illustratif, à personnaliser selon vos besoins.</h2>
     </div>
   </section>
 
@@ -332,47 +334,47 @@ footer .copyright { max-width: 72rem; margin: 2rem auto 0; padding-top: 1.5rem; 
   <footer id="footer">
     <div class="grid">
       <div>
-        <span class="brand">CAGECFI</span>
-        <p>Éditeur de logiciels et de solutions digitales pour les systèmes financiers décentralisés, les administrations et les ONG en Afrique de l'Ouest.</p>
-        <span class="badge">ISO 9001:2015</span>
+        <span class="brand">NOVAFIN</span>
+        <p>Texte de présentation illustratif. NOVAFIN est un nom fictif utilisé pour cette démonstration ; aucune des informations affichées ici n'est réelle.</p>
+        <span class="badge">Démo</span>
       </div>
       <div>
         <h4>Contact</h4>
         <p>
-          <a href="mailto:cagecfi@cagecfi.com">cagecfi@cagecfi.com</a><br />
-          <a href="mailto:cagecfibenin@cagecfi.com">cagecfibenin@cagecfi.com</a><br />
-          <a href="tel:+22822268461">+228 22 26 84 61</a><br />
-          <a href="https://www.cagecfi.com" target="_blank" rel="noopener">www.cagecfi.com</a>
+          <a href="mailto:contact@novafin.example">contact@novafin.example</a><br />
+          <a href="mailto:hello@novafin.example">hello@novafin.example</a><br />
+          <a href="tel:+0000000000">+00 00 00 00 00</a><br />
+          <a href="#">www.novafin.example</a>
         </p>
       </div>
       <div>
         <h4>Nos bureaux</h4>
         <p>
-          <b style="color:#cbd5e1;">Togo (siège)</b><br />
-          409 Rue KONFESS, Tokoin-Tamé, Lomé<br /><br />
-          <b style="color:#cbd5e1;">Bénin</b><br />
-          Fidjrossè Kpota, Cotonou
+          <b style="color:#cbd5e1;">Bureau principal</b><br />
+          123 Avenue de l'Exemple, Ville-Démo<br /><br />
+          <b style="color:#cbd5e1;">Antenne</b><br />
+          45 Rue Illustrative, Cité-Test
         </p>
       </div>
     </div>
-    <div class="copyright">© <span id="year"></span> CAGECFI SA — Tous droits réservés.</div>
+    <div class="copyright">© <span id="year"></span> NOVAFIN — Contenu illustratif, tous droits réservés (exemple).</div>
   </footer>
 </div>
 
 <!-- Bulle de chat -->
-<button id="chat-bubble" class="pulse" aria-label="Ouvrir le chat CAGECFI">
+<button id="chat-bubble" class="pulse" aria-label="Ouvrir le chat NOVAFIN">
   <span class="notif"></span>
   <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l1.2-3.6A7.9 7.9 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
 </button>
 
 <!-- Panneau de chat -->
-<div id="chat-panel" role="dialog" aria-label="Chatbot CAGECFI">
+<div id="chat-panel" role="dialog" aria-label="Chatbot NOVAFIN">
   <div class="head">
     <div class="title">
       <span class="av">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l1.2-3.6A7.9 7.9 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
       </span>
-      <div><b>Chatbot CAGECFI</b><small><span class="live"></span>En ligne · répond en quelques secondes</small></div>
+      <div><b>Assistant NOVAFIN</b><small><span class="live"></span>En ligne · répond en quelques secondes</small></div>
     </div>
     <button id="chat-close" aria-label="Fermer le chat">&times;</button>
   </div>
@@ -436,65 +438,20 @@ footer .copyright { max-width: 72rem; margin: 2rem auto 0; padding-top: 1.5rem; 
     animateParticles();
   }
 
-  // ===================== HERO FADE =====================
-  function updateHeroOpacity() {
-    const fade = Math.max(0, 1 - window.scrollY / (window.innerHeight * 0.3));
-    document.getElementById('hero').style.opacity = fade;
-  }
-  window.addEventListener('scroll', updateHeroOpacity, { passive: true });
-
-  // ===================== FIXED CARDS =====================
-  const fixedCards = document.getElementById('fixed-cards');
-  const cardsGrid = fixedCards.querySelector('.grid');
-
-  function tickCards() {
-    const trigger = document.getElementById('cards-trigger');
-    const rect = trigger.getBoundingClientRect();
-    const triggerTop = rect.top + window.scrollY;
-    const triggerHeight = rect.height;
-    const scrollY = window.scrollY;
-    const vh = window.innerHeight;
-
-    const start = triggerTop - vh * 0.5;
-    const end = triggerTop + triggerHeight - vh * 0.3;
-    const range = end - start;
-
-    let progress = range > 0 ? (scrollY - start) / range : 0;
-    progress = Math.max(0, Math.min(1, progress));
-
-    const isActive = scrollY >= start - vh * 0.2 && scrollY <= end + vh * 0.3;
-    const fadeIn = Math.min(1, Math.max(0, (scrollY - (start - vh * 0.2)) / (vh * 0.2)));
-    const fadeOut = Math.min(1, Math.max(0, (end + vh * 0.3 - scrollY) / (vh * 0.3)));
-    const containerOpacity = isActive ? Math.min(fadeIn, fadeOut) : 0;
-
-    fixedCards.style.opacity = containerOpacity;
-    fixedCards.style.pointerEvents = containerOpacity > 0.1 ? 'auto' : 'none';
-
-    const isMobile = window.innerWidth < 768;
-    const revealPct = progress * 130;
-    if (isMobile) {
-      cardsGrid.style.maskImage = `linear-gradient(to bottom, black ${revealPct}%, transparent ${revealPct + 20}%)`;
-      cardsGrid.style.webkitMaskImage = `linear-gradient(to bottom, black ${revealPct}%, transparent ${revealPct + 20}%)`;
-    } else {
-      cardsGrid.style.maskImage = `linear-gradient(to right, black ${revealPct}%, transparent ${revealPct + 15}%)`;
-      cardsGrid.style.webkitMaskImage = `linear-gradient(to right, black ${revealPct}%, transparent ${revealPct + 15}%)`;
-    }
-    requestAnimationFrame(tickCards);
-  }
-  requestAnimationFrame(tickCards);
-
-  // ===================== SECTION FINALE =====================
-  const sectionThreeInner = document.getElementById('section-three-inner');
-  const observer = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) {
-      sectionThreeInner.classList.add('visible');
-      observer.unobserve(sectionThreeInner);
-    }
-  }, { threshold: 0.15 });
-  observer.observe(sectionThreeInner);
+  // ===================== APPARITION AU SCROLL (fade-in immédiat) =====================
+  // Chaque section apparaît dès qu'elle entre dans la vue, sans long défilement.
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        fadeObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('#cards, #section-three-inner').forEach((el) => fadeObserver.observe(el));
 
   // ===================== CHAT WIDGET =====================
-  // TODO: brancher l'API FastAPI (endpoint /chat) du backend CAGECFI.
+  // L'API FastAPI (endpoint /chat) répond en un seul bloc de texte.
   const CHAT_API_URL = "/chat";
   const panel = document.getElementById('chat-panel');
   const bubble = document.getElementById('chat-bubble');
@@ -507,9 +464,9 @@ footer .copyright { max-width: 72rem; margin: 2rem auto 0; padding-top: 1.5rem; 
 
   const BOT_SVG = '<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4-.8L3 20l1.2-3.6A7.9 7.9 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>';
   const SUGGESTIONS = [
-    "Qu'est-ce que CAGECFI ?",
-    "Demander un devis",
-    "Vos formations",
+    "Que proposez-vous ?",
+    "Demander une démo",
+    "Vos services",
     "Comment vous contacter ?"
   ];
 
@@ -631,7 +588,7 @@ footer .copyright { max-width: 72rem; margin: 2rem auto 0; padding-top: 1.5rem; 
       history.push({ role: 'assistant', content: full });
     } catch (err) {
       typing.remove();
-      addMessage("Le chatbot n'est pas encore connecté. En attendant, écrivez-nous à cagecfi@cagecfi.com ou appelez le +228 22 26 84 61.", 'bot');
+      addMessage("L'assistant n'est pas encore connecté. En attendant, écrivez-nous à contact@novafin.example.", 'bot');
     }
   }
 
@@ -642,7 +599,7 @@ footer .copyright { max-width: 72rem; margin: 2rem auto 0; padding-top: 1.5rem; 
     if (notif) notif.style.display = 'none';
     if (!welcomed) {
       welcomed = true;
-      addMessage("Bonjour 👋 Je suis le chatbot de CAGECFI. Posez-moi vos questions sur nos solutions (Perfect-Vision, finance digitale, solutions étatiques), un devis, nos formations ou nos contacts.", 'bot');
+      addMessage("Bonjour 👋 Je suis l'assistant NOVAFIN (démonstration). Posez-moi une question d'exemple sur nos services.", 'bot');
       renderSuggestions();
     }
     setTimeout(() => input.focus(), 250);
