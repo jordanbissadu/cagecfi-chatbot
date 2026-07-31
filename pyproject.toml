@@ -29,6 +29,8 @@ ingestion = [
     "transformers>=4.47.0",
     "openai-whisper>=20240930",
     "aiofiles>=24.1.0",
+    "pypdf>=6.0.0",
+    "python-frontmatter>=1.1.0",
 ]
 # Interfaces locales (CLI Rich + app Streamlit).
 #   uv pip install -e ".[ui]"
@@ -53,3 +55,10 @@ dev-dependencies = [
     "black>=24.10.0",
     "ruff>=0.8.0",
 ]
+
+[tool.pytest.ini_options]
+markers = [
+    "unit: tests unitaires sans I/O reseau",
+    "integration: tests necessitant un service externe",
+]
+asyncio_mode = "auto"
