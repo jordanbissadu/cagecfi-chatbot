@@ -135,7 +135,7 @@ async def download_all(dest_dir: Path) -> list[Path]:
         for item in DRIVE_FILES:
             try:
                 ok.append(await download_file(client, item, dest_dir))
-            except (httpx.HTTPError, ValueError) as exc:
+            except (httpx.HTTPError, ValueError, OSError) as exc:
                 logger.exception("telechargement_echoue slug=%s", item.slug)
                 echecs.append(f"{item.slug}: {exc}")
 

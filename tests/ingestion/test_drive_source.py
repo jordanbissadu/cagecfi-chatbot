@@ -2,9 +2,11 @@
 
 from pathlib import Path
 
+import httpx
 import pytest
 
-from src.ingestion.drive_source import DRIVE_FILES, is_complete_pdf
+import src.ingestion.drive_source as drive_source
+from src.ingestion.drive_source import DRIVE_FILES, DriveFile, is_complete_pdf
 
 
 @pytest.mark.unit
@@ -50,3 +52,28 @@ def test_is_complete_pdf_detects_truncated_file(tmp_path: Path) -> None:
 def test_is_complete_pdf_handles_missing_file(tmp_path: Path) -> None:
     """Un fichier absent est considere incomplet, sans lever d'exception."""
     assert is_complete_pdf(tmp_path / "absent.pdf") is False
+
+
+@pytest.mark.unit
+async def test_download_all_continues_after_disk_error(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Une OSError (disque plein, permission refusee) sur un fichier ne doit pas
+    interrompre le traitement des fichiers suivants du lot.
+    """
+    appels: list[str] = []
+
+    async def download_file_simule(
+        client: httpx.AsyncClient, item: DriveFile, dest_dir: Path
+    ) -> Path:
+        appels.append(item.slug)
+        if len(appels) == 1:
+            raise OSError("disque plein (simule)")
+        return dest_dir / item.slug
+
+    monkeypatch.setattr(drive_source, "download_file", download_file_simule)
+
+    resultat = await drive_source.download_all(tmp_path)
+
+    assert len(appels) == len(DRIVE_FILES)
+    assert len(resultat) == len(DRIVE_FILES) - 1
