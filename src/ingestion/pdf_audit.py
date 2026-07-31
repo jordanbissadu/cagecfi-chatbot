@@ -100,7 +100,8 @@ def apply_exclusions(audits: list[DocumentAudit]) -> list[DocumentAudit]:
     """Marque les doublons et les documents anglais.
 
     L'exclusion est toujours tracee par un motif : aucun document ne disparait
-    silencieusement du pipeline.
+    silencieusement du pipeline. Les doublons d'un document exclu sont aussi
+    exclus (motif: doublon), pour garantir la coherence du pipeline d'ingestion.
 
     Args:
         audits: Audits bruts.
@@ -117,6 +118,7 @@ def apply_exclusions(audits: list[DocumentAudit]) -> list[DocumentAudit]:
         if copie.filename in ENGLISH_SLUGS:
             copie.language = "en"
             copie.excluded_reason = "document en anglais"
+            premier_par_hash[copie.md5] = copie.filename  # Enregistrer même les documents exclus
         elif copie.md5 in premier_par_hash:
             original = premier_par_hash[copie.md5]
             copie.is_duplicate_of = original
