@@ -199,11 +199,19 @@ from src.ingestion.drive_source import DRIVE_FILES, is_complete_pdf
 
 
 @pytest.mark.unit
-def test_inventory_has_31_unique_entries() -> None:
-    """L'inventaire couvre les 31 fichiers du dossier Drive, sans doublon d'id."""
-    assert len(DRIVE_FILES) == 31
-    assert len({f.drive_id for f in DRIVE_FILES}) == 31
-    assert len({f.slug for f in DRIVE_FILES}) == 31
+def test_inventory_has_32_unique_entries() -> None:
+    """L'inventaire couvre les 32 fichiers du Drive (31 PDF + 1 JPG), sans doublon d'id."""
+    assert len(DRIVE_FILES) == 32
+    assert len({f.drive_id for f in DRIVE_FILES}) == 32
+    assert len({f.slug for f in DRIVE_FILES}) == 32
+
+
+@pytest.mark.unit
+def test_inventory_contains_31_pdfs() -> None:
+    """Les 31 plaquettes PDF sont presentes ; seul l'encart est une image."""
+    pdfs = [f for f in DRIVE_FILES if f.slug.endswith(".pdf")]
+    assert len(pdfs) == 31
+    assert "VISUEL_CAGECFI.pdf" in {f.slug for f in pdfs}
 
 
 @pytest.mark.unit
@@ -213,7 +221,7 @@ def test_slugs_are_filesystem_safe() -> None:
         assert " " not in item.slug
         assert "," not in item.slug
         assert item.slug.isascii()
-        assert item.slug.endswith(".pdf")
+        assert item.slug.endswith((".pdf", ".jpg"))
 
 
 @pytest.mark.unit
@@ -304,6 +312,7 @@ DRIVE_FILES: list[DriveFile] = [
     DriveFile(drive_id="11zi3QKvJCUzAgIBaMPg32xPQe7NXcun_", original_name="SYCEBNL_CAGECFI.pdf", slug="SYCEBNL_CAGECFI.pdf"),
     DriveFile(drive_id="1kmGWI1A9c1o4w6qN9p7QWcyFHbi2sJaC", original_name="SYCEBNL.pdf", slug="SYCEBNL.pdf"),
     DriveFile(drive_id="1YCRb_k2Iz1A2wh8Yc3SdG4XFjB2KL_hw", original_name="TRADER.pdf", slug="TRADER.pdf"),
+    DriveFile(drive_id="1ruFLqu59oJyhf81WMEYsN7Sjt0ZtYkFl", original_name="VISUEL CAGECFI.pdf", slug="VISUEL_CAGECFI.pdf"),
 ]
 
 
@@ -402,19 +411,19 @@ if __name__ == "__main__":
 - [ ] **Step 4: Lancer les tests pour vérifier qu'ils passent**
 
 Run: `uv run pytest tests/ingestion/test_drive_source.py -v`
-Expected: PASS (4 tests)
+Expected: PASS (5 tests)
 
 - [ ] **Step 5: Télécharger réellement le corpus**
 
 Run: `uv run python -m src.ingestion.drive_source`
-Expected: `telechargement_termine ok=31 echecs=0`
+Expected: `telechargement_termine ok=32 echecs=0`
 
 Si `INTEROPERABILITE.pdf` (89 Mo) échoue par dépassement de délai, relancer la commande : les fichiers déjà complets sont sautés.
 
 - [ ] **Step 6: Vérifier le résultat**
 
-Run: `uv run python -c "from pathlib import Path; from src.ingestion.drive_source import DRIVE_FILES, is_complete_pdf; d=Path('documents/plaquettes'); print(sum(is_complete_pdf(d/f.slug) for f in DRIVE_FILES), '/31 complets')"`
-Expected: `31 /31 complets`
+Run: `uv run python -c "from pathlib import Path; from src.ingestion.drive_source import DRIVE_FILES, is_complete_pdf; d=Path('documents/plaquettes'); print(sum(is_complete_pdf(d/f.slug) for f in DRIVE_FILES), '/32 complets')"`
+Expected: `32 /32 complets`
 
 - [ ] **Step 7: Commit**
 
