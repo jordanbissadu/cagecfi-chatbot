@@ -177,7 +177,7 @@ git commit -m "feat: configuration Mistral OCR et dependances d'ingestion"
 - Consumes: rien
 - Produces:
   - `DriveFile` (Pydantic : `drive_id: str`, `original_name: str`, `slug: str`)
-  - `DRIVE_FILES: list[DriveFile]` — inventaire figé de 31 entrées
+  - `DRIVE_FILES: list[DriveFile]` — inventaire figé de 32 entrées (31 PDF + 1 JPG)
   - `is_complete_pdf(path: Path) -> bool`
   - `download_file(client: httpx.AsyncClient, item: DriveFile, dest_dir: Path) -> Path`
   - `download_all(dest_dir: Path) -> list[Path]` (async)
