@@ -149,6 +149,53 @@ Alternatives écartées : OCR local + correction LLM (qualité brute insuffisant
 correction à l'aveugle sans voir la page) ; curation manuelle (1 à 2 jours, non
 rejouable lors des mises à jour de plaquettes).
 
+### 3.3 Validation sur le corpus réel (2026-07-31)
+
+Trois appels réels à l'API, sur les cas représentatifs du corpus :
+
+| Document | Taille | Pages | Durée | Débit | Accents |
+| --- | --- | --- | --- | --- | --- |
+| `PERFECT.pdf` | 8,1 Mo | 4 | 14,5 s | 3,6 s/p | 73 |
+| `CAGECFI_QUI SOMMES NOUS.pdf` | 11,1 Mo | 4 | 20,4 s | 5,1 s/p | 129 |
+| `Livret Solutions étatiques.pdf` | 6,4 Mo | 24 | 23,8 s | **1,0 s/p** | 430 |
+
+Comparaison directe sur `PERFECT.pdf` (le même document, les deux moteurs) :
+
+| | RapidOCR | Mistral OCR |
+| --- | --- | --- |
+| Titres | `FONCTIONNALITESGENERALES` | `# FONCTIONNALITÉS GÉNÉRALES` |
+| Corps de texte | `Gestion delaclientele` | `Gestion de la clientèle` |
+| Accents corrects | 54 | **73** |
+| Durée | 266 s | **14,5 s** |
+
+Conclusions établies par la mesure :
+
+1. **Le volume n'est plus un enjeu.** Le débit s'améliore avec le nombre de
+   pages (1 s/page sur 24 pages). Les ~90 pages du corpus se traitent en quelques
+   minutes, contre ~2 h 30 estimées pour l'OCR local.
+2. **Un document de 11,1 Mo passe sans erreur** en base64. Le risque de limite de
+   taille ne concerne donc que `INTEROPERABILITE.pdf` (89 Mo).
+3. **La qualité française est au rendez-vous** : structure markdown en titres,
+   accents corrects, listes de fonctionnalités complètes et ordonnées.
+
+Deux défauts constatés, à traiter dans le pipeline :
+
+- **Artefacts LaTeX sur les puces graphiques** : `\(\odot\)`, `\(\mathbb{O}\)`
+  apparaissent à la place des icônes de liste. Nettoyage par expression régulière
+  en post-traitement.
+- **Le contenu des infographies n'est pas transcrit.** Sur `PERFECT.pdf`, la
+  section `# COUVERTURE FONCTIONNELLE` ne contient que trois références
+  `![img-N.jpeg]`. L'information portée par les schémas est perdue. Sur ce
+  document précis la perte est limitée — la section `FONCTIONNALITÉS GÉNÉRALES`
+  qui suit rétablit la liste en texte — mais ce n'est pas garanti ailleurs.
+  C'est précisément ce que le point de contrôle humain (4.4) doit détecter, en
+  priorisant les pages dont le ratio références d'images / texte est élevé.
+
+Quelques coquilles OCR résiduelles ont aussi été relevées (`rapportes` pour
+`rapports`, `budgêtaire`, `ARCHITECHTURE`, `ratios prudents` pour
+`ratios prudentiels`). Elles sont rares et sans effet notable sur la recherche
+sémantique, mais justifient la relecture de l'étape 4.4.
+
 ## 4. Architecture du pipeline
 
 Cinq étapes, avec un **point de contrôle humain** entre l'extraction et la
@@ -205,6 +252,13 @@ Routage dicté par l'audit :
 - `kind == "TEXTE"` ou `"MIXTE"` → `DocumentConverter` avec `do_ocr = False`
 - `kind == "IMAGE"` → Mistral OCR (`mistral-ocr-latest`)
 
+Post-traitement appliqué à la sortie Mistral, motivé par les défauts mesurés en
+3.3 :
+
+- suppression des artefacts LaTeX de puces (`\(\odot\)`, `\(\mathbb{O}\)`) ;
+- comptage des références `![img-N.jpeg]` par page, reporté en métadonnée
+  `image_ratio` pour prioriser la relecture des pages riches en infographies.
+
 Sortie : un fichier markdown par document dans `documents/plaquettes_md/`, avec
 un en-tête YAML conservant la provenance :
 
@@ -224,8 +278,9 @@ est journalisé et n'interrompt pas le traitement des autres. Les documents en
 
 Point à valider à l'implémentation : `INTEROPERABILITE.pdf` fait 89 Mo et peut
 dépasser la limite par requête de l'API. Prévoir un découpage par pages en
-secours. La limite exacte n'a pas pu être confirmée (documentation rendue en
-JavaScript) et devra être vérifiée par un appel réel.
+secours. Le plafond exact reste inconnu (documentation rendue en JavaScript),
+mais un envoi de 11,1 Mo a été validé par appel réel (3.3) : seul ce fichier est
+concerné.
 
 ### 4.4 Point de contrôle humain
 
@@ -342,13 +397,15 @@ exactement le mode de défaillance silencieuse identifié à la section 2.2.
 
 ## 8. Risques
 
-| Risque | Traitement |
-| --- | --- |
-| OCR fidèle mais imparfait sur des visuels denses | Point de contrôle humain (4.4) + scores de confiance |
-| `INTEROPERABILITE.pdf` (89 Mo) au-delà de la limite API | Découpage par pages en secours |
-| Perte des pages du site (contact, actualités) | Coordonnées déjà en dur dans le prompt système |
-| Plaquettes mises à jour ultérieurement | Pipeline rejouable de bout en bout ; markdown versionné |
-| Coût API Mistral | ~90 pages en une passe, réexécution seulement si les sources changent |
+| Risque | Statut | Traitement |
+| --- | --- | --- |
+| **Contenu des infographies non transcrit** | avéré (3.3) | Priorisation de la relecture via `image_ratio` ; recours à une description d'image seulement si la relecture révèle une perte réelle |
+| Coquilles OCR résiduelles | avéré, marginal | Relecture 4.4 ; sans effet notable sur la recherche sémantique |
+| Artefacts LaTeX sur les puces | avéré | Nettoyage par expression régulière (4.3) |
+| `INTEROPERABILITE.pdf` (89 Mo) au-delà de la limite API | non levé | Découpage par pages en secours. Un document de 11,1 Mo passe sans erreur (3.3) : le risque ne concerne que ce fichier |
+| Perte des pages du site (contact, actualités) | accepté | Coordonnées déjà en dur dans le prompt système |
+| Plaquettes mises à jour ultérieurement | — | Pipeline rejouable de bout en bout ; markdown versionné |
+| Coût et durée du traitement | levé | ~90 pages à 1–5 s/page, soit quelques minutes par exécution complète |
 
 ## 9. Hors périmètre
 
