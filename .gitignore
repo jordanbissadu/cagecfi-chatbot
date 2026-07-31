@@ -45,3 +45,6 @@ uv.lock
 
 # Logs
 *.log
+
+# Documents ingeres (telecharges, jamais commites)
+documents/plaquettes/
