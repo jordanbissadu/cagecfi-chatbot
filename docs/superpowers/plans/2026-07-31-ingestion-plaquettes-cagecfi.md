@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Remplacer la base de connaissance du chatbot CAGECFI par le contenu des 22 plaquettes commerciales retenues, extraites via un routage Docling / Mistral OCR dicté par un audit d'extractibilité.
+**Goal:** Remplacer la base de connaissance du chatbot CAGECFI par le contenu des 21 plaquettes commerciales retenues, extraites via un routage Docling / Mistral OCR dicté par un audit d'extractibilité.
 
 **Architecture:** Cinq modules autonomes chaînés par des artefacts sur disque (PDF → audit JSON → markdown → base). Chaque étape est rejouable seule : on peut ré-ingérer sans refaire l'OCR. Un point de contrôle humain sépare l'extraction de la vectorisation, parce que 94 % du contenu transite par un OCR.
 
@@ -729,9 +729,9 @@ Expected: PASS (9 tests, dont 6 paramétrés)
 - [ ] **Step 5: Auditer le corpus réel**
 
 Run: `uv run python -m src.ingestion.pdf_audit`
-Expected: `Documents retenus : 22` et `Exclus : 9` (6 doublons + 3 anglais ; `IT_BASED_SOLUTIONS_GOV_ENG.pdf` est à la fois doublon et anglais, il n'est compté qu'une fois).
+Expected: `Documents retenus : 21` et `Exclus : 10` (6 doublons exacts + 4 documents anglais).
 
-Vérifier que la répartition des retenus est cohérente avec la spec : environ 14 `IMAGE` et 6 `TEXTE`/`MIXTE`, plus les 2 fichiers auparavant tronqués désormais classés.
+Répartition attendue des retenus : 14 `IMAGE`, 6 `TEXTE`, 1 `MIXTE`.
 
 - [ ] **Step 6: Commit**
 
@@ -1284,9 +1284,9 @@ Expected: PASS (3 tests)
 - [ ] **Step 5: Extraire le corpus réel**
 
 Run: `uv run python -m src.ingestion.extract_plaquettes`
-Expected: 22 lignes `OK`, 0 échec. Durée de quelques minutes.
+Expected: 21 lignes `OK`, 0 échec. Durée de quelques minutes.
 
-Si `INTEROPERABILITE.pdf` échoue sur une limite de taille de l'API, c'est le seul cas prévu : le découper par pages et relancer. Tous les autres fichiers sont sous 12 Mo, taille validée par appel réel.
+Aucun envoi à l'API ne dépasse 12 Mo : l'audit classe `INTEROPERABILITE.pdf` (89 Mo) en `TEXTE`, il part donc chez Docling. Un envoi de 11,1 Mo a été validé par appel réel.
 
 - [ ] **Step 6: Point de contrôle humain**
 
@@ -1638,7 +1638,7 @@ Expected: PASS (4 tests)
 - [ ] **Step 9: Générer les fiches du corpus réel**
 
 Run: `uv run python -m src.ingestion.product_sheet`
-Expected: environ 22 fiches, une par plaquette extraite
+Expected: 21 fiches, une par plaquette extraite
 
 Relire deux ou trois fiches (`PERFECT_fiche.md`, `GOMISE_fiche.md`) et vérifier qu'aucune fonctionnalité n'a été inventée : le prompt l'interdit, mais la vérification vaut mieux que la confiance.
 
@@ -2046,12 +2046,12 @@ Expected: PASS (3 tests)
 Cette commande **purge** `cagecfi_documents` et `cagecfi_chunks` avant d'ingérer, conformément à la décision de remplacer la base issue du crawl.
 
 Run: `uv run python -m src.ingestion.ingest_supabase -d documents/plaquettes_md`
-Expected: `Total: 44/44 documents` avec un nombre de chunks non nul pour chacun — 22 plaquettes extraites et leurs 22 fiches produit, toutes présentes dans le même répertoire.
+Expected: `Total: 42/42 documents` avec un nombre de chunks non nul pour chacun — 21 plaquettes extraites et leurs 21 fiches produit, toutes présentes dans le même répertoire.
 
 - [ ] **Step 6: Passer la recette**
 
 Run: `uv run python -m src.ingestion.verify_ingestion`
-Expected: `Recette reussie : 44 documents, N chunks.` et code de sortie 0
+Expected: `Recette reussie : 42 documents, N chunks.` et code de sortie 0
 
 Si un document ressort à 0 chunk, ne pas poursuivre : reprendre son markdown dans `documents/plaquettes_md/` — il est probablement vide ou réduit à des références d'images.
 

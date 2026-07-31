@@ -29,9 +29,15 @@ extraction réelle sur les fichiers téléchargés.
 | Mesure | Valeur |
 | --- | --- |
 | Fichiers dans le Drive | 31 PDF + 1 JPG |
-| Documents uniques (hash MD5) | 25 |
-| Paires de doublons exacts | 6 |
-| Documents retenus après exclusion de l'anglais | **22** |
+| Documents uniques (hash MD5) | 24 |
+| Paires de doublons exacts | 7 |
+| Documents retenus après exclusion de l'anglais | **21** |
+
+> **Chiffres révisés le 2026-07-31 après téléchargement intégral.** La première
+> version de cette section annonçait 25 uniques et 22 retenus. Elle reposait sur
+> un téléchargement où `SYCEBNL_CAGECFI.pdf` était tronqué : une fois le fichier
+> complet, son MD5 s'avère identique à celui de `SYCEBNL.pdf`. C'est donc un 7e
+> doublon exact, et le corpus retenu compte 21 documents.
 
 ### 2.2 Extractibilité — le constat structurant
 
@@ -81,6 +87,8 @@ Identiques octet pour octet (MD5). À noter : les suffixes `-min` ne désignent
 4. `Livret Solutions étatiques-min (2).pdf` == `Livret Solutions étatiques.pdf`
 5. `PAY TAX.pdf` == `Plaquette_PAY TAX.pdf`
 6. `Solutions de finance digitale-min.pdf` == `Solutions de finance digitale.pdf`
+7. `SYCEBNL.pdf` == `SYCEBNL_CAGECFI.pdf` (MD5 `c7cbe0ef…`, 12 921 499 octets —
+   révélé seulement après téléchargement intégral)
 
 ### 2.4 Documents anglais exclus
 
@@ -97,19 +105,28 @@ Cette exclusion retire 52 pages du volume à traiter par OCR.
 
 ### 2.5 Répartition finale du traitement
 
-Les chiffres de la section 2.2 portent sur les 25 documents uniques. Après
-exclusion des 3 plaquettes anglaises — toutes de type IMAGE — la répartition des
-**22 documents retenus** est la suivante :
+Répartition mesurée sur le corpus intégral (31 PDF audités, 10 exclus) :
 
 | Voie d'extraction | Documents | Détail |
 | --- | --- | --- |
-| Mistral OCR | **14** | 17 IMAGE − 3 documents anglais |
-| Docling sans OCR | **6** | 5 TEXTE + 1 MIXTE |
-| À auditer avant routage | **2** | `INTEROPERABILITE.pdf`, `SYCEBNL_CAGECFI.pdf` |
+| Mistral OCR | **14** | documents de type IMAGE |
+| Docling sans OCR | **7** | 6 TEXTE + 1 MIXTE |
 
-Les deux derniers n'ont pas pu être classés : leurs téléchargements ont été
-tronqués pendant l'audit. Ils passeront par `audit_corpus.py` une fois
-récupérés intégralement, et suivront le routage correspondant à leur type.
+Les 6 documents à couche texte sont `CLOUD_Administrations`, `CLOUD_SFD_IMF`,
+`INTEROPERABILITE`, `MODULES_REGLEMENTAIRES_BIC_LBCFT`, `SYCEBNL` et
+`VISUEL_CAGECFI` ; le document mixte est `CAGECFI_Presentation_Insertion`.
+
+Les 10 exclusions se répartissent en 6 doublons exacts et 4 documents anglais.
+Le 7e doublon (`IT_BASED_SOLUTIONS_GOV_ENG` == `GOV_SOLUTIONS_ENG`) est absorbé
+dans les exclusions linguistiques : `apply_exclusions` teste la langue avant le
+dédoublonnage, si bien que ces deux fichiers portent le motif « document en
+anglais ».
+
+**`INTEROPERABILITE.pdf` ressort en TEXTE.** Ce document de 89 Mo était
+illisible lors du premier audit — son téléchargement avait été tronqué. Complet,
+il possède une couche texte exploitable et passe donc par Docling. Le risque de
+dépassement de la limite de taille de l'API Mistral, identifié en §8, disparaît
+de ce fait : aucun document envoyé à l'OCR ne dépasse 12 Mo.
 
 ## 3. Choix de la méthode d'extraction
 
@@ -276,11 +293,10 @@ Gestion d'erreurs, conforme aux conventions du projet : un échec sur un documen
 est journalisé et n'interrompt pas le traitement des autres. Les documents en
 échec sont listés en fin d'exécution.
 
-Point à valider à l'implémentation : `INTEROPERABILITE.pdf` fait 89 Mo et peut
-dépasser la limite par requête de l'API. Prévoir un découpage par pages en
-secours. Le plafond exact reste inconnu (documentation rendue en JavaScript),
-mais un envoi de 11,1 Mo a été validé par appel réel (3.3) : seul ce fichier est
-concerné.
+Aucun découpage par pages n'est nécessaire : l'audit du corpus intégral montre
+que `INTEROPERABILITE.pdf` (89 Mo) possède une couche texte et passe donc par
+Docling. Le plus gros fichier réellement envoyé à l'API pèse moins de 12 Mo, et
+un envoi de 11,1 Mo a été validé par appel réel (3.3).
 
 ### 4.4 Point de contrôle humain
 
@@ -402,7 +418,7 @@ exactement le mode de défaillance silencieuse identifié à la section 2.2.
 | **Contenu des infographies non transcrit** | avéré (3.3) | Priorisation de la relecture via `image_ratio` ; recours à une description d'image seulement si la relecture révèle une perte réelle |
 | Coquilles OCR résiduelles | avéré, marginal | Relecture 4.4 ; sans effet notable sur la recherche sémantique |
 | Artefacts LaTeX sur les puces | avéré | Nettoyage par expression régulière (4.3) |
-| `INTEROPERABILITE.pdf` (89 Mo) au-delà de la limite API | non levé | Découpage par pages en secours. Un document de 11,1 Mo passe sans erreur (3.3) : le risque ne concerne que ce fichier |
+| `INTEROPERABILITE.pdf` (89 Mo) au-delà de la limite API | **levé** | Le fichier complet possède une couche texte : il passe par Docling, jamais par l'API. Aucun document envoyé à l'OCR ne dépasse 12 Mo (2.5) |
 | Perte des pages du site (contact, actualités) | accepté | Coordonnées déjà en dur dans le prompt système |
 | Plaquettes mises à jour ultérieurement | — | Pipeline rejouable de bout en bout ; markdown versionné |
 | Coût et durée du traitement | levé | ~90 pages à 1–5 s/page, soit quelques minutes par exécution complète |
