@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-07-31'
+extracted_at: '2026-08-01'
 extraction: docling
 image_ratio: 0.0
 source_file: CLOUD_SFD_IMF.pdf

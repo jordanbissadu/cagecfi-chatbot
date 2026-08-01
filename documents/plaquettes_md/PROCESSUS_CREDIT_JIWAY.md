@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-07-31'
+extracted_at: '2026-08-01'
 extraction: mistral_ocr
 image_ratio: 3.0
 source_file: PROCESSUS_CREDIT_JIWAY.pdf

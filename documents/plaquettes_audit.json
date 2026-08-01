@@ -133,8 +133,8 @@
     "filename": "INTEROPERABILITE.pdf",
     "md5": "3e805d94cea051e674f29ed3488dea74",
     "pages": 2,
-    "chars_per_page": 5362,
-    "kind": "TEXTE",
+    "chars_per_page": 0,
+    "kind": "IMAGE",
     "is_duplicate_of": null,
     "language": "fr",
     "excluded_reason": null
@@ -303,8 +303,8 @@
     "filename": "VISUEL_CAGECFI.pdf",
     "md5": "23f0b3b450e171c86ca3260acb059cc3",
     "pages": 1,
-    "chars_per_page": 1221,
-    "kind": "TEXTE",
+    "chars_per_page": 0,
+    "kind": "IMAGE",
     "is_duplicate_of": null,
     "language": "fr",
     "excluded_reason": null
