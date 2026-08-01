@@ -116,6 +116,39 @@ def test_audit_pdf_handles_corrupted_files(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
+def test_audit_pdf_ignores_unmapped_glyphs(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Des glyphes non mappes (/gidNNNNN, (cid:NN)) ne comptent pas comme texte exploitable.
+
+    Ces motifs sont produits par pypdf sur les polices vectorisees sans table
+    Unicode : ils contiennent des lettres alphabetiques ("g", "i", "d") qui,
+    non filtrees, gonflent artificiellement chars_per_page et font router le
+    document vers Docling au lieu de l'OCR.
+    """
+
+    class FakePage:
+        """Page factice renvoyant du texte compose uniquement de glyphes non mappes."""
+
+        def extract_text(self) -> str:
+            return "/gid00010/gid00015/gid00020" * 50 + "(cid:12)(cid:34)"
+
+    class FakeReader:
+        """Lecteur factice imitant l'interface pypdf.PdfReader utilisee par audit_pdf."""
+
+        def __init__(self, _path: str) -> None:
+            self.pages = [FakePage()]
+
+    monkeypatch.setattr("src.ingestion.pdf_audit.PdfReader", FakeReader)
+
+    pdf_path = tmp_path / "glyphes.pdf"
+    pdf_path.write_bytes(b"%PDF-1.4 contenu factice")
+
+    result = audit_pdf(pdf_path)
+
+    assert result.chars_per_page == 0
+    assert result.kind == "IMAGE"
+
+
+@pytest.mark.unit
 def test_audit_pdf_reads_valid_minimal_pdf(tmp_path: Path) -> None:
     """Un PDF minimal valide est lu correctement."""
     import io

@@ -9,6 +9,7 @@ sans lever d'erreur.
 import hashlib
 import json
 import logging
+import re
 from pathlib import Path
 from typing import Literal, Optional
 
@@ -21,6 +22,12 @@ DocumentKind = Literal["TEXTE", "MIXTE", "IMAGE"]
 
 SEUIL_TEXTE = 400
 SEUIL_MIXTE = 50
+
+# Glyphes non mappes : polices vectorisees sans table Unicode. pypdf les
+# restitue sous forme de references litterales ("/gid00010", "(cid:42)") dont
+# les lettres alphabetiques ("g", "i", "d") fausseraient le comptage de texte
+# exploitable si elles n'etaient pas retirees avant classification.
+_GLYPHES_NON_MAPPES = re.compile(r"/gid\d+|\(cid:\d+\)")
 
 ENGLISH_SLUGS: set[str] = {
     "CORE_BANKING_PERFECT_ENG.pdf",
@@ -46,6 +53,18 @@ class DocumentAudit(BaseModel):
     def is_retained(self) -> bool:
         """Indique si le document doit etre extrait puis ingere."""
         return self.excluded_reason is None
+
+
+def strip_unmapped_glyphs(text: str) -> str:
+    """Retire les references de glyphes non mappes d'un texte extrait par pypdf.
+
+    Args:
+        text: Texte brut renvoye par `page.extract_text()`.
+
+    Returns:
+        Texte debarrasse des motifs `/gidNNNNN` et `(cid:NN)`.
+    """
+    return _GLYPHES_NON_MAPPES.sub("", text)
 
 
 def classify(chars_per_page: int) -> DocumentKind:
@@ -81,7 +100,8 @@ def audit_pdf(path: Path) -> DocumentAudit:
         alpha = 0
         for page in reader.pages:
             try:
-                alpha += sum(c.isalpha() for c in (page.extract_text() or ""))
+                texte = strip_unmapped_glyphs(page.extract_text() or "")
+                alpha += sum(c.isalpha() for c in texte)
             except Exception:  # noqa: BLE001 - page corrompue isolee
                 logger.warning("page_illisible fichier=%s", path.name)
         per_page = alpha // max(pages, 1)

@@ -30,6 +30,7 @@ ingestion = [
     "openai-whisper>=20240930",
     "aiofiles>=24.1.0",
     "pypdf>=6.0.0",
+    "pypdfium2>=4.30.0",
     "python-frontmatter>=1.1.0",
 ]
 # Interfaces locales (CLI Rich + app Streamlit).

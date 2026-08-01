@@ -4,7 +4,11 @@ from pathlib import Path
 
 import pytest
 
-from src.ingestion.extract_plaquettes import ExtractionResult, write_markdown
+from src.ingestion.extract_plaquettes import (
+    ExtractionResult,
+    route_extraction_method,
+    write_markdown,
+)
 
 
 @pytest.mark.unit
@@ -42,6 +46,27 @@ def test_write_markdown_skips_failed_extraction(tmp_path: Path) -> None:
         write_markdown(result, tmp_path)
 
     assert list(tmp_path.glob("*.md")) == []
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    ("kind", "attendu"),
+    [
+        ("TEXTE", "docling"),
+        ("MIXTE", "mistral_ocr"),
+        ("IMAGE", "mistral_ocr"),
+    ],
+)
+def test_route_extraction_method_verrouille_le_routage(
+    kind: str, attendu: str
+) -> None:
+    """TEXTE seul emprunte Docling ; MIXTE et IMAGE vont a Mistral OCR.
+
+    En dessous de 400 caracteres/page, la couche texte est trop pauvre pour
+    Docling : mesure sur l'unique document MIXTE du corpus (15 mots reels et
+    texte mutile via Docling, contre 177 mots propres via Mistral OCR).
+    """
+    assert route_extraction_method(kind) == attendu  # type: ignore[arg-type]
 
 
 @pytest.mark.unit

@@ -1,5 +1,8 @@
 """Tests du client Mistral OCR et du nettoyage des artefacts."""
 
+from pathlib import Path
+from typing import Any
+
 import pytest
 
 from src.ingestion.mistral_ocr import OcrPage, OcrResult, clean_artifacts
@@ -52,6 +55,72 @@ def test_ocr_result_computes_image_ratio() -> None:
 def test_ocr_result_image_ratio_is_zero_without_pages() -> None:
     """Un resultat vide ne provoque pas de division par zero."""
     assert OcrResult(pages=[], markdown="").image_ratio == 0.0
+
+
+@pytest.mark.unit
+@pytest.mark.asyncio
+async def test_ocr_pdf_sends_whole_document_below_threshold(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Sous le seuil de taille, le PDF entier est envoye en une seule requete."""
+    import src.ingestion.mistral_ocr as mod
+    from src.settings_supabase import SupabaseSettings
+
+    monkeypatch.setenv("MISTRAL_API_KEY", "cle-de-test")
+    pdf_path = tmp_path / "petit.pdf"
+    pdf_path.write_bytes(b"%PDF-1.4 contenu factice")
+
+    appels: list[dict[str, Any]] = []
+
+    async def fake_send(
+        client: object, settings: SupabaseSettings, payload: dict[str, Any]
+    ) -> dict[str, Any]:
+        appels.append(payload)
+        return {"pages": [{"markdown": "Contenu du document"}]}
+
+    monkeypatch.setattr(mod, "_send_ocr_request", fake_send)
+
+    result = await mod.ocr_pdf(pdf_path, SupabaseSettings())
+
+    assert len(appels) == 1
+    assert appels[0]["document"]["type"] == "document_url"
+    assert len(result.pages) == 1
+    assert result.pages[0].index == 0
+
+
+@pytest.mark.unit
+@pytest.mark.asyncio
+async def test_ocr_pdf_renders_pages_above_threshold(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Au-dela du seuil de taille, chaque page est rendue en image et envoyee separement."""
+    import src.ingestion.mistral_ocr as mod
+    from src.settings_supabase import SupabaseSettings
+
+    monkeypatch.setenv("MISTRAL_API_KEY", "cle-de-test")
+    pdf_path = tmp_path / "gros.pdf"
+    pdf_path.write_bytes(b"x" * (mod.MISTRAL_SIZE_THRESHOLD_BYTES + 1))
+
+    monkeypatch.setattr(
+        mod, "render_pages_to_jpeg", lambda path: [b"jpeg-page-0", b"jpeg-page-1"]
+    )
+
+    appels: list[dict[str, Any]] = []
+
+    async def fake_send(
+        client: object, settings: SupabaseSettings, payload: dict[str, Any]
+    ) -> dict[str, Any]:
+        appels.append(payload)
+        return {"pages": [{"markdown": f"Page {len(appels) - 1}"}]}
+
+    monkeypatch.setattr(mod, "_send_ocr_request", fake_send)
+
+    result = await mod.ocr_pdf(pdf_path, SupabaseSettings())
+
+    assert len(appels) == 2
+    assert all(appel["document"]["type"] == "image_url" for appel in appels)
+    assert [page.index for page in result.pages] == [0, 1]
+    assert [page.markdown for page in result.pages] == ["Page 0", "Page 1"]
 
 
 @pytest.mark.integration

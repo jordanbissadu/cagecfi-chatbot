@@ -1,9 +1,14 @@
 """Extraction routee des plaquettes vers du markdown relisible.
 
-Le routage est dicte par l'audit : Docling sans OCR pour les documents ayant
-une couche texte (l'OCR y degrade la qualite, mesure a l'appui), Mistral OCR
-pour les visuels. Le markdown produit est un artefact versionnable, destine a
-etre relu avant vectorisation.
+Le routage est dicte par l'audit : Docling sans OCR pour les seuls documents
+classes TEXTE (couche texte suffisante), Mistral OCR pour MIXTE et IMAGE. En
+dessous de 400 caracteres/page, la couche texte est trop pauvre pour que
+Docling en tire quoi que ce soit d'exploitable : mesure sur l'unique document
+MIXTE du corpus, CAGECFI_Presentation_Insertion.pdf (82 caracteres/page) —
+Docling y extrait 15 mots reels et du texte mutile ("PERFECT- VI SI O N"),
+noye dans des `<!-- image -->`, quand Mistral OCR en tire 177 mots propres.
+Le markdown produit est un artefact versionnable, destine a etre relu avant
+vectorisation.
 """
 
 import asyncio
@@ -17,12 +22,31 @@ import frontmatter
 from pydantic import BaseModel, Field
 
 from src.ingestion.mistral_ocr import ocr_pdf
-from src.ingestion.pdf_audit import DocumentAudit
+from src.ingestion.pdf_audit import DocumentAudit, DocumentKind
 from src.settings_supabase import SupabaseSettings, load_settings
 
 logger = logging.getLogger(__name__)
 
 ExtractionMethod = Literal["docling", "mistral_ocr"]
+
+
+def route_extraction_method(kind: DocumentKind) -> ExtractionMethod:
+    """Determine la voie d'extraction a partir de la classification d'audit.
+
+    Seuls les documents TEXTE empruntent Docling. En dessous de 400
+    caracteres/page (seuil de classification MIXTE/IMAGE, voir
+    `pdf_audit.classify`), la couche texte est trop pauvre pour que Docling
+    en tire quoi que ce soit d'exploitable : mesure sur l'unique document
+    MIXTE du corpus, qui donne 15 mots reels et du texte mutile par Docling
+    contre 177 mots propres par Mistral OCR.
+
+    Args:
+        kind: Classification d'audit du document.
+
+    Returns:
+        La voie d'extraction a emprunter.
+    """
+    return "docling" if kind == "TEXTE" else "mistral_ocr"
 
 
 class ExtractionResult(BaseModel):
@@ -83,7 +107,7 @@ async def extract_document(
     """
     path = pdf_dir / audit.filename
     slug = path.stem
-    method: ExtractionMethod = "docling" if audit.kind in ("TEXTE", "MIXTE") else "mistral_ocr"
+    method: ExtractionMethod = route_extraction_method(audit.kind)
 
     try:
         if method == "docling":
