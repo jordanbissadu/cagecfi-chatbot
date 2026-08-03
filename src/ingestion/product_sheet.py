@@ -13,6 +13,7 @@ from typing import Literal, Optional
 
 import frontmatter
 import openai
+import yaml
 from pydantic import BaseModel, Field, ValidationError
 
 from src.settings_supabase import SupabaseSettings, load_settings
@@ -57,6 +58,14 @@ Regles imperatives :
 CONTENU :
 """
 
+MAX_MARKDOWN_CHARS = 60000
+"""Longueur maximale de markdown envoyee au LLM.
+
+gpt-4o-mini offre 128k tokens de contexte ; 60000 caracteres (~17000 tokens)
+laisse largement passer les plus grosses plaquettes du corpus (24502 et 21828
+caracteres) sans jamais tronquer leur contenu.
+"""
+
 
 async def build_sheet(
     markdown: str, slug: str, settings: SupabaseSettings
@@ -77,16 +86,24 @@ async def build_sheet(
         api_key=settings.llm_api_key, base_url=settings.llm_base_url
     )
 
+    if len(markdown) > MAX_MARKDOWN_CHARS:
+        logger.warning(
+            "plaquette_tronquee slug=%s caracteres=%d limite=%d",
+            slug, len(markdown), MAX_MARKDOWN_CHARS,
+        )
+
     try:
         response = await client.chat.completions.create(
             model=settings.llm_model,
-            messages=[{"role": "user", "content": SHEET_PROMPT + markdown[:12000]}],
+            messages=[
+                {"role": "user", "content": SHEET_PROMPT + markdown[:MAX_MARKDOWN_CHARS]}
+            ],
             temperature=0.0,
             response_format={"type": "json_object"},
         )
         payload = json.loads(response.choices[0].message.content or "{}")
         return ProductSheet(**payload)
-    except (json.JSONDecodeError, ValidationError, openai.APIError):
+    except (json.JSONDecodeError, ValidationError, openai.APIError, TypeError):
         logger.exception("fiche_produit_echouee slug=%s", slug)
         return None
 
@@ -150,7 +167,9 @@ async def build_all_sheets(md_dir: Path) -> list[Path]:
         md_dir: Repertoire des markdown de plaquettes.
 
     Returns:
-        Chemins des fiches ecrites.
+        Chemins des fiches ecrites. Une erreur de lecture, de parsing du
+        front-matter ou d'ecriture sur un document est capturee et journalisee
+        plutot que d'interrompre le traitement des documents suivants.
     """
     settings = load_settings()
     ecrites: list[Path] = []
@@ -158,12 +177,22 @@ async def build_all_sheets(md_dir: Path) -> list[Path]:
     for source in sorted(md_dir.glob("*.md")):
         if source.stem.endswith("_fiche"):
             continue
-        post = frontmatter.loads(source.read_text(encoding="utf-8"))
+
+        try:
+            post = frontmatter.loads(source.read_text(encoding="utf-8"))
+        except (OSError, yaml.YAMLError):
+            logger.exception("plaquette_illisible slug=%s", source.stem)
+            continue
+
         sheet = await build_sheet(post.content, source.stem, settings)
         if sheet is None:
             logger.warning("fiche_ignoree slug=%s", source.stem)
             continue
-        ecrites.append(write_sheet(sheet, source.stem, md_dir))
+
+        try:
+            ecrites.append(write_sheet(sheet, source.stem, md_dir))
+        except OSError:
+            logger.exception("ecriture_fiche_echouee slug=%s", source.stem)
 
     logger.info("fiches_generees n=%d", len(ecrites))
     return ecrites
