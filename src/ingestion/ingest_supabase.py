@@ -27,6 +27,23 @@ from src.settings_supabase import load_settings
 # Load environment variables
 load_dotenv()
 
+
+def read_plaquette_markdown(path: Path) -> tuple[str, Dict[str, Any]]:
+    """Lit un markdown de plaquette en separant son front-matter.
+
+    Args:
+        path: Chemin du fichier markdown.
+
+    Returns:
+        Tuple (contenu sans front-matter, metadonnees du front-matter).
+        Les metadonnees sont vides si le fichier n'en porte pas.
+    """
+    import frontmatter
+
+    post = frontmatter.loads(path.read_text(encoding="utf-8"))
+    return post.content, dict(post.metadata)
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -232,6 +249,12 @@ class DocumentIngestionPipeline:
             '.md', '.markdown'
         ]
 
+        # Les plaquettes extraites portent un front-matter : le laisser passer
+        # dans Docling injecterait les cles YAML dans le texte indexe.
+        if file_ext in ('.md', '.markdown'):
+            content, _ = read_plaquette_markdown(Path(file_path))
+            return (content, None)
+
         if file_ext in docling_formats:
             try:
                 from docling.document_converter import DocumentConverter
@@ -362,7 +385,8 @@ class DocumentIngestionPipeline:
     def _extract_document_metadata(
         self,
         content: str,
-        file_path: str
+        file_path: str,
+        front_matter: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
         Extract metadata from document content.
@@ -370,16 +394,31 @@ class DocumentIngestionPipeline:
         Args:
             content: Document content
             file_path: Path to the document file
+            front_matter: Metadata read from the markdown front-matter, if any
 
         Returns:
             Document metadata dictionary
         """
-        return {
+        metadata: Dict[str, Any] = {
             "file_name": os.path.basename(file_path),
             "file_extension": os.path.splitext(file_path)[1],
             "file_size": os.path.getsize(file_path),
             "word_count": len(content.split()),
+            "doc_type": "chunk",
         }
+        if front_matter:
+            for cle in (
+                "source_file",
+                "extraction",
+                "image_ratio",
+                "extracted_at",
+                "doc_type",
+                "product",
+                "category",
+            ):
+                if cle in front_matter:
+                    metadata[cle] = front_matter[cle]
+        return metadata
 
     async def _ingest_document(self, file_path: str) -> IngestionResult:
         """
@@ -401,9 +440,14 @@ class DocumentIngestionPipeline:
             # Read document content
             content, docling_doc = self._read_document(file_path)
 
+            # Les plaquettes portent leur provenance dans un front-matter
+            front_matter: Dict[str, Any] = {}
+            if os.path.splitext(file_path)[1].lower() in ('.md', '.markdown'):
+                _, front_matter = read_plaquette_markdown(Path(file_path))
+
             # Extract metadata
             title = self._extract_title(content, file_path)
-            metadata = self._extract_document_metadata(content, file_path)
+            metadata = self._extract_document_metadata(content, file_path, front_matter)
 
             logger.info(f"Processing document: {title}")
 
