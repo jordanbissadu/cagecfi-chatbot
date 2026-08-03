@@ -2,6 +2,8 @@
 
 import json
 from pathlib import Path
+from types import SimpleNamespace
+from typing import Optional
 from unittest.mock import MagicMock
 
 import pytest
@@ -73,7 +75,7 @@ def test_write_sheet_marks_doc_type_product_sheet(tmp_path: Path) -> None:
         benefits=["Automatisation"], summary="Logiciel de gestion integre.",
     )
 
-    chemin = write_sheet(sheet, "PERFECT", tmp_path)
+    chemin = write_sheet(sheet, "PERFECT", tmp_path, "PERFECT.pdf")
     charge = frontmatter.loads(chemin.read_text(encoding="utf-8"))
 
     assert chemin.name == "PERFECT_fiche.md"
@@ -81,6 +83,30 @@ def test_write_sheet_marks_doc_type_product_sheet(tmp_path: Path) -> None:
     assert charge["product"] == "PERFECT"
     assert charge["category"] == "core_banking"
     assert "Gestion de la clientele" in charge.content
+
+
+@pytest.mark.unit
+def test_write_sheet_uses_real_source_file(tmp_path: Path) -> None:
+    """Le front-matter de la fiche porte le vrai nom de fichier source.
+
+    ``write_sheet`` ne doit pas reconstruire ``f"{slug}.pdf"`` : le slug d'un
+    document extrait ne correspond pas toujours au nom du PDF d'origine
+    (ex. suffixes ``-min``, noms normalises par ``drive_source.py``).
+    """
+    import frontmatter
+
+    from src.ingestion.product_sheet import write_sheet
+
+    sheet = ProductSheet(
+        product="PERFECT-VISION", category="core_banking",
+        target_audience=["SFD"], features=["Gestion de la clientele"],
+        benefits=["Automatisation"], summary="Logiciel de gestion integre.",
+    )
+
+    chemin = write_sheet(sheet, "PERFECT-VISION-SIG", tmp_path, "PERFECT-VISION-SIG-min.pdf")
+    charge = frontmatter.loads(chemin.read_text(encoding="utf-8"))
+
+    assert charge["source_file"] == "PERFECT-VISION-SIG-min.pdf"
 
 
 @pytest.mark.unit
@@ -115,9 +141,8 @@ async def test_build_sheet_does_not_truncate_below_max_chars(
 
     fake_client = MagicMock()
     fake_client.chat.completions.create = fake_create
-    monkeypatch.setattr(mod.openai, "AsyncOpenAI", lambda **kwargs: fake_client)
 
-    sheet = await mod.build_sheet(markdown, "slug-test", SupabaseSettings())
+    sheet = await mod.build_sheet(markdown, "slug-test", SupabaseSettings(), fake_client)
 
     assert sheet is not None
     assert markdown in captured["content"]
@@ -151,10 +176,13 @@ async def test_build_all_sheets_continues_after_parsing_error(
         return original_loads(text, *args, **kwargs)
 
     monkeypatch.setattr(mod.frontmatter, "loads", fake_loads)
-    monkeypatch.setattr(mod, "load_settings", lambda: object())
+    monkeypatch.setattr(
+        mod, "load_settings",
+        lambda: SimpleNamespace(llm_api_key="test", llm_base_url="http://test.invalid"),
+    )
 
     async def fake_build_sheet(
-        markdown: str, slug: str, settings: object
+        markdown: str, slug: str, settings: object, client: object
     ) -> ProductSheet:
         return ProductSheet(
             product=slug, category="corporate", target_audience=[],
@@ -163,7 +191,50 @@ async def test_build_all_sheets_continues_after_parsing_error(
 
     monkeypatch.setattr(mod, "build_sheet", fake_build_sheet)
 
-    ecrites = await mod.build_all_sheets(tmp_path)
+    ecrites, echecs = await mod.build_all_sheets(tmp_path)
 
     noms = {p.stem for p in ecrites}
     assert noms == {"A_fiche", "C_fiche"}
+    assert len(echecs) == 1
+    assert "B" in echecs[0]
+
+
+@pytest.mark.unit
+@pytest.mark.asyncio
+async def test_build_all_sheets_reports_llm_failure(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Un echec du LLM sur une plaquette est rapporte dans les echecs, pas seulement journalise.
+
+    Si le LLM echoue (limite de taux, JSON malforme) sur une partie du lot,
+    l'operateur doit pouvoir le constater dans le retour de la fonction :
+    sans ce correctif, ``build_all_sheets`` ne renvoyait que les succes et un
+    echec silencieux se traduisait par un code de sortie 0 sans aucune trace.
+    """
+    import src.ingestion.product_sheet as mod
+
+    (tmp_path / "A.md").write_text("# A\n\nContenu A", encoding="utf-8")
+    (tmp_path / "B.md").write_text("# B\n\nContenu B", encoding="utf-8")
+
+    monkeypatch.setattr(
+        mod, "load_settings",
+        lambda: SimpleNamespace(llm_api_key="test", llm_base_url="http://test.invalid"),
+    )
+
+    async def fake_build_sheet(
+        markdown: str, slug: str, settings: object, client: object
+    ) -> Optional[ProductSheet]:
+        if slug == "B":
+            return None  # simule un echec LLM (rate limit, JSON malforme, ...)
+        return ProductSheet(
+            product=slug, category="corporate", target_audience=[],
+            features=[], benefits=[], summary="Resume de test.",
+        )
+
+    monkeypatch.setattr(mod, "build_sheet", fake_build_sheet)
+
+    ecrites, echecs = await mod.build_all_sheets(tmp_path)
+
+    assert {p.stem for p in ecrites} == {"A_fiche"}
+    assert len(echecs) == 1
+    assert "B" in echecs[0]

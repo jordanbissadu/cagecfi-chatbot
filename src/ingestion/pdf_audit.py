@@ -151,8 +151,34 @@ def apply_exclusions(audits: list[DocumentAudit]) -> list[DocumentAudit]:
     return resultat
 
 
+def audit_non_pdf(path: Path) -> DocumentAudit:
+    """Audite un fichier non-PDF present dans le repertoire des plaquettes.
+
+    `drive_source.py` telecharge parfois un fichier image (capture de page)
+    au meme titre que les PDF (ex. `Insertion_page-0001.jpg`). Sans cette
+    fonction, `audit_directory` ne globant que `*.pdf`, un tel fichier
+    disparaitrait sans aucune ligne d'audit ni motif d'exclusion — exactement
+    ce que ce module promet de ne jamais faire.
+
+    Args:
+        path: Chemin du fichier non-PDF.
+
+    Returns:
+        Audit exclu (pages=-1, kind=IMAGE) avec un motif d'exclusion explicite.
+    """
+    md5 = hashlib.md5(path.read_bytes()).hexdigest()
+    return DocumentAudit(
+        filename=path.name, md5=md5, pages=-1, chars_per_page=0, kind="IMAGE",
+        excluded_reason="format image, non ingerable",
+    )
+
+
 def audit_directory(pdf_dir: Path) -> list[DocumentAudit]:
-    """Audite tous les PDF d'un repertoire et applique les exclusions.
+    """Audite tous les fichiers d'un repertoire et applique les exclusions.
+
+    Les fichiers non-PDF (ex. une capture d'image telechargee avec les
+    plaquettes) sont inclus dans l'audit avec un motif d'exclusion explicite
+    plutot que d'etre silencieusement ignores par le glob.
 
     Args:
         pdf_dir: Repertoire contenant les plaquettes.
@@ -160,7 +186,11 @@ def audit_directory(pdf_dir: Path) -> list[DocumentAudit]:
     Returns:
         Liste d'audits, triee par nom de fichier.
     """
-    audits = [audit_pdf(p) for p in sorted(pdf_dir.glob("*.pdf"))]
+    fichiers = sorted(p for p in pdf_dir.iterdir() if p.is_file())
+    audits = [
+        audit_pdf(p) if p.suffix.lower() == ".pdf" else audit_non_pdf(p)
+        for p in fichiers
+    ]
     return apply_exclusions(audits)
 
 

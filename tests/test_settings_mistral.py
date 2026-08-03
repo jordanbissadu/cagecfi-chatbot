@@ -1,7 +1,5 @@
 """Tests de la configuration Mistral OCR."""
 
-import os
-
 import pytest
 
 from src.settings_supabase import SupabaseSettings

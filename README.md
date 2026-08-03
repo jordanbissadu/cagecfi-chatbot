@@ -153,16 +153,18 @@ La base se compose de trois sources, toutes placées dans [`documents/`](documen
    ```
 2. **FAQ rédigée** — [`documents/cagecfi-faq.md`](documents/cagecfi-faq.md) : questions clients fréquentes (contacts, devis, formation, produits). Déjà fournie ; complétez-la librement.
 3. **Fiche services** — [`documents/cagecfi-services.md`](documents/cagecfi-services.md) : présentation synthétique des produits. Déjà fournie.
+4. **Plaquettes commerciales** — pipeline dédié (`drive_source.py` → `pdf_audit.py` → `extract_plaquettes.py` → `product_sheet.py`) qui audite, extrait et résume chaque plaquette PDF. Le markdown déjà extrait et validé vit dans `documents/plaquettes_md/`.
 
-   Vous pouvez aussi déposer vos propres fichiers (PDF, Word, Markdown, HTML…) dans `documents/`.
+   Vous pouvez aussi déposer vos propres fichiers (PDF, Word, Markdown, HTML…) dans `documents/`, **sauf dans `documents/plaquettes/`** : ce dossier contient les PDF bruts des plaquettes, dont certains n'ont aucune couche texte exploitable — ne les passez jamais directement à l'ingestion (voir Étape 8).
 
 ### Étape 8 — Lancer l'ingestion
 
 ```powershell
-$env:PYTHONUTF8='1'; uv run python -m src.ingestion.ingest_supabase -d ./documents
+$env:PYTHONUTF8='1'; uv run python -m src.ingestion.ingest_supabase -d documents/plaquettes_md
 ```
 Cela découpe les documents, génère les embeddings via Ollama et les stocke dans Supabase (tables `cagecfi_*`).
 - Pour ajouter sans effacer l'existant : ajouter `--no-clean`.
+- L'ingestion cible toujours le markdown déjà extrait (`documents/plaquettes_md/`), **jamais** les PDF bruts de `documents/plaquettes/` : une partie de ces PDF n'a aucune couche texte exploitable et produirait des chunks illisibles sans qu'aucune erreur ne le signale. Pour les autres sources (crawl, FAQ, fiche services), ciblez leur propre dossier ou fichier avec `--no-clean` plutôt qu'un `-d ./documents` global.
 
 ### Étape 9 — Lancer le chatbot
 
@@ -237,11 +239,11 @@ $env:PYTHONUTF8='1'
 # Créer / vérifier le schéma cagecfi_*
 uv run python apply_supabase_setup.py
 
-# Ingérer des documents
-uv run python -m src.ingestion.ingest_supabase -d ./documents
+# Ingérer les plaquettes (markdown déjà extrait, jamais les PDF bruts de documents/plaquettes/)
+uv run python -m src.ingestion.ingest_supabase -d documents/plaquettes_md
 
 # Ingérer sans effacer les données existantes
-uv run python -m src.ingestion.ingest_supabase -d ./documents --no-clean
+uv run python -m src.ingestion.ingest_supabase -d documents/plaquettes_md --no-clean
 
 # Lancer l'interface web
 uv run python -m streamlit run src/streamlit_app_supabase.py

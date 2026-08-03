@@ -8,6 +8,8 @@ from src.ingestion.pdf_audit import (
     ENGLISH_SLUGS,
     DocumentAudit,
     apply_exclusions,
+    audit_directory,
+    audit_non_pdf,
     audit_pdf,
     classify,
     write_audit,
@@ -169,3 +171,46 @@ def test_audit_pdf_reads_valid_minimal_pdf(tmp_path: Path) -> None:
     assert result.pages >= 1
     assert result.md5 is not None and len(result.md5) == 32  # MD5 hex
     assert result.kind in ("TEXTE", "MIXTE", "IMAGE")  # Classification valide
+
+
+@pytest.mark.unit
+def test_audit_non_pdf_is_excluded_with_explicit_reason(tmp_path: Path) -> None:
+    """Un fichier non-PDF recoit un audit exclu avec un motif explicite."""
+    image_path = tmp_path / "Insertion_page-0001.jpg"
+    image_path.write_bytes(b"\xff\xd8\xff\xe0donnees-jpeg-factices")
+
+    result = audit_non_pdf(image_path)
+
+    assert result.filename == "Insertion_page-0001.jpg"
+    assert result.pages == -1
+    assert result.kind == "IMAGE"
+    assert result.excluded_reason == "format image, non ingerable"
+    assert result.is_retained is False
+
+
+@pytest.mark.unit
+def test_audit_directory_reports_non_pdf_files(tmp_path: Path) -> None:
+    """Un fichier image du repertoire audite apparait dans le rapport, jamais silencieusement ignore.
+
+    Sans le correctif, `audit_directory` ne globe que `*.pdf` : le fichier
+    image telecharge par `drive_source.py` (`Insertion_page-0001.jpg`)
+    disparaitrait du rapport sans laisser aucune trace.
+    """
+    import io
+
+    from pypdf import PdfWriter
+
+    writer = PdfWriter()
+    writer.add_blank_page(width=100, height=100)
+    pdf_bytes = io.BytesIO()
+    writer.write(pdf_bytes)
+    (tmp_path / "VISUEL_CAGECFI.pdf").write_bytes(pdf_bytes.getvalue())
+    (tmp_path / "Insertion_page-0001.jpg").write_bytes(b"\xff\xd8\xff\xe0donnees-jpeg-factices")
+
+    resultat = audit_directory(tmp_path)
+    par_nom = {a.filename: a for a in resultat}
+
+    assert len(resultat) == 2
+    assert "Insertion_page-0001.jpg" in par_nom
+    assert par_nom["Insertion_page-0001.jpg"].excluded_reason == "format image, non ingerable"
+    assert par_nom["VISUEL_CAGECFI.pdf"].excluded_reason is None

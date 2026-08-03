@@ -68,7 +68,7 @@ caracteres) sans jamais tronquer leur contenu.
 
 
 async def build_sheet(
-    markdown: str, slug: str, settings: SupabaseSettings
+    markdown: str, slug: str, settings: SupabaseSettings, client: openai.AsyncOpenAI
 ) -> Optional[ProductSheet]:
     """Construit une fiche produit a partir du markdown d'une plaquette.
 
@@ -76,16 +76,15 @@ async def build_sheet(
         markdown: Contenu de la plaquette.
         slug: Identifiant du document, utilise pour la journalisation.
         settings: Configuration portant le LLM.
+        client: Client OpenAI partage entre tous les documents du lot (voir
+            `build_all_sheets`), afin de ne pas ouvrir un pool de connexions
+            httpx par plaquette.
 
     Returns:
         La fiche produit, ou None si le modele n'a pas produit un objet valide.
         Un echec ne doit pas interrompre le lot : les chunks bruts restent
         ingeres meme sans fiche.
     """
-    client = openai.AsyncOpenAI(
-        api_key=settings.llm_api_key, base_url=settings.llm_base_url
-    )
-
     if len(markdown) > MAX_MARKDOWN_CHARS:
         logger.warning(
             "plaquette_tronquee slug=%s caracteres=%d limite=%d",
@@ -129,7 +128,7 @@ def sheet_to_markdown(sheet: ProductSheet) -> str:
     return "\n".join(lignes).strip() + "\n"
 
 
-def write_sheet(sheet: ProductSheet, slug: str, dest_dir: Path) -> Path:
+def write_sheet(sheet: ProductSheet, slug: str, dest_dir: Path, source_file: str) -> Path:
     """Ecrit une fiche produit en markdown avec son front-matter.
 
     Le front-matter porte doc_type=product_sheet : l'ingestion le recopie tel
@@ -139,6 +138,9 @@ def write_sheet(sheet: ProductSheet, slug: str, dest_dir: Path) -> Path:
         sheet: Fiche a ecrire.
         slug: Identifiant du document source.
         dest_dir: Repertoire de destination.
+        source_file: Nom du PDF d'origine, lu depuis le front-matter de la
+            plaquette extraite (`extract_plaquettes.py` y ecrit le nom reel,
+            qui ne correspond pas toujours a `f"{slug}.pdf"`).
 
     Returns:
         Chemin du fichier ecrit.
@@ -149,7 +151,7 @@ def write_sheet(sheet: ProductSheet, slug: str, dest_dir: Path) -> Path:
         doc_type="product_sheet",
         product=sheet.product,
         category=sheet.category,
-        source_file=f"{slug}.pdf",
+        source_file=source_file,
         extraction="product_sheet",
     )
     dest = dest_dir / f"{slug}_fiche.md"
@@ -157,7 +159,7 @@ def write_sheet(sheet: ProductSheet, slug: str, dest_dir: Path) -> Path:
     return dest
 
 
-async def build_all_sheets(md_dir: Path) -> list[Path]:
+async def build_all_sheets(md_dir: Path) -> tuple[list[Path], list[str]]:
     """Genere une fiche produit pour chaque plaquette extraite.
 
     Les fiches deja generees et les fiches elles-memes sont ignorees, afin que
@@ -167,44 +169,62 @@ async def build_all_sheets(md_dir: Path) -> list[Path]:
         md_dir: Repertoire des markdown de plaquettes.
 
     Returns:
-        Chemins des fiches ecrites. Une erreur de lecture, de parsing du
-        front-matter ou d'ecriture sur un document est capturee et journalisee
-        plutot que d'interrompre le traitement des documents suivants.
+        Tuple (chemins des fiches ecrites avec succes, echecs). Chaque echec
+        est une chaine "<slug>: <motif>". Une erreur de lecture, de parsing
+        du front-matter, d'echec du LLM ou d'ecriture sur un document est
+        capturee et journalisee dans les echecs plutot que d'interrompre le
+        traitement des documents suivants.
     """
     settings = load_settings()
     ecrites: list[Path] = []
+    echecs: list[str] = []
 
-    for source in sorted(md_dir.glob("*.md")):
-        if source.stem.endswith("_fiche"):
-            continue
+    client = openai.AsyncOpenAI(
+        api_key=settings.llm_api_key, base_url=settings.llm_base_url
+    )
+    try:
+        for source in sorted(md_dir.glob("*.md")):
+            if source.stem.endswith("_fiche"):
+                continue
 
-        try:
-            post = frontmatter.loads(source.read_text(encoding="utf-8"))
-        except (OSError, yaml.YAMLError):
-            logger.exception("plaquette_illisible slug=%s", source.stem)
-            continue
+            try:
+                post = frontmatter.loads(source.read_text(encoding="utf-8"))
+            except (OSError, yaml.YAMLError) as exc:
+                logger.exception("plaquette_illisible slug=%s", source.stem)
+                echecs.append(f"{source.stem}: plaquette illisible ({exc})")
+                continue
 
-        sheet = await build_sheet(post.content, source.stem, settings)
-        if sheet is None:
-            logger.warning("fiche_ignoree slug=%s", source.stem)
-            continue
+            sheet = await build_sheet(post.content, source.stem, settings, client)
+            if sheet is None:
+                logger.warning("fiche_ignoree slug=%s", source.stem)
+                echecs.append(f"{source.stem}: generation LLM echouee")
+                continue
 
-        try:
-            ecrites.append(write_sheet(sheet, source.stem, md_dir))
-        except OSError:
-            logger.exception("ecriture_fiche_echouee slug=%s", source.stem)
+            source_file = post.metadata.get("source_file", f"{source.stem}.pdf")
+            try:
+                ecrites.append(write_sheet(sheet, source.stem, md_dir, source_file))
+            except OSError as exc:
+                logger.exception("ecriture_fiche_echouee slug=%s", source.stem)
+                echecs.append(f"{source.stem}: ecriture disque echouee ({exc})")
+    finally:
+        await client.close()
 
-    logger.info("fiches_generees n=%d", len(ecrites))
-    return ecrites
+    logger.info("fiches_generees n=%d echecs=%d", len(ecrites), len(echecs))
+    return ecrites, echecs
 
 
 def main() -> None:
     """Point d'entree CLI : genere les fiches produit des plaquettes extraites."""
     logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
-    fiches = asyncio.run(build_all_sheets(Path("documents/plaquettes_md")))
+    fiches, echecs = asyncio.run(build_all_sheets(Path("documents/plaquettes_md")))
+
     print(f"\n{len(fiches)} fiches produit generees :")
     for chemin in fiches:
         print(f"  {chemin.name}")
+
+    print(f"\n{len(echecs)} echec(s) :")
+    for echec in echecs:
+        print(f"  {echec}")
 
 
 if __name__ == "__main__":
