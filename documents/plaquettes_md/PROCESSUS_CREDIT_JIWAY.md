@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
 image_ratio: 3.0
 source_file: PROCESSUS_CREDIT_JIWAY.pdf
@@ -9,22 +9,16 @@ source_file: PROCESSUS_CREDIT_JIWAY.pdf
 
 OPTIMISEZ LA SOLVABILITÉ ET LE SCORING DE VOS CLIENTS
 
-![img-0.jpeg](img-0.jpeg)
-
-![img-1.jpeg](img-1.jpeg)
-
 En partenariat avec
 
 Dans un contexte de pression réglementaire accrue, d'exigence client en hausse et de risque de crédit instable, la capacité à prendre une décision de crédit rapide, fiable et conforme devient un avantage compétitif majeur.
 
 La solution proposée permet aux institutions financières de digitaliser tout leur processus d'octroi de crédit en intégrant un moteur de scoring intelligent basé sur l'IA, enrichi par des données internes et externes (centrales de risques, BIC, historiques, etc.).
 
-![img-2.jpeg](img-2.jpeg)
-
 # FONCTIONNALITÉS CLÉS
 
-Credit Scoring IA enrichi: analyse automatisée à partir du KYC, des historiques de transactions, comportements de paiement, données socio-economiques et scoring alternatif.
-Workflow digitalise: validation du dossier du terrain au comité de crédit.
+Credit Scoring IA enrichi : analyse automatisée à partir du KYC, des historiques de transactions, comportements de paiement, données socio-economiques et scoring alternatif.
+Workflow digitalise : validation du dossier du terrain au comité de crédit.
 Connexion BIC & centrales risques pour enrichissement des données de solvabilité.
 Application mobile & web pour les agents de crédit.
 Dashboards analytiques pour les comités techniques et de crédit.

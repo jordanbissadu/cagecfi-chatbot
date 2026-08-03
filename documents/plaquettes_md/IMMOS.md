@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
 image_ratio: 0.5
 source_file: IMMOS.pdf
@@ -8,9 +8,8 @@ source_file: IMMOS.pdf
 CAGECFI
 INFORMATIQUE & MANAGEMENT
 
-![img-0.jpeg](img-0.jpeg)
-
 # IMMOS
+
 GESTION DES IMMOBILISATIONS
 
 ISO 9001:2015

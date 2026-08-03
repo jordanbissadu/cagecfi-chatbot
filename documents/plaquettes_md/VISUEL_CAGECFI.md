@@ -1,11 +1,9 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
 image_ratio: 1.0
 source_file: VISUEL_CAGECFI.pdf
 ---
-
-![img-0.jpeg](img-0.jpeg)
 
 # INSTITUTIONS ETATIQUES
 ET SOUS-REGIONALES

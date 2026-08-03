@@ -1,11 +1,9 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
 image_ratio: 0.33
 source_file: Livret_Solutions_etatiques-min.pdf
 ---
-
-![img-0.jpeg](img-0.jpeg)
 
 # SOLUTIONS INFORMATIQUES
 
@@ -67,8 +65,6 @@ Etc.
 
 03
 
-![img-1.jpeg](img-1.jpeg)
-
 # SYSTÈME D'INFORMATION & DE GESTION DES DECAISSEMENTS EXTERIEURS DES PROJETS/PROGRAMMES (SIGEP)
 
 Le Système de Gestion des décaissements Extérieurs des Projets/Programmes (SIGEP) contribue à l'amélioration de la gouvernance financière des ressources extérieures et des dépenses des projets et programmes financés sur les fonds extérieurs des bailleurs multilatéraux et bilatéraux. Il permet de faciliter le suivi des décaissements, améliorer le taux de consommation des crédits du budget de l'Etat, suivre exhaustivement l'exécution budgétaire et produire des rapports budgétaires complets et dans les délais.
@@ -114,7 +110,7 @@ La solution permet donc d'effectuer des déclarations en ligne et de payer autom
 
 ## FONCTIONNALITES DU LOGICIEL
 
-Tele déclaration (chiffre d'affaires, TVA)
+Télé déclaration (chiffre d'affaires, TVA)
 Calculateur de taux d'imposition
 Paiements des impôts par Mobile Money (peut être payé par n'importe qui à l'aide du code unique contribuable)
 Consultation des échéances
@@ -144,8 +140,6 @@ Historique des opérations & des connexions
 Etat des rapprochements pour la compensation Mobile Money
 
 06
-
-![img-2.jpeg](img-2.jpeg)
 
 # PLATEFORME DE COLLECTE DE TAXES MUNICIPALES (PAY'TAX)
 
@@ -280,8 +274,6 @@ Rapport sur les frais
 Rapport détaillé des transactions
 Rapport synthétique des collectes et des remises
 
-![img-3.jpeg](img-3.jpeg)
-
 11
 
 # SYSTEME D'INFORMATION SUR LE TOURISME (SIT)
@@ -309,8 +301,6 @@ Gestion de la piste d'audit
 Etc.
 
 12
-
-![img-4.jpeg](img-4.jpeg)
 
 ## RAPPORTS FOURNIS
 
@@ -374,8 +364,6 @@ Graphe d'évolution des données
 - PERFORMANCE : GESTION DE PROJETS
 - GOMISE : GESTION DES RESSOURCES HUMAINES ET PAIE
 
-![img-5.jpeg](img-5.jpeg)
-
 # LOGICIEL DE GESTION INTEGRE DES SYSTEMES FINANCIERS DECENTRALISES (PERFECT-VISION)
 
 PERFECT-VISION est un Logiciel de Gestion Intégré des Institutions de Microfinance, permettant de disposer de données fiables, en respect des règlementations en vigueur.
@@ -389,7 +377,7 @@ Excellente conformité aux exigences fonctionnelles
 Autonomie du client assurée par le haut degré de paramétrage
 Protection des données, pistes d'audit, habilitation, sauvegarde, restauration de données
 Utilisation simple, contrôle et guidée
-Capacité d'adaptation aux règlementations en vigueur dans les sous régions (Afrique de l'Ouest, Afrique Centrale, les régions des Grands Lacs etc.)
+Capacité d'adaptation aux réglementations en vigueur dans les sous régions (Afrique de l'Ouest, Afrique Centrale, les régions des Grands Lacs etc.)
 Gestion de la clientèle et du portefeuille épargne (Comptes épargne, plan épargne, du plan assurance, du dépôt à terme, etc.)
 Gestion multi-caisses ou multi-agences avec production des données consolidées
 
@@ -471,8 +459,6 @@ Nombre de détenus par catégorie d'infraction, par tranche d'âge, par niveau d
 Graphes des détenus par tranche d'âge, par catégorie d'infraction, etc.
 
 19
-
-![img-6.jpeg](img-6.jpeg)
 
 # LOGICIEL DE GESTION DE PROJETS (PERFORMANCE)
 
@@ -590,5 +576,3 @@ Etc.
 cagecfi@cagecfi.com
 
 www.cagecfi.com
-
-![img-7.jpeg](img-7.jpeg)

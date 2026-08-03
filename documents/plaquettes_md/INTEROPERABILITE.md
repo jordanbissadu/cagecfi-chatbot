@@ -1,55 +1,43 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
-image_ratio: 3.0
+image_ratio: 3.5
 source_file: INTEROPERABILITE.pdf
 ---
 
 # Avantages pour les Institutions Financières
 
-- ✓ Interopérabilité totale : un seul canal pour toutes les transactions régionales ;
-- ✓ Zéro coût API pour les clients déjà équipés du Core Banking PERFECT ;
-- ✓ Réduction des délais et des coûts opérationnels ;
-- ✓ Nouvelle source de revenus : commissions sur transferts, paiements marchands et règlements ;
-- ✓ Accompagnement premium : support technique, formation et veille réglementaire ;
-- ✓ Conformité avec les standards ISO 20022, BCEAO, BEAC, BCC, BRB et normes RGPD.
-- ✓ Support technique et transfert de compétences jusqu'à la mise en production.
+Interopérabilité totale : un seul canal pour toutes les transactions régionales ;
+Zéro coût API pour les clients déjà équipés du Core Banking PERFECT;
+Réduction des déliés et des coûts opérationnels;
+Nouvelle source de revenus : commissions sur transferts, paiements marchands et règlements ;
+Accompagnement premium : support technique, formation et veille réglementaire ;
+Conformité avec les standards ISO 20022, BCEAO, BEAC, BCC, BRB et normes RGPD.
+Support technique et transfert de compétences jusqu'à la mise en production.
 
-![img-0.jpeg](img-0.jpeg)
+# Sécurité et Fiabilité
 
-## Sécurité et Fiabilité
+Authentication multi-niveaux (PIN, OTP, Google Authenticator)
+Chiffrement SSL/TLS et traçabilité complète
+Monitoring temps réel et reporting automatisé
+Journalisation et traçabilité intégrales
+Protection des données et respect des normes
 
-- ⚖ Authentification multi-niveaux (PIN, OTP, Google Authenticator)
-- ⚖ Chiffrement SSL/TLS et traçabilité complète
-- ⚖ Monitoring temps réel et reporting automatisé
-- ⚖ Journalisation et traçabilité intégrales
-- ⚖ Protection des données et respect des normes
+# Contact
 
-![img-1.jpeg](img-1.jpeg)
+CAGECFI S.A. - Votre Intégrateur Régional des Plateformes Bancaires et FinTech
 
-![img-2.jpeg](img-2.jpeg)
+Lomé - Togo
 
-![img-3.jpeg](img-3.jpeg)
+cagecfi@cagecfi.com
 
-## Contact
-
-CAGECFI S.A. – Votre Intégrateur Régional des Plateformes Bancaires et FinTech
-
-🔧 Lomé – Togo
-
-✉ cagecfi@cagecfi.com
-
-🌐 www.cagecfi.com
+www.cagecfi.com
 
 (+228) 22 26 84 61 / 90 89 76 50
 
-CAGECFI
-INFORMATIQUE & MANAGEMENT
-Certifié ISO 9001 : 2015
+# Interopérabilité des Systèmes Financiers
 
-![img-4.jpeg](img-4.jpeg)
-
-## Interopérabilité des Systèmes Financiers
+GIMAC
 
 ## Connecter les Écosystèmes Financiers de la BCEAO, BEAC, BCC, BRB & BNR etc.
 
@@ -89,8 +77,6 @@ La plateforme d'interopérabilité développée par CAGECFI agit comme un hub un
 |  Burundi | SPN – Système de Paiement National | BRB | Paiements interbancaires & digitaux  |
 
 Schéma d'Interopérabilité Multi-Zone
-
-![img-0.jpeg](img-0.jpeg)
 
 Client / Application mobile Institution financière (banque ou IMF) Hub d'interopérabilité (BCEAO / BEAC / BCC / BRB / R-Switch) Bénéficiaire
 

@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
 image_ratio: 10.0
 source_file: CAGECFI_Presentation_Insertion.pdf
@@ -18,24 +18,6 @@ de solutions informatiques et numériques
 
 LOGICIEL DE GESTION INTÉGRÉ DES SYSTÈMES FINANCIERS DÉCENTRALISÉS
 
-![img-0.jpeg](img-0.jpeg)
-
-![img-1.jpeg](img-1.jpeg)
-
-![img-2.jpeg](img-2.jpeg)
-
-![img-3.jpeg](img-3.jpeg)
-
-![img-4.jpeg](img-4.jpeg)
-
-![img-5.jpeg](img-5.jpeg)
-
-![img-6.jpeg](img-6.jpeg)
-
-![img-7.jpeg](img-7.jpeg)
-
-![img-8.jpeg](img-8.jpeg)
-
 # NOS DOMAINES D'EXPERTISE
 
 - Numérique & Digital
@@ -45,8 +27,6 @@ LOGICIEL DE GESTION INTÉGRÉ DES SYSTÈMES FINANCIERS DÉCENTRALISÉS
 - Formation
 
 # SOLUTIONS ADAPTÉES AUX GE/PME/PMI
-
-![img-9.jpeg](img-9.jpeg)
 
 # SOLUTIONS ADAPTÉES AUX ADMINISTRATIONS PUBLIQUES
 

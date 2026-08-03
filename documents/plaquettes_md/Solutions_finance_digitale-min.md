@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
 image_ratio: 2.33
 source_file: Solutions_finance_digitale-min.pdf
@@ -10,8 +10,6 @@ INFORMATIQUE & MANAGEMENT
 
 # SOLUTIONS
 DE FINANCE DIGITALE
-
-![img-0.jpeg](img-0.jpeg)
 
 # 2
 
@@ -32,8 +30,6 @@ DE FINANCE DIGITALE
 |  Témoignages | 20  |
 |  Quelques références | 21  |
 
-![img-1.jpeg](img-1.jpeg)
-
 CAGECFI SA au capital de 200 000 000 F CFA, (soit 305.300 €) , est une société d'Expertise Informatique et de Management créée en 2001 avec son siège social à Lomé au Togo et disposant de plus d'une dizaine de filiales à travers l'Afrique.
 
 ## SECTEURS D'ACTIVITES
@@ -46,13 +42,7 @@ CAGECFI SA au capital de 200 000 000 F CFA, (soit 305.300 €) , est une sociét
 
 03
 
-![img-2.jpeg](img-2.jpeg)
-
 Nous assurons la digitalisation de vos produits et services financiers !
-
-![img-3.jpeg](img-3.jpeg)
-
-![img-4.jpeg](img-4.jpeg)
 
 ## NOS SOLUTIONS DE FINANCE DIGITALE
 
@@ -65,10 +55,6 @@ Dans notre désir d'accompagner ces institutions dans leur marche vers la profes
 # MOBILE AGENCY
 
 # SOLUTION MOBILE DE COLLECTE
-
-![img-5.jpeg](img-5.jpeg)
-
-![img-6.jpeg](img-6.jpeg)
 
 06
 
@@ -99,10 +85,6 @@ Sécurisation de la collecte sur le terrain
 
 PLATEFORME D'AGREGRATION AU MOBILE MONEY
 
-![img-7.jpeg](img-7.jpeg)
-
-![img-8.jpeg](img-8.jpeg)
-
 08
 
 ## FONCTIONNALITES
@@ -131,8 +113,6 @@ PLATEFORME D'AGREGRATION AU MOBILE MONEY
 
 SOLUTION DE GESTION DE COMPTES CLIENTS VIA WHATSAPP
 
-![img-9.jpeg](img-9.jpeg)
-
 10
 
 # FONCTIONNALITES
@@ -160,10 +140,6 @@ Disponibilité de vos services 24h/24 & 7j/7
 ## SOLUTION DE GESTION DES NOTIFICATIONS
 SMS AUX CLIENTS
 
-![img-10.jpeg](img-10.jpeg)
-
-![img-11.jpeg](img-11.jpeg)
-
 12
 
 # FONCTIONNALITES
@@ -189,8 +165,6 @@ Marketing digital
 # WEB AGENCY
 
 ## SOLUTION DE RESEAU D'AGENTS PARTENAIRES
-
-![img-12.jpeg](img-12.jpeg)
 
 14
 
@@ -220,8 +194,6 @@ Engrangement de revenus additionnels
 
 # SOLUTION MOBILE DE SUIVI DES COMPTES CLIENTS
 
-![img-13.jpeg](img-13.jpeg)
-
 # FONCTIONNALITES
 
 Consultation de solde de compte
@@ -230,8 +202,6 @@ Virement de compte à compte
 Situation générale et suivi des crédits
 Suivi des remboursements
 Simulation de tableaux d'amortissements
-
-![img-14.jpeg](img-14.jpeg)
 
 # AVANTAGES
 
@@ -244,8 +214,6 @@ Autonomie du client vis-à-vis de l'institution pour la disponibilité des infor
 # E-BANKING
 
 # SOLUTION WEB DE SUIVI DES COMPTES CLIENTS
-
-![img-15.jpeg](img-15.jpeg)
 
 # FONCTIONNALITES
 
@@ -267,8 +235,6 @@ Autonomie du client vis-à-vis de l'institution pour la disponibilité des infor
 
 # PLATEFORME WEB ET MOBILE DE TRANSFERT D'ARGENT
 
-![img-16.jpeg](img-16.jpeg)
-
 Disposez de votre propre marque de transfert d'argent
 Gain de commissions
 Transferts cash to cash
@@ -281,98 +247,22 @@ Transferts account to cash
 
 PLATEFORME D'INTERFAÇAGE AVEC LES GAB/TPE
 
-![img-17.jpeg](img-17.jpeg)
-
 - Disponibilité de cartes prépayées
 - Transactions dans les GAB
 - Paiements marchands
 
 # TEMOIGNAGES
 
-## SCANNEZ POUR LIRE
-
-![img-18.jpeg](img-18.jpeg)
-
-![img-19.jpeg](img-19.jpeg)
-
-![img-20.jpeg](img-20.jpeg)
-
-![img-21.jpeg](img-21.jpeg)
-
-![img-22.jpeg](img-22.jpeg)
-
-![img-23.jpeg](img-23.jpeg)
+# SCANNEZ POUR LIRE
 
 20
 
 # QUELQUES REFERENCES
 
-![img-24.jpeg](img-24.jpeg)
-
-![img-25.jpeg](img-25.jpeg)
-
-![img-26.jpeg](img-26.jpeg)
-
-![img-27.jpeg](img-27.jpeg)
-
-![img-28.jpeg](img-28.jpeg)
-
-![img-29.jpeg](img-29.jpeg)
-
-![img-30.jpeg](img-30.jpeg)
-
-![img-31.jpeg](img-31.jpeg)
-
-![img-32.jpeg](img-32.jpeg)
-
-![img-33.jpeg](img-33.jpeg)
-
-![img-34.jpeg](img-34.jpeg)
-
-![img-35.jpeg](img-35.jpeg)
-
-![img-36.jpeg](img-36.jpeg)
-
-![img-37.jpeg](img-37.jpeg)
-
-![img-38.jpeg](img-38.jpeg)
-
-![img-39.jpeg](img-39.jpeg)
-
-![img-40.jpeg](img-40.jpeg)
-
-![img-41.jpeg](img-41.jpeg)
-
-![img-42.jpeg](img-42.jpeg)
-
-![img-43.jpeg](img-43.jpeg)
-
-![img-44.jpeg](img-44.jpeg)
-
-![img-45.jpeg](img-45.jpeg)
-
-![img-46.jpeg](img-46.jpeg)
-
-![img-47.jpeg](img-47.jpeg)
-
-![img-48.jpeg](img-48.jpeg)
-
-![img-49.jpeg](img-49.jpeg)
-
-![img-50.jpeg](img-50.jpeg)
-
-![img-51.jpeg](img-51.jpeg)
-
-![img-52.jpeg](img-52.jpeg)
-
-![img-53.jpeg](img-53.jpeg)
-
 21
 
-![img-54.jpeg](img-54.jpeg)[{"box_2d": [2, 501, 316, 651], "label": "text", "caption": "A.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.
+[{"box_2d": [2, 501, 316, 651], "label": "text", "caption": "A.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.  \nZ.  \nA.  \nB.  \nC.  \nD.  \nE.  \nF.  \nG.  \nH.  \nI.  \nJ.  \nK.  \nL.  \nM.  \nN.  \nO.  \nP.  \nQ.  \nR.  \nS.  \nT.  \nU.  \nV.  \nW.  \nX.  \nY.
 
 cagecfi@cagecfi.com
 
 www.cagecfi.com
-
-![img-55.jpeg](img-55.jpeg)

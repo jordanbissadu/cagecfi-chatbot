@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
 image_ratio: 1.75
 source_file: TRADER.pdf
@@ -7,8 +7,6 @@ source_file: TRADER.pdf
 
 AGECFI
 INFORMATIQUE & MANAGEMENT
-
-![img-0.jpeg](img-0.jpeg)
 
 # TRADER
 
@@ -62,10 +60,6 @@ ID 9108657733
 - Autonomie du client assurée par un haut degré de paramétrage
 - Etc.
 
-![img-1.jpeg](img-1.jpeg)
-
-![img-2.jpeg](img-2.jpeg)
-
 # ARCHITECTURE TECHNIQUE, RÉSEAU & SÉCURITÉ
 
 - Déploiement en local ou en mode interconnecté
@@ -80,8 +74,6 @@ ID 9108657733
 - Backup et restauration de données
 - Sécurité réseau
 - Etc.
-
-![img-3.jpeg](img-3.jpeg)
 
 ## REPORTINGS
 
@@ -115,8 +107,6 @@ Les rapports peuvent être édités suivant des très multicritères que l'utili
 - Inventaire des produits à expiration
 - Mouvement d'un produit
 - Etc.
-
-![img-4.jpeg](img-4.jpeg)
 
 ## CARACTÉRISTIQUES GÉNÉRALES
 
@@ -154,10 +144,6 @@ Système de gestion de bases de données
 - Mutuelle de l'Ouémé pour le Développement de l'Epargne et du Crédit (MODEC)
 - Programme d'Action aux Petites et Moyennes Entreprises (PAPME)
 
-![img-5.jpeg](img-5.jpeg)
-
 cagecfi@cagecfi.com
 
 www.cagecfi.com
-
-![img-6.jpeg](img-6.jpeg)

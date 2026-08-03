@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
 image_ratio: 1.5
 source_file: PERFECT.pdf
@@ -7,8 +7,6 @@ source_file: PERFECT.pdf
 
 AGECFI
 INFORMATIQUE & MANAGEMENT
-
-![img-0.jpeg](img-0.jpeg)
 
 # PERFECT
 
@@ -22,12 +20,6 @@ www.tuv.com
 ID: 9001/2015
 
 # COUVERTURE FONCTIONNELLE
-
-![img-1.jpeg](img-1.jpeg)
-
-![img-2.jpeg](img-2.jpeg)
-
-![img-3.jpeg](img-3.jpeg)
 
 # FONCTIONNALITÉS GÉNÉRALES
 
@@ -119,10 +111,6 @@ SQL SERVER
 
 # QUELQUES RÉFÉRENCES
 
-![img-4.jpeg](img-4.jpeg)
-
 cagecfi@cagecfi.com
 
 www.cagecfi.com
-
-![img-5.jpeg](img-5.jpeg)

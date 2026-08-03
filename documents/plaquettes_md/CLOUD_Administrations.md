@@ -1,15 +1,11 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: docling
 image_ratio: 0.0
 source_file: CLOUD_Administrations.pdf
 ---
 
-<!-- image -->
-
 Votre infrastructure numérique au cœur du Cloud CAGECFI propose une offre d'hébergement Cloud adaptée aux besoins des entreprises, des ONG, des associations, et des institutions publiques, pour un accès sécurisé et permanent à vos plateformes et logiciels critiques.
-
-<!-- image -->
 
 ## POURQUOI MIGRER VERS LE CLOUD AVEC CAGECFI ?
 

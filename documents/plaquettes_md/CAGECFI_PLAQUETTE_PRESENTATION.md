@@ -1,7 +1,7 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
-image_ratio: 4.5
+image_ratio: 0.75
 source_file: CAGECFI_PLAQUETTE_PRESENTATION.pdf
 ---
 
@@ -92,8 +92,6 @@ Au-delà des pays d'implantation, nous desservons deux pays du Maghreb tels que 
 # SOLUTIONS DE FINANCE DIGITALE
 
 Notre plateforme de finance digitale interfaçable à différents CoreBankings, à travers divers canaux de distribution notamment Web, Mobile, USSD et GAB.
-
-![img-0.jpeg](img-0.jpeg)
 
 MOBILE
 MONEY
@@ -220,37 +218,3 @@ Notre portefeuille client est essentiellement composé de :
 - Agence Belge de Développement du Niger (Enabel-Niger)
 - Ministère du Plan (Niger)
 - Ministère du Tourisme et des Transports Aériens (Sénégal)
-
-![img-1.jpeg](img-1.jpeg)
-
-![img-2.jpeg](img-2.jpeg)
-
-![img-3.jpeg](img-3.jpeg)
-
-![img-4.jpeg](img-4.jpeg)
-
-![img-5.jpeg](img-5.jpeg)
-
-![img-6.jpeg](img-6.jpeg)
-
-![img-7.jpeg](img-7.jpeg)
-
-![img-8.jpeg](img-8.jpeg)
-
-![img-9.jpeg](img-9.jpeg)
-
-![img-10.jpeg](img-10.jpeg)
-
-![img-11.jpeg](img-11.jpeg)
-
-![img-12.jpeg](img-12.jpeg)
-
-![img-13.jpeg](img-13.jpeg)
-
-![img-14.jpeg](img-14.jpeg)
-
-![img-15.jpeg](img-15.jpeg)
-
-![img-16.jpeg](img-16.jpeg)
-
-![img-17.jpeg](img-17.jpeg)

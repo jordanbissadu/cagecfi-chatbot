@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: docling
 image_ratio: 0.0
 source_file: MODULES_REGLEMENTAIRES_BIC_LBCFT.pdf
@@ -36,25 +36,13 @@ Le module est nativement intégré à PERFECT VISION mais il est  entièrement  
 - Gain de temps grâce à l'automatisation et au contrôle intégré
 - Configuration rapide, adaptable à toute nomenclature locale
 
-<!-- image -->
-
 Afin  de  garantir  une  protection  optimale  de  vos données, au-delà de notre certification ISO 9001-2015,  nous  nous  engageons  également dans la mise en œuvre de la norme ISO/CEI 27001 relative à la sécurité de l'information !
-
-<!-- image -->
-
-<!-- image -->
-
-<!-- image -->
 
 cagecfi@cagecfi.com
 
 www.cagecfi.com
 
 - Contactez-nous au +228 22 26 84 61
-
-<!-- image -->
-
-<!-- image -->
 
 ## MODULES REGLEMENTAIRES ( REPORTING MULTIZONE LB/CFT - BIC )
 
@@ -67,8 +55,6 @@ Automatisez vos états réglementaires et garantissez votre conformité!
 ## CONFORMITÉ RÉGLEMENTAIRE, SANS COMPLEXITÉ
 
 Les  institutions  financières  doivent  produire  des  reportings périodiques conformes aux exigences strictes des régulateurs comme la BCEAO (UEMOA), la BEAC (CEMAC), la BCC (RDC), BRB (Burundi),  BNR  (Rwanda),  BCRG  (Guinée)  et  les  autres Banques Nationales.
-
-<!-- image -->
 
 ## 🎯 LE  MODULE  REPORTING  MULTIZONE  DE  CAGECFI PERMET :
 

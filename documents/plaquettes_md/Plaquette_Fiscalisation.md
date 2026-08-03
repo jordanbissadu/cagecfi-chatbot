@@ -1,15 +1,13 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
-image_ratio: 2.5
+image_ratio: 2.25
 source_file: Plaquette_Fiscalisation.pdf
 ---
 
 AGECFI
 INFORMATIQUE & MANAGEMENT
 Certifié ISO 9001 : 2015
-
-![img-0.jpeg](img-0.jpeg)
 
 # SOLUTION DE FISCALISATION
 
@@ -33,60 +31,46 @@ Adéquation locale
 
 # À PROPOS
 
-![img-1.jpeg](img-1.jpeg)
-
 # PILIERS DU SUCCÈS
 
-- Nécessite la loi sur la fiscalité - Cadre juridique
-- Obligation d'utiliser des caisses enregistreuses électroniques
-- Gestion de la relation publique
-- Technologie simple (comme indiqué, y compris les mobiles)
-- Ensembles de registres électroniques attrayants (comme ci-dessous)
+Nécessite la loi sur la fiscalité - Cadre juridique
+Obligation d'utiliser des caisses enregistres électroniques
+Gestion de la relation publique
+Technologie simple ( comme indiqué, y compris les mobiles)
+Ensembles de registres électroniques attrayants ( comme ci-dessous)
 
 # APPROCHE CAROTTE ET BÂTON
 
-- Redevances de conformité réduites
-- Amendes pour non-conformité
-
-![img-2.jpeg](img-2.jpeg)
-
-![img-3.jpeg](img-3.jpeg)
-
-![img-4.jpeg](img-4.jpeg)
+Redevances de conformité réduites
+Amendes pour non-conformité
 
 # FONCTIONNEMENT
 
-![img-5.jpeg](img-5.jpeg)
-
 Schéma fonctionnel
 
-1. La caisse enregistreuse électronique génère et signe numériquement un message XML
-2. Envoi du message en temps réel à la centrale « Office de Collecte des Recettes » via Internet
-3. Le serveur central des impôts reçoit le message et génère un numéro Identifiant Fiscal Unique (IFU), horodate la transaction et signe numériquement la réponse Message XML
-4. La réponse Message XML contenant l'IFU est renvoyée à la caisse enregistreuse du marchand
-5. Le reçu est imprimé et remis physiquement au client
-6. À l'aide d'un SMS ou d'une application Web, le client vérifie si le reçu est authentique
-7. Réponse immédiate à la requête du client
+La caisse enregistreuse électronique génère et signe numériquement un message XML
+Envoi du message en temps réel à la centrale « Office de Collecte des Recettes » via Internet
+Le serveur central des impôts reçoit le message et génère un numéro Identifiant Fiscal Unique (IFU), horode la transaction et signe numériquement la réponse Message XML
+La reponse Message XML contenant l'IFU est renvoyée à la caisse enregistreuse du marchand
+Le reçu est imprimé et remis physiquement au client
+A l'aide d'un SMS ou d'une application Web, le client vérifie si le reçu est authenticate
+Réponse immédiate à la requête du client
 
 # MODÈLE DU PROCESSUS DE MISE EN ŒUVRE
 
-1. Le système utilise une caisse enregistreuse électronique connectée avec un accès Internet basique généralement via les réseaux mobiles (GPRS)
-2. Chaque reçu est remis à l'administration fiscale en temps réel, il reçoit un numéro d'identification fiscale unique et le message contenant le numéro d'identification fiscale unique est renvoyé au sujet imposable
-3. Le reçu est imprimé sur la caisse enregistreuse et délivré physiquement au client
-4. À l'aide d'une application Web ou d'un SMS, le client peut vérifier l'authenticité du reçu. Ex de suite de numéros à vérifier : 6b6f5db6e51f9a40f8547880c29ae200
-5. Chaque caisse enregistreuse se synchronise avec la base de données de l'OTR en temps réel et émet un numéro d'identification fiscale unique sur chaque reçu
+Le système utilise une caisse enregistreuse électronique connectée avec un accès Internet basique généralement via les réseaux mobiles (GPRS)
+2 Chaque reçu est remis à l'administration fiscale en temps réel, il recoit un numéro d'identification fiscale unique et le message contenant le numéro d'identification fiscale unique est renvoyé au sujet imposable
+Le reçu est imprimé sur la caisse enregistreuse et délivré physiquement au client
+A l'aide d'une application Web ou d'un SMS, le client peut vérifier l'authenticité du reçu. Ex de suite de numérios à vérifier : 6b6f5db6e51f9a40f8547880c29ae200
+5 Chaque caisse enregistreuse se synchronise avec la base de données de l'OTR en temps réel et émet un numéro d'identification fiscale unique sur chaque reçu
 
 # Système Architecture
-
-![img-6.jpeg](img-6.jpeg)
 
 # VÉRIFICATION DES REÇUS
 
 - Programme de récompenses lié à la délivrance systématique de reçus: chaque numéro de reçu unique est automatiquement entré dans le tirage hebdomadaire / mensuel. Les commerçants peuvent également partager les gains comme une incitation pour émettre des reçus
 - Système de dénonciation: l'administration fiscale peut donner une récompense fixe, en espèces ou une autre incitation aux personnes déclarant des transactions qui ne sont pas taxées (pas de numéro d'identification fiscale sur un reçu ou faux numéro d'identification fiscale)
 - Autres incitations adaptées au contexte et à la culture locale
-
-![img-7.jpeg](img-7.jpeg)
 
 # CARACTÉRISTIQUES GÉNÉRALES DU SYSTÈME
 
@@ -99,8 +83,6 @@ Schéma fonctionnel
 - Mode hors ligne : le dispositif TACS (puce fiscale) est moderne et adaptable à toute caisse enregistreuse électronique et permet l'émission de reçus uniques et authentiques
 Numéros d'identification fiscale jusqu'à 72 heures en cas d'absence de connexion réseau.
 
-![img-8.jpeg](img-8.jpeg)
-
 # RÉSULTATS ATTENDUS
 
 - Collecte des impôts plus efficace : accroissement des recouvrements d'impôts
@@ -110,8 +92,6 @@ Numéros d'identification fiscale jusqu'à 72 heures en cas d'absence de connexi
 - Des collectes et des contrôles fiscaux plus efficaces
 - Sensibilisation accrue à la nécessité de payer les impôts
 - Augmentation de l'image positive de l'Office de Collecte des Recettes
-
-![img-9.jpeg](img-9.jpeg)
 
 cagecfi@cagecfi.com
 

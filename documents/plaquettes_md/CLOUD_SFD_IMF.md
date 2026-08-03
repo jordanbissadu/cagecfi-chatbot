@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: docling
 image_ratio: 0.0
 source_file: CLOUD_SFD_IMF.pdf
@@ -7,23 +7,15 @@ source_file: CLOUD_SFD_IMF.pdf
 
 CAGECFI Hébergeur Cloud dédié à la transformation numérique de la microfinance africaine
 
-<!-- image -->
-
 v Contactez-nous au +228 22 26 84 61
 
 ]
 
 cagecfi@cagecfi.com
 
-<!-- image -->
-
 q
 
-<!-- image -->
-
 www.cagecfi.com
-
-<!-- image -->
 
 ## CAGECFI CLOUD
 
@@ -34,8 +26,6 @@ La puissance du Cloud, la sécurité d'un expert en microfinance Votre hébergem
 CAGECFI, leader technologique au service des institutions de microfinance depuis plus de 20 ans, met à votre disposition une offre Cloud fiable, conforme et maîtrisée.
 
 Nos solutions d'hébergement sont spécialement conçues pour répondre aux contraintes réglementaires, tout en assurant une haute disponibilité des services et une sécurité optimale des données.
-
-<!-- image -->
 
 ## POURQUOI LA MICROFINANCE A BESOIN DU CLOUD ?
 
@@ -56,14 +46,6 @@ Nos solutions d'hébergement sont spécialement conçues pour répondre aux cont
 | Cloud Pro. Dédié     | SUR DEVIS     | SUR DEVIS          | SUR DEVIS            | SUR DEVIS           |
 
 ## UN HÉBERGEMENT SOUVERAIN &amp; SÉCURISÉ
-
-<!-- image -->
-
-<!-- image -->
-
-<!-- image -->
-
-<!-- image -->
 
 - « Grâce à l'hébergement Cloud CAGECFI, notre système est toujours disponible, même en cas de coupure locale. Le support est réactif et spécialisé. »
 - CAURIE MICROFINANCE

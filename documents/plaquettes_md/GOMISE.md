@@ -1,7 +1,7 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
-image_ratio: 1.0
+image_ratio: 0.75
 source_file: GOMISE.pdf
 ---
 
@@ -23,8 +23,6 @@ System
 
 www.tuv.com
 ID: 9-6885/7/33
-
-![img-0.jpeg](img-0.jpeg)
 
 # COUVERTURE FONCTIONNELLE
 
@@ -75,8 +73,6 @@ Piste d'audit
 Backup et restauration de données
 Sécurité réseau
 Etc.
-
-![img-1.jpeg](img-1.jpeg)
 
 # REPORTINGS
 
@@ -148,31 +144,6 @@ Système de gestion de bases de données
 - SQL SERVER
 
 # QUELQUES RÉFÉRENCES
-
-![img-2.jpeg](img-2.jpeg)
-
-COOPEC
-TOGO PORT
-
-WAGES
-INSTITUTION DE RECHERCHES
-
-ASSILASSIME
-Solidarité
-
-Faa
-Fédérances
-Société de l'Administration
-
-FRQECAV
-
-![img-3.jpeg](img-3.jpeg)
-
-ATLANTIC MICROFINANCE
-FAMILIE
-
-CEC CAMEROUN
-Caisse d'Epargne et de Crédit du CAMEROUN
 
 - Etablissement Public Autonome pour l'Exploitation des Marchés de Lomé (EPAM)
 - Investir Dans l'Humain (IDH)

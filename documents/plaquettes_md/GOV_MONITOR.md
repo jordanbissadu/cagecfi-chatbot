@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
 image_ratio: 1.0
 source_file: GOV_MONITOR.pdf
@@ -8,8 +8,6 @@ source_file: GOV_MONITOR.pdf
 AGECFI
 INFORMATIQUE & MANAGEMENT
 Certifié ISO 9001 : 2015
-
-![img-0.jpeg](img-0.jpeg)
 
 # GOV - MONITOR
 
@@ -21,8 +19,6 @@ DE MISSION
 # APERÇU
 
 Ce système d'information et de gestion offre des moyens et outils de suivi-évaluation des projets et programmes/ lettres de mission des gouvernements afin de contribuer à l'amélioration de leurs taux d'exécution au sein des ministères ; l'objectif étant de faciliter les prises de décision et une gouvernance proactive.
-
-![img-1.jpeg](img-1.jpeg)
 
 # COUVERTURE FONCTIONNELLE
 
@@ -56,8 +52,6 @@ Saisie/ suivi des opérations financières
 
 # REPORTINGS
 
-![img-2.jpeg](img-2.jpeg)
-
 Aperçu PTBA (Plan de Travail Budgetisé Annuel)
 Matrice de suivi des activités
 Etat de synthese des activités par statut
@@ -71,8 +65,6 @@ Situation physique et financière des projets/missions
 Etat global de suivi des projets/missions
 Etat de suivi des projets/missions par Ministère
 Taux d'exécution (financier et physique) des projets/missions
-
-![img-3.jpeg](img-3.jpeg)
 
 Graphe d'évolution des actions et activités
 Tableau de suivi d'évolution des indicateurs

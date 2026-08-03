@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: mistral_ocr
 image_ratio: 1.25
 source_file: SICOM.pdf
@@ -10,8 +10,6 @@ source_file: SICOM.pdf
 INFORMATIQUE & MANAGEMENT
 
 Certifié ISO 9001 : 2015
-
-![img-0.jpeg](img-0.jpeg)
 
 SICOM
 
@@ -38,10 +36,6 @@ Un tableau de bord web permet au régisseur général de la commune/municipalit�
 - Gestion de la piste d'audit
 - Mode de fonctionnement : online et offline.
 
-![img-1.jpeg](img-1.jpeg)
-
-![img-2.jpeg](img-2.jpeg)
-
 # REPORTINGS
 
 - Historique des opérations
@@ -65,8 +59,6 @@ Un tableau de bord web permet au régisseur général de la commune/municipalit�
 - Piste d'audit
 - Backup et restauration de données
 - Sécurité réseau
-
-![img-3.jpeg](img-3.jpeg)
 
 ### TYPE D'APPLICATION
 
@@ -92,5 +84,3 @@ Un tableau de bord web permet au régisseur général de la commune/municipalit�
 cagecfi@cagecfi.com
 
 www.cagecfi.com
-
-![img-4.jpeg](img-4.jpeg)

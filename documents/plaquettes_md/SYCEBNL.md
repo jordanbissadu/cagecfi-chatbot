@@ -1,5 +1,5 @@
 ---
-extracted_at: '2026-08-01'
+extracted_at: '2026-08-03'
 extraction: docling
 image_ratio: 0.0
 source_file: SYCEBNL.pdf
@@ -21,8 +21,6 @@ source_file: SYCEBNL.pdf
 - Rapports sur les ressources humaines et paie
 - Edition multicritère des reportings
 - Exportation des reportings en Word, Excel , Html, etc…
-
-<!-- image -->
 
 ## LOGICIEL COMPTABLE
 
