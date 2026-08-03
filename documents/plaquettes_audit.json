@@ -150,6 +150,16 @@
     "excluded_reason": "document en anglais"
   },
   {
+    "filename": "Insertion_page-0001.jpg",
+    "md5": "e2d622944412c7021ce09f5a85f2a103",
+    "pages": -1,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": "format image, non ingerable"
+  },
+  {
     "filename": "Livret_Solutions_etatiques-min.pdf",
     "md5": "a9d0548fc0e327efac69c7b88d7e5d5e",
     "pages": 24,
