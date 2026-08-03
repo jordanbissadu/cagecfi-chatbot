@@ -17,9 +17,18 @@ logger = logging.getLogger(__name__)
 
 
 class IngestionCheck(BaseModel):
-    """Resultat de verification pour un document."""
+    """Resultat de verification pour un document.
 
-    title: str = Field(..., description="Titre du document")
+    Un document est identifie sans ambiguite par son ``file_id`` en base.
+    Le ``title`` n'est qu'une etiquette d'affichage : plusieurs documents
+    distincts (une plaquette et sa fiche produit, par exemple) peuvent
+    partager le meme titre. ``source`` permet de les distinguer a l'ecran.
+    """
+
+    title: str = Field(..., description="Titre du document (non unique)")
+    source: str = Field(
+        ..., description="Chemin ou reference source du document, pour distinguer deux homonymes"
+    )
     chunks: int = Field(..., description="Nombre de chunks rattaches")
     passed: bool = Field(..., description="True si le document porte au moins un chunk")
 
@@ -29,25 +38,38 @@ async def check_all_documents_have_chunks(
 ) -> list[IngestionCheck]:
     """Verifie que chaque document ingere possede au moins un chunk.
 
+    Le regroupement se fait par ``file_id``, la cle reelle d'un document,
+    et non par ``title`` : plusieurs documents distincts (une plaquette et
+    sa fiche produit) peuvent partager le meme titre, et regrouper par titre
+    masquerait un document sans chunk derriere le compte de son homonyme.
+
     Args:
         pool: Pool de connexions PostgreSQL.
         settings: Configuration portant les noms de tables.
 
     Returns:
-        Un resultat de verification par document distinct.
+        Un resultat de verification par document distinct (par file_id).
     """
     requete = f"""
-        SELECT d.title, COUNT(c.id) AS n
-        FROM (SELECT DISTINCT file_id, title FROM {settings.postgres_table_documents}) d
+        SELECT d.file_id, d.title, d.source, COUNT(c.id) AS n
+        FROM (
+            SELECT DISTINCT file_id, title, source
+            FROM {settings.postgres_table_documents}
+        ) d
         LEFT JOIN {settings.postgres_table_chunks} c ON c.file_id = d.file_id
-        GROUP BY d.title
-        ORDER BY d.title
+        GROUP BY d.file_id, d.title, d.source
+        ORDER BY d.title, d.source
     """
     async with pool.acquire() as conn:
         lignes = await conn.fetch(requete)
 
     return [
-        IngestionCheck(title=row["title"], chunks=row["n"], passed=row["n"] > 0)
+        IngestionCheck(
+            title=row["title"],
+            source=row["source"],
+            chunks=row["n"],
+            passed=row["n"] > 0,
+        )
         for row in lignes
     ]
 
@@ -66,7 +88,7 @@ def summarize_checks(checks: list[IngestionCheck]) -> tuple[bool, str]:
 
     echecs = [c for c in checks if not c.passed]
     if echecs:
-        noms = ", ".join(c.title for c in echecs)
+        noms = ", ".join(f"{c.title} ({c.source})" for c in echecs)
         return False, f"Recette echouee : {len(echecs)} document(s) sans chunk : {noms}"
 
     total = sum(c.chunks for c in checks)
@@ -87,7 +109,7 @@ async def _run() -> None:
     ok, message = summarize_checks(checks)
     for check in checks:
         etat = "OK   " if check.passed else "ECHEC"
-        print(f"  {etat} {check.title:<50} {check.chunks} chunks")
+        print(f"  {etat} {check.title:<40} {check.source:<45} {check.chunks} chunks")
     print(f"\n{message}")
 
     if not ok:
