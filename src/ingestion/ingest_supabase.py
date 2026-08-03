@@ -10,6 +10,7 @@ import asyncio
 import logging
 import glob
 import json
+from io import BytesIO
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from datetime import datetime
@@ -87,6 +88,11 @@ class DocumentIngestionPipeline:
         self.config = config
         self.documents_folder = documents_folder
         self.clean_before_ingest = clean_before_ingest
+
+        # Front-matter du markdown en cours de lecture, memorise par
+        # _read_document et reutilise par _ingest_document (voir plus bas)
+        # pour eviter de relire le meme fichier deux fois.
+        self._current_front_matter: Dict[str, Any] = {}
 
         # Load settings
         self.settings = load_settings()
@@ -233,27 +239,52 @@ class DocumentIngestionPipeline:
 
         Returns:
             Tuple of (markdown_content, docling_document).
-            docling_document is None only for text files.
+            docling_document is None when the format has no Docling
+            converter (plain text), or when Docling conversion failed and
+            the reader fell back to raw text.
         """
         file_ext = os.path.splitext(file_path)[1].lower()
+
+        # Reinitialise a chaque lecture : seul le format markdown le
+        # renseigne ci-dessous, ce qui permet a _ingest_document de
+        # recuperer le front-matter sans relire le fichier une seconde fois.
+        self._current_front_matter = {}
 
         # Audio formats - transcribe with Whisper ASR
         audio_formats = ['.mp3', '.wav', '.m4a', '.flac']
         if file_ext in audio_formats:
             return self._transcribe_audio(file_path)
 
+        # Les plaquettes extraites portent un front-matter : le retirer avant
+        # Docling (sinon les cles YAML seraient injectees dans le texte
+        # indexe), puis convertir le contenu restant en memoire pour obtenir
+        # un DoclingDocument et beneficier du HybridChunker (chunking
+        # conscient de la hierarchie des titres) plutot que du fallback
+        # par fenetre glissante.
+        if file_ext in ('.md', '.markdown'):
+            content, front_matter = read_plaquette_markdown(Path(file_path))
+            self._current_front_matter = front_matter
+            try:
+                from docling.datamodel.base_models import DocumentStream
+                from docling.document_converter import DocumentConverter
+
+                stream = DocumentStream(
+                    name=os.path.basename(file_path),
+                    stream=BytesIO(content.encode("utf-8")),
+                )
+                result = DocumentConverter().convert(stream)
+                return (content, result.document)
+            except Exception as e:
+                logger.error(
+                    f"Failed to convert {file_path} with Docling: {e}"
+                )
+                return (content, None)
+
         # Docling-supported formats (convert to markdown)
         docling_formats = [
             '.pdf', '.docx', '.doc', '.pptx', '.ppt',
             '.xlsx', '.xls', '.html', '.htm',
-            '.md', '.markdown'
         ]
-
-        # Les plaquettes extraites portent un front-matter : le laisser passer
-        # dans Docling injecterait les cles YAML dans le texte indexe.
-        if file_ext in ('.md', '.markdown'):
-            content, _ = read_plaquette_markdown(Path(file_path))
-            return (content, None)
 
         if file_ext in docling_formats:
             try:
@@ -440,10 +471,10 @@ class DocumentIngestionPipeline:
             # Read document content
             content, docling_doc = self._read_document(file_path)
 
-            # Les plaquettes portent leur provenance dans un front-matter
-            front_matter: Dict[str, Any] = {}
-            if os.path.splitext(file_path)[1].lower() in ('.md', '.markdown'):
-                _, front_matter = read_plaquette_markdown(Path(file_path))
+            # Le front-matter (provenance des plaquettes) a deja ete lu par
+            # _read_document ; on le recupere depuis l'instance plutot que
+            # de relire le fichier une seconde fois.
+            front_matter = self._current_front_matter
 
             # Extract metadata
             title = self._extract_title(content, file_path)

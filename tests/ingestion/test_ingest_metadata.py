@@ -6,7 +6,6 @@ import pytest
 
 from src.ingestion.ingest_supabase import (
     DocumentIngestionPipeline,
-    IngestionConfig,
     read_plaquette_markdown,
 )
 
@@ -91,6 +90,34 @@ def test_document_metadata_product_sheet_overrides_doc_type(tmp_path: Path) -> N
     assert meta["product"] == "Solutions de finance digitale"
     assert meta["category"] == "finance_digitale"
     assert meta["source_file"] == "SOLUTION.pdf"
+
+
+@pytest.mark.unit
+def test_read_document_markdown_returns_docling_document(tmp_path: Path) -> None:
+    """_read_document retire le front-matter et convertit le reste en DoclingDocument.
+
+    Le second element du tuple ne doit pas etre None : c'est ce qui permet a
+    chunker.chunk_document d'utiliser le HybridChunker (conscient des titres)
+    plutot que le fallback par fenetre glissante.
+    """
+    fichier = tmp_path / "PERFECT.md"
+    fichier.write_text(
+        "---\n"
+        "source_file: PERFECT.pdf\n"
+        "extraction: mistral_ocr\n"
+        "---\n"
+        "# PERFECT\n\n## Section\n\nGestion de la clientele\n",
+        encoding="utf-8",
+    )
+    pipeline = DocumentIngestionPipeline.__new__(DocumentIngestionPipeline)
+
+    contenu, docling_doc = pipeline._read_document(str(fichier))
+
+    assert docling_doc is not None
+    assert contenu.startswith("# PERFECT")
+    assert "source_file" not in contenu
+    assert "extraction" not in contenu
+    assert pipeline._current_front_matter["source_file"] == "PERFECT.pdf"
 
 
 @pytest.mark.unit
