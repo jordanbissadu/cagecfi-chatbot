@@ -1,0 +1,322 @@
+[
+  {
+    "filename": "CAGECFI_PLAQUETTE_PRESENTATION.pdf",
+    "md5": "0c8c13f380538812d78625d9a21c328d",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "CAGECFI_Presentation_Insertion.pdf",
+    "md5": "573adf2c89e84e1ab901efb4646e90c6",
+    "pages": 1,
+    "chars_per_page": 82,
+    "kind": "MIXTE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "CAGECFI_QUI_SOMMES_NOUS.pdf",
+    "md5": "0c8c13f380538812d78625d9a21c328d",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": "CAGECFI_PLAQUETTE_PRESENTATION.pdf",
+    "language": "fr",
+    "excluded_reason": "doublon exact de CAGECFI_PLAQUETTE_PRESENTATION.pdf"
+  },
+  {
+    "filename": "CAGECFI_SIG_PERFECT-V-min.pdf",
+    "md5": "e7092a004dad91cf5f4f288c90444201",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "CLOUD_Administrations.pdf",
+    "md5": "fd221fc876c2875accd8be37f7401e2d",
+    "pages": 2,
+    "chars_per_page": 1000,
+    "kind": "TEXTE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "CLOUD_SFD_IMF.pdf",
+    "md5": "347b75db25ef162c44d73d1ef515171d",
+    "pages": 2,
+    "chars_per_page": 942,
+    "kind": "TEXTE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "CORE_BANKING_PERFECT_ENG.pdf",
+    "md5": "720a53980781a7f7370786dfa04acc04",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "en",
+    "excluded_reason": "document en anglais"
+  },
+  {
+    "filename": "DIGITAL_FINANCE_SOLUTIONS_ENG.pdf",
+    "md5": "96b0d51048d2f9b49c7e0cb7edf3f1ea",
+    "pages": 24,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "en",
+    "excluded_reason": "document en anglais"
+  },
+  {
+    "filename": "ERP_COMPTA.pdf",
+    "md5": "76295fbf0d683462d3c8f5286429ae1e",
+    "pages": 2,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "GOMISE.pdf",
+    "md5": "b5f3f2181d1a9149f2cc8e0ea2c8a6f7",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "GOV_MONITOR.pdf",
+    "md5": "944fb79be1987e0e249384370b9148f3",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "GOV_SOLUTIONS_ENG.pdf",
+    "md5": "bcb7a53dfc3182a36f6c68de3c7660a8",
+    "pages": 24,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "en",
+    "excluded_reason": "document en anglais"
+  },
+  {
+    "filename": "IMMOS.pdf",
+    "md5": "b836b1df0af45446662a1fe9918f399e",
+    "pages": 2,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "INTEROPERABILITE.pdf",
+    "md5": "3e805d94cea051e674f29ed3488dea74",
+    "pages": 2,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "IT_BASED_SOLUTIONS_GOV_ENG.pdf",
+    "md5": "bcb7a53dfc3182a36f6c68de3c7660a8",
+    "pages": 24,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "en",
+    "excluded_reason": "document en anglais"
+  },
+  {
+    "filename": "Insertion_page-0001.jpg",
+    "md5": "e2d622944412c7021ce09f5a85f2a103",
+    "pages": -1,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": "format image, non ingerable"
+  },
+  {
+    "filename": "Livret_Solutions_etatiques-min.pdf",
+    "md5": "a9d0548fc0e327efac69c7b88d7e5d5e",
+    "pages": 24,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "Livret_Solutions_etatiques.pdf",
+    "md5": "a9d0548fc0e327efac69c7b88d7e5d5e",
+    "pages": 24,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": "Livret_Solutions_etatiques-min.pdf",
+    "language": "fr",
+    "excluded_reason": "doublon exact de Livret_Solutions_etatiques-min.pdf"
+  },
+  {
+    "filename": "MODULES_REGLEMENTAIRES_BIC_LBCFT.pdf",
+    "md5": "01554b234beffc36b37173907e0f8642",
+    "pages": 2,
+    "chars_per_page": 2579,
+    "kind": "TEXTE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "PAY_TAX.pdf",
+    "md5": "6906e24a0f93ccc61e6ac7de95703724",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "PERFECT-VISION-SIG.pdf",
+    "md5": "e7092a004dad91cf5f4f288c90444201",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": "CAGECFI_SIG_PERFECT-V-min.pdf",
+    "language": "fr",
+    "excluded_reason": "doublon exact de CAGECFI_SIG_PERFECT-V-min.pdf"
+  },
+  {
+    "filename": "PERFECT.pdf",
+    "md5": "701ae69a340f6c17a251f83c748eec7f",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "PROCESSUS_CREDIT_JIWAY.pdf",
+    "md5": "572c9bf110ba77f3d1d9fa02eca78404",
+    "pages": 1,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "Plaquette_Fiscalisation.pdf",
+    "md5": "9a2fdae14d67cdb7f436f636f0ec2956",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "Plaquette_PAY_TAX.pdf",
+    "md5": "6906e24a0f93ccc61e6ac7de95703724",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": "PAY_TAX.pdf",
+    "language": "fr",
+    "excluded_reason": "doublon exact de PAY_TAX.pdf"
+  },
+  {
+    "filename": "SICOM.pdf",
+    "md5": "dec1fe268a00ab1f74ca06d8b749a122",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "SYCEBNL.pdf",
+    "md5": "c7cbe0ef13cebb93547f2073ba716dfb",
+    "pages": 2,
+    "chars_per_page": 1924,
+    "kind": "TEXTE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "SYCEBNL_CAGECFI.pdf",
+    "md5": "c7cbe0ef13cebb93547f2073ba716dfb",
+    "pages": 2,
+    "chars_per_page": 1924,
+    "kind": "TEXTE",
+    "is_duplicate_of": "SYCEBNL.pdf",
+    "language": "fr",
+    "excluded_reason": "doublon exact de SYCEBNL.pdf"
+  },
+  {
+    "filename": "Solutions_finance_digitale-min.pdf",
+    "md5": "c61542415ad0e1528eab271e35472b8d",
+    "pages": 24,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "Solutions_finance_digitale.pdf",
+    "md5": "c61542415ad0e1528eab271e35472b8d",
+    "pages": 24,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": "Solutions_finance_digitale-min.pdf",
+    "language": "fr",
+    "excluded_reason": "doublon exact de Solutions_finance_digitale-min.pdf"
+  },
+  {
+    "filename": "TRADER.pdf",
+    "md5": "3e767d9a357d4c8dfe3daba870c938de",
+    "pages": 4,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  },
+  {
+    "filename": "VISUEL_CAGECFI.pdf",
+    "md5": "23f0b3b450e171c86ca3260acb059cc3",
+    "pages": 1,
+    "chars_per_page": 0,
+    "kind": "IMAGE",
+    "is_duplicate_of": null,
+    "language": "fr",
+    "excluded_reason": null
+  }
+]

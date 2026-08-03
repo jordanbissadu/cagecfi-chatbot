@@ -103,6 +103,15 @@ class SupabaseSettings(BaseSettings):
         default=0.3, description="Default text weight for hybrid search (0-1)"
     )
 
+    # Mistral OCR (ingestion locale uniquement, jamais appele depuis Vercel)
+    mistral_api_key: str = Field(
+        default="", description="Cle API Mistral pour l'OCR des plaquettes"
+    )
+
+    mistral_ocr_model: str = Field(
+        default="mistral-ocr-latest", description="Modele OCR Mistral"
+    )
+
 
 def load_settings() -> SupabaseSettings:
     """Load settings with proper error handling."""

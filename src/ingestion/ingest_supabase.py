@@ -10,6 +10,7 @@ import asyncio
 import logging
 import glob
 import json
+from io import BytesIO
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from datetime import datetime
@@ -26,6 +27,23 @@ from src.settings_supabase import load_settings
 
 # Load environment variables
 load_dotenv()
+
+
+def read_plaquette_markdown(path: Path) -> tuple[str, Dict[str, Any]]:
+    """Lit un markdown de plaquette en separant son front-matter.
+
+    Args:
+        path: Chemin du fichier markdown.
+
+    Returns:
+        Tuple (contenu sans front-matter, metadonnees du front-matter).
+        Les metadonnees sont vides si le fichier n'en porte pas.
+    """
+    import frontmatter
+
+    post = frontmatter.loads(path.read_text(encoding="utf-8"))
+    return post.content, dict(post.metadata)
+
 
 logger = logging.getLogger(__name__)
 
@@ -70,6 +88,11 @@ class DocumentIngestionPipeline:
         self.config = config
         self.documents_folder = documents_folder
         self.clean_before_ingest = clean_before_ingest
+
+        # Front-matter du markdown en cours de lecture, memorise par
+        # _read_document et reutilise par _ingest_document (voir plus bas)
+        # pour eviter de relire le meme fichier deux fois.
+        self._current_front_matter: Dict[str, Any] = {}
 
         # Load settings
         self.settings = load_settings()
@@ -216,20 +239,51 @@ class DocumentIngestionPipeline:
 
         Returns:
             Tuple of (markdown_content, docling_document).
-            docling_document is None only for text files.
+            docling_document is None when the format has no Docling
+            converter (plain text), or when Docling conversion failed and
+            the reader fell back to raw text.
         """
         file_ext = os.path.splitext(file_path)[1].lower()
+
+        # Reinitialise a chaque lecture : seul le format markdown le
+        # renseigne ci-dessous, ce qui permet a _ingest_document de
+        # recuperer le front-matter sans relire le fichier une seconde fois.
+        self._current_front_matter = {}
 
         # Audio formats - transcribe with Whisper ASR
         audio_formats = ['.mp3', '.wav', '.m4a', '.flac']
         if file_ext in audio_formats:
             return self._transcribe_audio(file_path)
 
+        # Les plaquettes extraites portent un front-matter : le retirer avant
+        # Docling (sinon les cles YAML seraient injectees dans le texte
+        # indexe), puis convertir le contenu restant en memoire pour obtenir
+        # un DoclingDocument et beneficier du HybridChunker (chunking
+        # conscient de la hierarchie des titres) plutot que du fallback
+        # par fenetre glissante.
+        if file_ext in ('.md', '.markdown'):
+            content, front_matter = read_plaquette_markdown(Path(file_path))
+            self._current_front_matter = front_matter
+            try:
+                from docling.datamodel.base_models import DocumentStream
+                from docling.document_converter import DocumentConverter
+
+                stream = DocumentStream(
+                    name=os.path.basename(file_path),
+                    stream=BytesIO(content.encode("utf-8")),
+                )
+                result = DocumentConverter().convert(stream)
+                return (content, result.document)
+            except Exception as e:
+                logger.error(
+                    f"Failed to convert {file_path} with Docling: {e}"
+                )
+                return (content, None)
+
         # Docling-supported formats (convert to markdown)
         docling_formats = [
             '.pdf', '.docx', '.doc', '.pptx', '.ppt',
             '.xlsx', '.xls', '.html', '.htm',
-            '.md', '.markdown'
         ]
 
         if file_ext in docling_formats:
@@ -362,7 +416,8 @@ class DocumentIngestionPipeline:
     def _extract_document_metadata(
         self,
         content: str,
-        file_path: str
+        file_path: str,
+        front_matter: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
         Extract metadata from document content.
@@ -370,16 +425,31 @@ class DocumentIngestionPipeline:
         Args:
             content: Document content
             file_path: Path to the document file
+            front_matter: Metadata read from the markdown front-matter, if any
 
         Returns:
             Document metadata dictionary
         """
-        return {
+        metadata: Dict[str, Any] = {
             "file_name": os.path.basename(file_path),
             "file_extension": os.path.splitext(file_path)[1],
             "file_size": os.path.getsize(file_path),
             "word_count": len(content.split()),
+            "doc_type": "chunk",
         }
+        if front_matter:
+            for cle in (
+                "source_file",
+                "extraction",
+                "image_ratio",
+                "extracted_at",
+                "doc_type",
+                "product",
+                "category",
+            ):
+                if cle in front_matter:
+                    metadata[cle] = front_matter[cle]
+        return metadata
 
     async def _ingest_document(self, file_path: str) -> IngestionResult:
         """
@@ -401,9 +471,14 @@ class DocumentIngestionPipeline:
             # Read document content
             content, docling_doc = self._read_document(file_path)
 
+            # Le front-matter (provenance des plaquettes) a deja ete lu par
+            # _read_document ; on le recupere depuis l'instance plutot que
+            # de relire le fichier une seconde fois.
+            front_matter = self._current_front_matter
+
             # Extract metadata
             title = self._extract_title(content, file_path)
-            metadata = self._extract_document_metadata(content, file_path)
+            metadata = self._extract_document_metadata(content, file_path, front_matter)
 
             logger.info(f"Processing document: {title}")
 
