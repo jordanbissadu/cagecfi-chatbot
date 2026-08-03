@@ -5,7 +5,12 @@ from typing import Any
 
 import pytest
 
-from src.ingestion.mistral_ocr import OcrPage, OcrResult, clean_artifacts
+from src.ingestion.mistral_ocr import (
+    OcrPage,
+    OcrResult,
+    clean_artifacts,
+    render_pages_to_jpeg,
+)
 
 
 @pytest.mark.unit
@@ -121,6 +126,31 @@ async def test_ocr_pdf_renders_pages_above_threshold(
     assert all(appel["document"]["type"] == "image_url" for appel in appels)
     assert [page.index for page in result.pages] == [0, 1]
     assert [page.markdown for page in result.pages] == ["Page 0", "Page 1"]
+
+
+@pytest.mark.unit
+def test_render_pages_to_jpeg_produces_one_jpeg_per_page(tmp_path: Path) -> None:
+    """Chaque page d'un PDF genere localement est rendue en JPEG non vide.
+
+    Aucun appel reseau : le PDF est cree a la volee avec pypdf, ce qui
+    exerce reellement pypdfium2 (rendu + fermeture deterministe de la page
+    et du bitmap) plutot que de le mocker.
+    """
+    from pypdf import PdfWriter
+
+    writer = PdfWriter()
+    writer.add_blank_page(width=200, height=200)
+    writer.add_blank_page(width=200, height=200)
+    pdf_path = tmp_path / "vierge.pdf"
+    with pdf_path.open("wb") as f:
+        writer.write(f)
+
+    images = render_pages_to_jpeg(pdf_path)
+
+    assert len(images) == 2
+    for image in images:
+        assert len(image) > 0
+        assert image[:2] == b"\xff\xd8"
 
 
 @pytest.mark.integration

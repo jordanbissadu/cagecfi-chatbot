@@ -1,14 +1,17 @@
 """Tests de l'extraction routee des plaquettes."""
 
+import json
 from pathlib import Path
 
 import pytest
 
 from src.ingestion.extract_plaquettes import (
     ExtractionResult,
+    extract_all,
     route_extraction_method,
     write_markdown,
 )
+from src.ingestion.pdf_audit import DocumentAudit
 
 
 @pytest.mark.unit
@@ -79,3 +82,63 @@ def test_extraction_result_rejects_unknown_method() -> None:
             filename="X.pdf", slug="X", method="tesseract",  # type: ignore[arg-type]
             markdown="", image_ratio=0.0,
         )
+
+
+@pytest.mark.unit
+@pytest.mark.asyncio
+async def test_extract_all_continues_after_write_markdown_os_error(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Une erreur d'ecriture disque sur un document n'interrompt pas le lot.
+
+    Sans le correctif, l'OSError leve par `write_markdown` remonte hors de
+    `extract_all` et empeche le traitement des documents suivants : ce test
+    echoue si l'appel n'est pas protege par un try/except cible.
+    """
+    import src.ingestion.extract_plaquettes as mod
+
+    audits = [
+        DocumentAudit(filename="A.pdf", md5="a", pages=1, chars_per_page=500, kind="TEXTE"),
+        DocumentAudit(filename="B.pdf", md5="b", pages=1, chars_per_page=500, kind="TEXTE"),
+        DocumentAudit(filename="C.pdf", md5="c", pages=1, chars_per_page=500, kind="TEXTE"),
+    ]
+    audit_path = tmp_path / "audit.json"
+    audit_path.write_text(
+        json.dumps([a.model_dump() for a in audits]), encoding="utf-8"
+    )
+    pdf_dir = tmp_path / "pdfs"
+    pdf_dir.mkdir()
+    dest_dir = tmp_path / "md"
+
+    async def fake_extract_document(
+        audit: DocumentAudit, pdf_dir: Path, settings: object
+    ) -> ExtractionResult:
+        return ExtractionResult(
+            filename=audit.filename,
+            slug=Path(audit.filename).stem,
+            method="docling",
+            markdown=f"# {audit.filename}",
+        )
+
+    original_write_markdown = mod.write_markdown
+
+    def fake_write_markdown(result: ExtractionResult, dest_dir_arg: Path) -> Path:
+        if result.filename == "B.pdf":
+            raise OSError("disque plein")
+        return original_write_markdown(result, dest_dir_arg)
+
+    monkeypatch.setattr(mod, "extract_document", fake_extract_document)
+    monkeypatch.setattr(mod, "load_settings", lambda: object())
+    monkeypatch.setattr(mod, "write_markdown", fake_write_markdown)
+
+    resultats = await extract_all(pdf_dir, audit_path, dest_dir)
+
+    par_nom = {r.filename: r for r in resultats}
+    assert len(resultats) == 3
+    assert par_nom["A.pdf"].succeeded
+    assert par_nom["C.pdf"].succeeded
+    assert not par_nom["B.pdf"].succeeded
+    assert "disque plein" in (par_nom["B.pdf"].error or "")
+    assert (dest_dir / "A.md").exists()
+    assert (dest_dir / "C.md").exists()
+    assert not (dest_dir / "B.md").exists()

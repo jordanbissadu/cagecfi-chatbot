@@ -10,6 +10,7 @@ rendre chaque page en JPEG via pypdfium2 (echelle 2, qualite 85) la fait
 tomber a 0,3-0,4 Mo, acceptee en 200 en 3-4 secondes par page.
 """
 
+import asyncio
 import base64
 import io
 import logging
@@ -101,12 +102,18 @@ def render_pages_to_jpeg(path: Path) -> list[bytes]:
     try:
         images: list[bytes] = []
         for page in document:
-            bitmap = page.render(scale=_PDFIUM_RENDER_SCALE)
-            buffer = io.BytesIO()
-            bitmap.to_pil().convert("RGB").save(
-                buffer, format="JPEG", quality=_PDFIUM_JPEG_QUALITY
-            )
-            images.append(buffer.getvalue())
+            try:
+                bitmap = page.render(scale=_PDFIUM_RENDER_SCALE)
+                try:
+                    buffer = io.BytesIO()
+                    bitmap.to_pil().convert("RGB").save(
+                        buffer, format="JPEG", quality=_PDFIUM_JPEG_QUALITY
+                    )
+                    images.append(buffer.getvalue())
+                finally:
+                    bitmap.close()
+            finally:
+                page.close()
         return images
     finally:
         document.close()
@@ -240,7 +247,8 @@ async def ocr_pdf(path: Path, settings: SupabaseSettings) -> OcrResult:
             logger.info(
                 "ocr_repli_images fichier=%s taille=%d", path.name, len(pdf_bytes)
             )
-            for index, jpeg_bytes in enumerate(render_pages_to_jpeg(path)):
+            jpeg_pages = await asyncio.to_thread(render_pages_to_jpeg, path)
+            for index, jpeg_bytes in enumerate(jpeg_pages):
                 data = await _send_ocr_request(client, settings, _image_payload(jpeg_bytes, settings))
                 pages.extend(_pages_from_response(data, index_offset=index))
 

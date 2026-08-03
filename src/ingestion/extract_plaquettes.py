@@ -168,7 +168,9 @@ async def extract_all(
         dest_dir: Repertoire de sortie des markdown.
 
     Returns:
-        Liste des resultats, succes comme echecs.
+        Liste des resultats, succes comme echecs. Une erreur d'ecriture disque
+        sur un document est capturee et marque ce document en echec plutot
+        que d'interrompre le traitement des documents suivants.
     """
     audits = [DocumentAudit(**row) for row in json.loads(audit_path.read_text(encoding="utf-8"))]
     retenus = [a for a in audits if a.is_retained]
@@ -178,7 +180,11 @@ async def extract_all(
     for audit in retenus:
         result = await extract_document(audit, pdf_dir, settings)
         if result.succeeded:
-            write_markdown(result, dest_dir)
+            try:
+                write_markdown(result, dest_dir)
+            except OSError as exc:
+                logger.exception("ecriture_echouee fichier=%s", result.filename)
+                result.error = str(exc)
         resultats.append(result)
 
     echecs = [r for r in resultats if not r.succeeded]
