@@ -47,6 +47,36 @@ def read_plaquette_markdown(path: Path) -> tuple[str, Dict[str, Any]]:
 
 logger = logging.getLogger(__name__)
 
+# Longueur minimale (en caracteres) pour qu'un chunk soit conserve avant
+# generation des embeddings. Mesure sur le corpus plaquettes : dans un chunk
+# de 33 caracteres, le mot "CAGECFI" pese assez pour battre en recherche
+# vectorielle un paragraphe pertinent plus long ("QUI SOMMES-NOUS ? ...
+# creee en 2001 ... Lome"). Defense en profondeur : le nettoyage du markdown
+# a l'extraction (extract_plaquettes.clean_markdown_images) retire deja la
+# plupart de ces fragments, mais un titre isole peut encore en produire un.
+MIN_CHUNK_LENGTH = 100
+
+
+def filter_short_chunks(
+    chunks: List[DocumentChunk], min_length: int = MIN_CHUNK_LENGTH
+) -> List[DocumentChunk]:
+    """Ecarte les chunks dont le contenu est plus court que min_length.
+
+    Appele apres le decoupage et avant la generation des embeddings : un
+    chunk trop court (titre isole, fragment residuel) n'apporte pas de
+    contexte exploitable et peut dominer une recherche vectorielle face a un
+    chunk plus long et pertinent.
+
+    Args:
+        chunks: Chunks issus du decoupage.
+        min_length: Longueur minimale en caracteres pour etre conserve.
+
+    Returns:
+        Les chunks dont le contenu atteint min_length, dans leur ordre
+        d'origine.
+    """
+    return [chunk for chunk in chunks if len(chunk.content) >= min_length]
+
 
 @dataclass
 class IngestionConfig:
@@ -503,6 +533,16 @@ class DocumentIngestionPipeline:
                 )
 
             logger.info(f"Created {len(chunks)} chunks")
+
+            # Ecarte les chunks trop courts (titre isole, fragment residuel)
+            # avant de depenser des appels d'embedding sur du bruit.
+            chunks_conserves = filter_short_chunks(chunks)
+            nombre_ecartes = len(chunks) - len(chunks_conserves)
+            logger.info(
+                f"document={title} chunks_ecartes={nombre_ecartes} "
+                f"chunks_conserves={len(chunks_conserves)}"
+            )
+            chunks = chunks_conserves
 
             # Generate embeddings for chunks
             chunks_with_embeddings = await self._embed_chunks(chunks)

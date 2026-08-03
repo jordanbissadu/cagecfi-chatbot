@@ -7,6 +7,7 @@ import pytest
 
 from src.ingestion.extract_plaquettes import (
     ExtractionResult,
+    clean_markdown_images,
     extract_all,
     route_extraction_method,
     write_markdown,
@@ -35,6 +36,59 @@ def test_write_markdown_includes_front_matter(tmp_path: Path) -> None:
     assert charge["extraction"] == "mistral_ocr"
     assert charge["image_ratio"] == 0.75
     assert "Gestion de la clientele" in charge.content
+
+
+@pytest.mark.unit
+def test_clean_markdown_images_removes_refs_and_comments_keeps_text() -> None:
+    """Les references d'images disparaissent, le texte utile est intact.
+
+    Couvre les deux voies d'extraction : `![img-0.jpeg](img-0.jpeg)`
+    (Mistral OCR) et `<!-- image -->` (Docling).
+    """
+    brut = (
+        "# CAGECFI\n\n"
+        "![img-0.jpeg](img-0.jpeg)\n\n"
+        "QUI SOMMES-NOUS ?\n\n"
+        "CAGECFI est une societe creee en 2001 a Lomé.\n\n"
+        "<!-- image -->\n\n"
+        "![img-1.jpeg](img-1.jpeg)\n\n"
+        "À PROPOS\n"
+    )
+
+    propre = clean_markdown_images(brut)
+
+    assert "img-0.jpeg" not in propre
+    assert "img-1.jpeg" not in propre
+    assert "<!-- image -->" not in propre
+    assert "![" not in propre
+    assert "CAGECFI est une societe creee en 2001 a Lomé." in propre
+    assert "QUI SOMMES-NOUS ?" in propre
+    assert "À PROPOS" in propre
+    assert "\n\n\n" not in propre
+
+
+@pytest.mark.unit
+def test_write_markdown_strips_image_references_from_disk_content(
+    tmp_path: Path,
+) -> None:
+    """Le fichier ecrit sur disque ne porte plus de references d'images."""
+    import frontmatter
+
+    result = ExtractionResult(
+        filename="CAGECFI.pdf",
+        slug="CAGECFI",
+        method="mistral_ocr",
+        markdown="# CAGECFI\n\n![img-0.jpeg](img-0.jpeg)\n\nQUI SOMMES-NOUS ?\n",
+        image_ratio=1.0,
+    )
+
+    chemin = write_markdown(result, tmp_path)
+    charge = frontmatter.loads(chemin.read_text(encoding="utf-8"))
+
+    assert "img-0.jpeg" not in charge.content
+    assert "QUI SOMMES-NOUS ?" in charge.content
+    # image_ratio reste celui calcule sur le markdown brut, pas recalcule.
+    assert charge["image_ratio"] == 1.0
 
 
 @pytest.mark.unit

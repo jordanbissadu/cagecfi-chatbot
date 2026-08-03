@@ -14,6 +14,7 @@ vectorisation.
 import asyncio
 import json
 import logging
+import re
 from datetime import date
 from pathlib import Path
 from typing import Literal, Optional
@@ -28,6 +29,45 @@ from src.settings_supabase import SupabaseSettings, load_settings
 logger = logging.getLogger(__name__)
 
 ExtractionMethod = Literal["docling", "mistral_ocr"]
+
+# Reference markdown d'une image : `![img-0.jpeg](img-0.jpeg)` (voie Mistral
+# OCR). Ni le texte alternatif ni la cible ne sont exploitables en recherche :
+# l'image elle-meme n'est stockee nulle part.
+_MARKDOWN_IMAGE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
+
+# Commentaire HTML laisse par Docling a la place d'une image non transcrite.
+_IMAGE_COMMENT = re.compile(r"<!--\s*image\s*-->", re.IGNORECASE)
+
+# Trois retours a la ligne ou plus laisses par les suppressions ci-dessus :
+# compactes en un seul paragraphe vide, comme dans mistral_ocr.clean_artifacts.
+_BLANK_LINES = re.compile(r"\n{3,}")
+
+
+def clean_markdown_images(markdown: str) -> str:
+    """Supprime les references d'images du markdown, avant ecriture disque.
+
+    Les images ne sont stockees nulle part : ni les references markdown
+    `![alt](src)` (voie Mistral OCR), ni les commentaires `<!-- image -->`
+    (voie Docling) n'apportent quoi que ce soit a la recherche. Pire, elles
+    produisent des chunks parasites au decoupage (ex. un chunk reduit a
+    `img-0.jpeg`) qui polluent l'index vectoriel.
+
+    Important : cette fonction n'est appliquee qu'au moment de l'ecriture
+    (`write_markdown`), *apres* que `image_ratio` a ete calcule sur le
+    markdown brut par `mistral_ocr.ocr_pdf`. Ce ratio doit continuer a
+    refleter les references d'images non transcrites sur le document
+    d'origine, car il pilote la priorite de relecture humaine.
+
+    Args:
+        markdown: Markdown brut, tel qu'issu de l'extraction.
+
+    Returns:
+        Markdown sans references d'images ni commentaires, lignes vides
+        superflues compactees.
+    """
+    sans_images = _MARKDOWN_IMAGE.sub("", markdown)
+    sans_commentaires = _IMAGE_COMMENT.sub("", sans_images)
+    return _BLANK_LINES.sub("\n\n", sans_commentaires).strip()
 
 
 def route_extraction_method(kind: DocumentKind) -> ExtractionMethod:
@@ -131,6 +171,10 @@ async def extract_document(
 def write_markdown(result: ExtractionResult, dest_dir: Path) -> Path:
     """Ecrit le markdown avec son front-matter de provenance.
 
+    Le markdown est debarrasse de ses references d'images (`clean_markdown_
+    images`) avant ecriture. `result.image_ratio`, deja calcule sur le
+    markdown brut, n'est pas affecte par ce nettoyage.
+
     Args:
         result: Resultat d'extraction reussi.
         dest_dir: Repertoire de destination.
@@ -146,7 +190,7 @@ def write_markdown(result: ExtractionResult, dest_dir: Path) -> Path:
 
     dest_dir.mkdir(parents=True, exist_ok=True)
     post = frontmatter.Post(
-        result.markdown,
+        clean_markdown_images(result.markdown),
         source_file=result.filename,
         extraction=result.method,
         image_ratio=round(result.image_ratio, 2),
