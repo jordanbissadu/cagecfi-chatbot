@@ -1,14 +1,9 @@
-# =========================================
-# Dépendances pour le déploiement Vercel (fonction serverless /chat).
-# VOLONTAIREMENT MINIMAL : pas de docling / torch / whisper / streamlit
-# (ceux-ci ne servent qu'à l'ingestion locale et feraient exploser la
-# taille de la fonction serverless, limitée à 250 Mo).
-#
-# Pour le développement local complet, utiliser pyproject.toml :
-#   uv pip install -e .
-# =========================================
-
+# Dépendances RUNTIME de l'API /chat déployée en serverless sur Vercel.
+# DOIT rester slim (< 500 Mo bundle) : miroir de [project].dependencies de pyproject.toml.
+# Les outils lourds (Docling, Whisper, transformers, torch, Streamlit) sont en extras
+# et ne doivent JAMAIS être installés sur Vercel.
 fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
 pydantic>=2.10.0
 pydantic-settings>=2.7.0
 pydantic-ai==1.36.0

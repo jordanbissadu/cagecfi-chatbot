@@ -1,10 +1,10 @@
 # Chatbot Support Client CAGECFI
 
 Assistant conversationnel (RAG) pour le support client de **CAGECFI** ([www.cagecfi.com](https://www.cagecfi.com)).
-Il répond aux questions des visiteurs sur les services et produits de l'agence (logiciel **Perfect Vision**, solutions de finance digitale, solutions étatiques, formations, etc.) en s'appuyant **uniquement** sur une base de connaissances documentée — pas d'invention.
+Sur toute question **concernant CAGECFI** (produits, services, tarifs, coordonnées…), il répond **uniquement** à partir d'une base de connaissances documentée — jamais d'invention. Pour une question **hors périmètre CAGECFI** (culture générale, définitions…), il répond intelligemment avec les connaissances du modèle, sans jamais inventer un fait spécifique à CAGECFI.
 
-> Objectif final : embarquer cet agent comme **chatbot sur le site cagecfi.com**.
-> Phase actuelle : **POC en local** (interfaces CLI et Web Streamlit). L'API web + widget embarquable est la prochaine étape (voir [Feuille de route](#-feuille-de-route)).
+> **Statut : déployé en production sur Vercel** (serverless), avec un widget de chat sur la landing page.
+> Le développement en local reste possible (CLI, Streamlit, API) — voir [Lancement pas-à-pas](#-lancement-pas-à-pas).
 
 ---
 
@@ -12,33 +12,40 @@ Il répond aux questions des visiteurs sur les services et produits de l'agence 
 
 | Brique | Technologie |
 |---|---|
-| **Base vectorielle** | Supabase (PostgreSQL + `pgvector`, index HNSW 768-dim) |
-| **LLM** | Ollama **`qwen2.5:7b-instruct-q4_K_M`** (local, OpenAI-compatible, supporte le function calling) |
-| **Embeddings** | Ollama **`nomic-embed-text:v1.5`** (768 dimensions) |
-| **Recherche** | Hybride — vectorielle + full-text français (fonction SQL `hybrid_search`) |
+| **Base vectorielle** | Supabase (PostgreSQL + `pgvector`, index HNSW **1536-dim**) |
+| **LLM** | **RodiumAI** `openai/gpt-4o-mini` (gateway compatible OpenAI) |
+| **Embeddings** | **RodiumAI** `openai/text-embedding-3-small` (**1536 dimensions**) |
+| **Recherche** | Hybride — vectorielle + full-text français (RRF en Python) |
 | **Agent** | Pydantic AI |
 | **Ingestion** | Docling (PDF, Word, PowerPoint, Excel, HTML, Markdown, Audio) |
-| **Interfaces** | CLI (Rich) + Web (Streamlit) |
+| **Interfaces** | Widget web (landing) + CLI (Rich) + Streamlit |
+| **Déploiement** | **Vercel** (serverless Python, `api/index.py`) |
 | **Gestion de paquets** | UV |
 
-Le code est **agnostique au fournisseur** (endpoint OpenAI-compatible) : un basculement futur vers une API cloud (Claude/OpenAI) ne demande que de changer le `.env`.
+Le code est **agnostique au fournisseur** : tout passe par une API compatible OpenAI
+(`LLM_BASE_URL` / `EMBEDDING_BASE_URL`). Basculer vers **OpenAI, RodiumAI, Ollama
+(local), OpenRouter…** ne demande que de changer le `.env` — à condition de ré-ingérer
+si la **dimension des embeddings** change (voir [Dépannage](#-dépannage)).
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-Documents (site cagecfi.com + FAQ rédigée)
+Documents (site cagecfi.com + FAQ + plaquettes)
         │
         ▼
- Ingestion (Docling + Ollama embeddings)
+ Ingestion (Docling + embeddings text-embedding-3-small, 1536)
         │
         ▼
- Supabase (pgvector)  ◀── recherche hybride ──┐
-                                              │
-Utilisateur ──▶ CLI / Streamlit ──▶ Agent Pydantic AI (qwen2.5:7b-instruct-q4_K_M)
-                                              │
-                                              └──▶ réponse ancrée sur la base
+ Supabase (pgvector)  ◀── recherche hybride (RRF) ──┐
+                                                    │
+Visiteur ──▶ Widget web / CLI / Streamlit ──▶ rag_chat + Pydantic AI
+   (Vercel serverless FastAPI)                 (RodiumAI · gpt-4o-mini)
+                                                    │
+       ┌────────────────────────────────────────────┘
+       ├─▶ question CAGECFI  → réponse ANCRÉE sur la base
+       └─▶ question générale → connaissances du modèle (sans inventer de fait CAGECFI)
 ```
 
 ---
@@ -47,11 +54,15 @@ Utilisateur ──▶ CLI / Streamlit ──▶ Agent Pydantic AI (qwen2.5:7b-in
 
 - **Python 3.10+**
 - **UV** (gestionnaire de paquets) — voir étape 1
-- **Ollama** installé localement — [ollama.com](https://ollama.com)
 - Un compte **Supabase** gratuit — [supabase.com](https://supabase.com)
-- ~6 Go de RAM libres pour `qwen2.5:7b-instruct-q4_K_M` (~4,7 Go ; un GPU accélère mais n'est pas obligatoire)
+- Un fournisseur LLM/embeddings compatible OpenAI — **RodiumAI** ([rodiumai.io](https://www.rodiumai.io)) par défaut
+- *(Optionnel)* **Ollama** — [ollama.com](https://ollama.com) — uniquement pour la voie 100 % locale/gratuite
 
-> ⚠️ Le modèle LLM **doit supporter le function calling** (l'agent appelle un outil de recherche). `qwen2.5:7b-instruct-q4_K_M`, `llama3.2:3b`, `llama3.1:8b`, `gemma4:e4b` conviennent — **`gemma3:4b` ne supporte pas les tools**. Sur CPU, privilégiez un modèle léger (`qwen2.5:7b-instruct-q4_K_M` ou `llama3.2:3b`) pour des réponses rapides.
+> ℹ️ L'API `/chat` (widget web) utilise une **recherche forcée** (`src/rag_chat.py`) :
+> elle interroge toujours la base puis rédige en une seule passe — **aucun function
+> calling requis**, donc n'importe quel modèle convient. Les interfaces CLI/Streamlit,
+> elles, passent par l'agent à outils (`src/agent_supabase.py`) et requièrent un
+> modèle qui supporte les *tools* (ex. `gpt-4o-mini`, `qwen2.5:7b` ; pas `gemma3:4b`).
 
 ---
 
@@ -75,12 +86,23 @@ uv venv
 .venv\Scripts\activate          # Windows
 # source .venv/bin/activate     # macOS / Linux
 
-uv pip install -r requirements_supabase.txt
+# Runtime seul (API /chat) :
+uv pip install -e .
+
+# Avec l'ingestion locale (Docling, OCR) et les interfaces CLI / Streamlit :
+uv pip install -e ".[ingestion,ui]"
 ```
+
+> Les dépendances sont déclarées dans `pyproject.toml`. Les briques lourdes
+> (Docling, Whisper, Streamlit) sont des **extras optionnels** : elles ne servent
+> qu'en local et alourdiraient le build serverless.
 
 > 🪟 **Windows** : la console (cp1252) ne sait pas afficher les emojis des scripts. Préfixez vos commandes par `$env:PYTHONUTF8='1';` (déjà intégré dans les exemples ci-dessous) pour éviter les `UnicodeEncodeError`.
 
-### Étape 3 — Installer Ollama et télécharger les modèles
+### Étape 3 — (Optionnel, voie locale) Installer Ollama
+
+> À faire **uniquement** si tu choisis la voie 100 % locale au lieu de RodiumAI
+> (étape 5). Avec RodiumAI (config par défaut), **saute cette étape**.
 
 1. Installer Ollama depuis [ollama.com](https://ollama.com), puis démarrer le service :
    ```powershell
@@ -125,16 +147,30 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
 DATABASE_URL=postgresql://postgres.[ref]:VOTRE-MOT-DE-PASSE@aws-0-...pooler.supabase.com:6543/postgres
 ```
 
-La partie Ollama et les tables dédiées sont déjà configurées (à ne pas changer pour un usage local) :
+Configurer le fournisseur LLM/embeddings. **Config actuelle (prod) : RodiumAI**, un
+gateway compatible OpenAI. Crée une clé sur [rodiumai.io/dashboard/api-keys](https://www.rodiumai.io/dashboard/api-keys)
+(et autorise le modèle d'embedding `openai/text-embedding-3-small`) :
 
 ```bash
-LLM_PROVIDER=ollama
-LLM_MODEL=qwen2.5:7b-instruct-q4_K_M
-EMBEDDING_MODEL=nomic-embed-text:v1.5
-EMBEDDING_DIMENSION=768
+LLM_PROVIDER=openai
+LLM_API_KEY=rd_sk_...            # ta clé RodiumAI
+LLM_MODEL=openai/gpt-4o-mini
+LLM_BASE_URL=https://api.rodiumai.io/v1
+
+EMBEDDING_PROVIDER=openai
+EMBEDDING_API_KEY=rd_sk_...      # même clé
+EMBEDDING_MODEL=openai/text-embedding-3-small
+EMBEDDING_BASE_URL=https://api.rodiumai.io/v1
+EMBEDDING_DIMENSION=1536         # DOIT correspondre à vector(N) en base
+
 POSTGRES_TABLE_DOCUMENTS=cagecfi_documents
 POSTGRES_TABLE_CHUNKS=cagecfi_chunks
 ```
+
+> 💡 **Alternative 100 % locale et gratuite : Ollama.** Mets plutôt
+> `LLM_BASE_URL=http://localhost:11434/v1`, `LLM_MODEL=qwen2.5:7b-instruct-q4_K_M`,
+> `EMBEDDING_MODEL=nomic-embed-text:v1.5`, `EMBEDDING_DIMENSION=768` (⚠️ 768 ≠ 1536 :
+> recrée la table `cagecfi_chunks` en `vector(768)` puis ré-ingère). Voir l'étape 3.
 
 ### Étape 6 — Vérifier la base
 
@@ -196,7 +232,8 @@ Puis posez quelques questions de référence (CLI ou Web) pour valider les répo
 | « Comment demander un devis ? » | Via la page « Demander un devis » du site ou par email à cagecfi@cagecfi.com. |
 | « Comment contacter CAGECFI ? » | cagecfi@cagecfi.com, +228 22 26 84 61, Lomé (Togo). |
 | « Proposez-vous des formations ? » | Oui, via CAGECFI Academy. |
-| « Quelle est la capitale de la France ? » | L'agent doit répondre qu'il n'a pas cette information (hors périmètre). |
+| « Quelle est la capitale de la France ? » | **« Paris. »** — question hors périmètre : réponse via les connaissances générales du modèle. |
+| « Quel est le chiffre d'affaires exact de CAGECFI ? » | Décline sans inventer → renvoie au contact (garde-fou anti-hallucination). |
 
 Bon réflexe : si une réponse est fausse ou « je n'ai pas trouvé » alors que l'info existe, enrichissez la FAQ ([`documents/cagecfi-faq.md`](documents/cagecfi-faq.md)) puis relancez l'ingestion (étape 8).
 
@@ -224,9 +261,43 @@ Puis ouvrez **http://localhost:8000**. La page se charge et le **widget de chat 
 
 > Aperçu visuel **sans** chat : `uv run python -m http.server 8080 --directory frontend` (le chat affichera alors le message de repli, car l'API n'est pas servie sur ce port).
 
-### Embarquer sur cagecfi.com (plus tard)
+---
 
-Pour héberger l'API ailleurs que la page, modifiez la constante `CHAT_API_URL` dans [`frontend/index.html`](frontend/index.html) (repère `// TODO`) pour pointer vers l'URL publique de l'endpoint `/chat`. Le CORS est déjà activé côté API.
+## ☁️ Déploiement sur Vercel
+
+Le projet est déployé en **serverless Python** sur Vercel : `api/index.py` expose
+l'app FastAPI, `vercel.json` route tout vers elle et sert la landing page.
+
+### Contrainte critique : taille du bundle < 500 Mo
+Vercel installe les dépendances au build. Les briques lourdes (Docling, Whisper,
+transformers, torch, Streamlit) **feraient exploser la limite de 500 Mo**. Deux
+fichiers garantissent un build slim :
+- [`requirements.txt`](requirements.txt) — **uniquement** les deps runtime de l'API
+  (miroir de `[project].dependencies`). Ne jamais y ajouter les extras.
+- [`.vercelignore`](.vercelignore) — exclut `uv.lock` (qui embarque les extras),
+  `documents/`, `tests/`, `.venv`… pour forcer une install minimale.
+
+### Variables d'environnement (dashboard Vercel → Settings → Environment Variables)
+Reprendre **toutes** les clés du `.env` (elles ne sont jamais commitées) :
+`SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `DATABASE_URL`,
+`POSTGRES_TABLE_*`, et le bloc **RodiumAI** (`LLM_*`, `EMBEDDING_*`).
+
+### Déployer
+- **Via Git** : connecter le dépôt à **un seul** projet Vercel dont la *Production
+  Branch* est `feat/ingestion-plaquettes-cagecfi` → chaque push redéploie.
+- **Via CLI** (déploiement manuel de l'état local) :
+  ```powershell
+  npx vercel link          # lier au bon projet
+  npx vercel deploy --prod # build + mise en production
+  ```
+
+> ⚠️ Attention aux **projets Vercel multiples** : ne garder qu'un projet relié au
+> dépôt pour éviter que l'URL de prod pointe vers un projet non synchronisé.
+
+### Embarquer le widget sur un autre domaine (cagecfi.com)
+Si la page est hébergée ailleurs que l'API, modifier `CHAT_API_URL` dans
+[`frontend/index.html`](frontend/index.html) (repère `// TODO`) vers l'URL publique
+de `/chat`. Le CORS est déjà activé côté API.
 
 ---
 
@@ -272,9 +343,12 @@ uv run python -m http.server 8080 --directory frontend
 | `does not support tools` (erreur 400) | Le modèle LLM ne gère pas le function calling. Utiliser `qwen2.5:7b-instruct-q4_K_M`, `llama3.2:3b` ou `llama3.1:8b` (pas `gemma3:4b`). |
 | `UnicodeEncodeError` sous Windows | Préfixer la commande par `$env:PYTHONUTF8='1';`. |
 | `prepared statement does not exist` / erreur pgbouncer | Déjà géré dans le code (`statement_cache_size=0`). Vérifier que `DATABASE_URL` pointe bien vers le pooler Supabase. |
-| Dimensions d'embedding incompatibles | `nomic-embed-text:v1.5` = **768**. Si vous changez de modèle d'embedding, recréez la table `cagecfi_chunks` avec la bonne dimension et réingérez. |
+| Dimensions d'embedding incompatibles | La table est en `vector(1536)` (= `text-embedding-3-small`). Changer de modèle d'embedding de dimension différente impose `DROP TABLE cagecfi_chunks CASCADE`, recréer le schéma, puis **ré-ingérer**. |
+| `model_not_allowed` (403 RodiumAI) | La clé n'est pas autorisée pour ce modèle. Dans le dashboard RodiumAI, autoriser `openai/gpt-4o-mini` **et** `openai/text-embedding-3-small` pour la clé. |
+| `billing_not_active` / `account is not active` (429) | Le compte du fournisseur (OpenAI/RodiumAI) n'a pas de facturation active ou de crédits. Recharger le wallet / activer la facturation. |
+| La prod ne reflète pas mes changements | Vérifier que le déploiement vise **le bon projet Vercel** (plusieurs projets peuvent coexister) et que le build a réussi (bundle < 500 Mo). |
+| `bundle size exceeds 500 MB` (build Vercel) | Une dep lourde a fui dans le runtime. Vérifier que `requirements.txt` reste slim et que `.vercelignore` exclut bien `uv.lock`. |
 | Le widget de chat répond « pas encore connecté » | Vous avez ouvert la page sans l'API. Lancez `uv run uvicorn src.api:app --port 8000` et ouvrez http://localhost:8000 (pas le port 8080 ni `file://`). |
-| Première réponse du chat très lente | Chargement initial du modèle `qwen2.5:7b-instruct-q4_K_M` en mémoire. Normal au démarrage à froid ; les réponses suivantes sont rapides. |
 
 ---
 
@@ -283,8 +357,8 @@ uv run python -m http.server 8080 --directory frontend
 ```
 MongoDB-RAG-Agent/
 ├── src/
-│   ├── settings_supabase.py        # Configuration (Supabase + Ollama)
-│   ├── providers_supabase.py       # Fournisseurs LLM / embeddings (Ollama)
+│   ├── settings_supabase.py        # Configuration (Supabase + LLM/embeddings via .env)
+│   ├── providers_supabase.py       # Fabrique le modèle LLM (API compatible OpenAI)
 │   ├── dependencies_supabase.py    # Connexion PostgreSQL + pgvector
 │   ├── tools_supabase.py           # Outils de recherche (semantic, text, hybrid)
 │   ├── agent_supabase.py           # Agent Pydantic AI (support CAGECFI)
@@ -296,19 +370,33 @@ MongoDB-RAG-Agent/
 │   └── ingestion/
 │       ├── chunker.py              # Découpage Docling HybridChunker
 │       ├── crawl_cagecfi.py        # Crawler du site cagecfi.com → Markdown
+│       ├── drive_source.py         # Téléchargement des plaquettes (Google Drive)
+│       ├── pdf_audit.py            # Audit d'extractibilité (TEXTE / MIXTE / IMAGE)
+│       ├── mistral_ocr.py          # OCR des plaquettes sans couche texte
+│       ├── extract_plaquettes.py   # Extraction routée → Markdown relisible
+│       ├── product_sheet.py        # Fiches produit structurées (LLM)
+│       ├── verify_ingestion.py     # Recette post-ingestion bloquante
 │       └── ingest_supabase.py      # Pipeline d'ingestion → PostgreSQL
+├── api/
+│   └── index.py                    # Point d'entrée serverless Vercel
 ├── documents/                      # Base de connaissances à ingérer
-│   ├── cagecfi-faq.md              # FAQ support (contacts, devis, formation…)
-│   ├── cagecfi-services.md         # Fiche produits/services
-│   └── cagecfi/                    # Pages du site crawlées (Markdown)
+│   ├── cagecfi/                    # Pages du site crawlées + FAQ (Markdown)
+│   ├── plaquettes/                 # PDF sources téléchargés (hors git)
+│   ├── plaquettes_md/              # Markdown extraits + fiches produit
+│   └── plaquettes_audit.json       # Rapport d'audit du corpus
 ├── frontend/
 │   └── index.html                  # Landing page CAGECFI + widget de chat
-├── tests/
-│   └── cagecfi-test-questions.md   # Jeu de 30 questions de test
+├── docs/
+│   ├── comprendre-le-projet.md     # Guide d'architecture de A à Z
+│   └── tests-chatbot-cagecfi.md    # Recette manuelle ancrée sur la base
+├── tests/                          # Tests pytest (chaîne d'ingestion)
 ├── supabase_setup_cagecfi.sql      # Schéma + index des tables cagecfi_*
 ├── apply_supabase_setup.py         # Crée / vérifie le schéma cagecfi_*
-├── .env.supabase.example           # Template de configuration
-└── requirements_supabase.txt       # Dépendances Python
+├── .env.supabase.example           # Template de configuration (.env)
+├── vercel.json                     # Routage serverless Vercel
+├── requirements.txt                # Deps RUNTIME slim pour le build Vercel (< 500 Mo)
+├── .vercelignore                   # Exclut uv.lock + dossiers lourds du déploiement
+└── pyproject.toml                  # Dépendances (runtime + extras) et packaging
 ```
 
 ---
@@ -321,8 +409,12 @@ MongoDB-RAG-Agent/
 - [x] **Front-end** : landing page CAGECFI + widget de chat (`frontend/index.html`)
 - [x] **API FastAPI** (`/chat`) connectant le widget à l'agent (`src/api.py`)
 - [x] **Recherche forcée + streaming** (réponses fiables, affichées mot à mot — `src/rag_chat.py`)
-- [ ] Nettoyage du dépôt (canonicalisation des fichiers `*_supabase.py`, retrait du legacy MongoDB)
-- [ ] Hébergement de production (serveur/VPS avec Ollama, ou bascule API cloud)
+- [x] **Retrait du legacy MongoDB** (`examples/`, `test_scripts/`, doublons de dépendances)
+- [x] **Bascule fournisseur cloud** : RodiumAI (`openai/gpt-4o-mini` + `openai/text-embedding-3-small`, 1536)
+- [x] **Déploiement production sur Vercel** (serverless, bundle slim)
+- [x] **Réponses générales** hors périmètre CAGECFI (garde-fou anti-hallucination conservé)
+- [ ] Canonicalisation des noms de fichiers `*_supabase.py` → `*.py`
+- [ ] Consolidation des projets Vercel + auto-déploiement Git
 
 ---
 
