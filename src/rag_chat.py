@@ -11,32 +11,48 @@ from typing import Optional
 from pydantic_ai import Agent
 
 from src.dependencies_supabase import AgentDependencies
-from src.prompts import RAG_ANSWER_PROMPT
+from src.prompts import GENERAL_ANSWER_PROMPT, RAG_ANSWER_PROMPT
 from src.providers_supabase import get_llm_model
 from src.settings_supabase import load_settings
 from src.tools_supabase import hybrid_search
 
-# Agent construit paresseusement (au 1er appel) et non à l'import : ainsi
+# Agents construits paresseusement (au 1er appel) et non à l'import : ainsi
 # importer ce module n'a aucun effet de bord et ne requiert pas les variables
 # d'environnement (essentiel pour le build serverless Vercel).
+#   - _answer_agent  : rédige à partir du CONTEXTE trouvé en base (ancré, anti-hallucination)
+#   - _general_agent : répond aux questions hors périmètre CAGECFI (connaissances générales)
 _answer_agent: Optional[Agent] = None
+_general_agent: Optional[Agent] = None
+
+
+def _make_agent(system_prompt: str) -> Agent:
+    """Fabrique un agent de rédaction avec le prompt système donné."""
+    settings = load_settings()
+    return Agent(
+        get_llm_model(),
+        system_prompt=system_prompt,
+        model_settings={
+            "temperature": settings.llm_temperature,
+            "top_p": settings.llm_top_p,
+            "max_tokens": settings.llm_max_tokens,
+        },
+    )
 
 
 def _get_agent() -> Agent:
-    """Construit (une seule fois) puis renvoie l'agent de rédaction."""
+    """Agent ancré sur le CONTEXTE (questions CAGECFI)."""
     global _answer_agent
     if _answer_agent is None:
-        settings = load_settings()
-        _answer_agent = Agent(
-            get_llm_model(),
-            system_prompt=RAG_ANSWER_PROMPT,
-            model_settings={
-                "temperature": settings.llm_temperature,
-                "top_p": settings.llm_top_p,
-                "max_tokens": settings.llm_max_tokens,
-            },
-        )
+        _answer_agent = _make_agent(RAG_ANSWER_PROMPT)
     return _answer_agent
+
+
+def _get_general_agent() -> Agent:
+    """Agent « connaissances générales » (questions hors périmètre CAGECFI)."""
+    global _general_agent
+    if _general_agent is None:
+        _general_agent = _make_agent(GENERAL_ANSWER_PROMPT)
+    return _general_agent
 
 _GREETING = re.compile(r"^\s*(bonjour|bonsoir|salut|hello|hi|coucou|hey)\b", re.IGNORECASE)
 _THANKS = re.compile(r"^\s*(merci|thanks|thank you|d'accord|parfait|super)\b", re.IGNORECASE)
@@ -97,7 +113,9 @@ async def answer(message: str) -> str:
         return social
     prompt = await _build_prompt(msg)
     if prompt is None:
-        return _NO_INFO
+        # Hors périmètre CAGECFI : on répond avec les connaissances générales du modèle.
+        result = await _get_general_agent().run(msg)
+        return str(result.output)
     result = await _get_agent().run(prompt)
     return str(result.output)
 
@@ -114,7 +132,10 @@ async def answer_stream(message: str):
         return
     prompt = await _build_prompt(msg)
     if prompt is None:
-        yield _NO_INFO
+        # Hors périmètre CAGECFI : réponse en connaissances générales (streamée).
+        async with _get_general_agent().run_stream(msg) as result:
+            async for delta in result.stream_text(delta=True):
+                yield delta
         return
     async with _get_agent().run_stream(prompt) as result:
         async for delta in result.stream_text(delta=True):

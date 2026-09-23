@@ -1,8 +1,19 @@
-# MongoDB RAG Agent Development Instructions
+# CAGECFI Chatbot — Development Instructions
 
 ## Project Overview
 
-Agentic RAG system combining MongoDB Atlas Vector Search with Pydantic AI for intelligent document retrieval. Uses Docling for multi-format ingestion, Motor for async MongoDB operations, and hybrid search via `$rankFusion`. Built with UV, type-safe Pydantic models, and conversational CLI.
+Chatbot RAG de support client pour **CAGECFI** (ingénierie informatique, Lomé — produit
+phare *Perfect-Vision*). Il répond aux visiteurs **uniquement** à partir d'une base
+documentaire maison : plaquettes commerciales, pages du site, FAQ. Jamais d'invention.
+
+Stack : **Supabase (PostgreSQL + pgvector)** pour le stockage et la recherche,
+**Pydantic AI** pour l'agent, **Docling** pour l'ingestion multi-format,
+**FastAPI** pour l'API, déployé en **serverless sur Vercel**. Géré avec **UV**.
+
+> ⚠️ Le dépôt s'appelle `MongoDB-RAG-Agent` pour des raisons historiques.
+> **Il n'y a plus aucune trace de MongoDB** : le legacy (`examples/`, `test_scripts/`)
+> a été supprimé. La recherche hybride est faite par un RRF codé en Python,
+> pas par `$rankFusion`.
 
 ## Core Principles
 
@@ -14,33 +25,54 @@ Agentic RAG system combining MongoDB Atlas Vector Search with Pydantic AI for in
 2. **KISS** (Keep It Simple, Stupid)
    - Prefer simple, readable solutions over clever abstractions
    - Don't build fallback mechanisms unless absolutely necessary
-   - Trust MongoDB `$rankFusion` - no manual score combination
 
 3. **YAGNI** (You Aren't Gonna Need It)
    - Don't build features until they're actually needed
    - MVP first, enhancements later
 
 4. **ASYNC ALL THE WAY**
-   - All I/O operations MUST be async (MongoDB, embeddings, LLM calls)
-   - Use `asyncio` for concurrent operations
+   - All I/O operations MUST be async (PostgreSQL, embeddings, LLM calls)
+   - Use `asyncio.gather` for concurrent operations (ex. semantic + text search)
    - Proper cleanup with `try/finally` or context managers
+
+5. **ANTI-HALLUCINATION SUR LES FAITS CAGECFI**
+   - Toute réponse **portant sur CAGECFI** (produits, tarifs, coordonnées, chiffres…)
+     doit être ancrée sur un passage réellement retrouvé en base (`RAG_ANSWER_PROMPT`)
+   - Zéro résultat (question **hors périmètre CAGECFI**) → le bot répond avec les
+     connaissances générales du modèle via `GENERAL_ANSWER_PROMPT`, qui **interdit
+     formellement d'inventer un fait spécifique à CAGECFI** (garde-fou conservé)
+   - Ne jamais relâcher les garde-fous de `src/prompts.py` sans raison explicite
 
 **Architecture:**
 
 ```
-examples/
-├── agent.py           # Pydantic AI agent with StateDeps
-├── cli.py             # Rich-based conversational CLI
-├── dependencies.py    # MongoDB client, OpenAI client injection
-├── providers.py       # LLM/embedding provider configs
-├── settings.py        # Pydantic Settings (env variables)
-├── tools.py           # Search tools (semantic, hybrid)
-├── prompts.py         # System prompts
+src/
+├── settings_supabase.py       # Pydantic Settings (variables .env)
+├── providers_supabase.py      # Fabrique le modèle LLM (API compatible OpenAI)
+├── dependencies_supabase.py   # Pool asyncpg + client embeddings
+├── prompts.py                 # System prompts (règles métier, en français)
+├── tools_supabase.py          # Recherches semantic / text / hybrid + RRF
+├── agent_supabase.py          # Agent Pydantic AI et ses outils (CLI, Streamlit)
+├── rag_chat.py                # Mode « recherche forcée » (utilisé par l'API)
+├── api.py                     # FastAPI : /, /chat, /health
+├── cli_supabase.py            # Interface terminal (Rich)
+├── streamlit_app_supabase.py  # Interface web locale
 └── ingestion/
-    ├── chunker.py     # Docling HybridChunker wrapper
-    ├── embedder.py    # Batch embedding generation
-    └── ingest.py      # Multi-format document pipeline
+    ├── drive_source.py        # Téléchargement des plaquettes (Google Drive)
+    ├── pdf_audit.py           # Classification TEXTE / MIXTE / IMAGE, dédoublonnage
+    ├── mistral_ocr.py         # OCR des documents sans couche texte
+    ├── extract_plaquettes.py  # Extraction routée → Markdown versionnable
+    ├── product_sheet.py       # Fiches produit structurées (LLM)
+    ├── chunker.py             # Wrapper Docling HybridChunker
+    ├── ingest_supabase.py     # Pipeline d'ingestion → PostgreSQL
+    ├── verify_ingestion.py    # Recette post-ingestion bloquante
+    └── crawl_cagecfi.py       # Crawler du site cagecfi.com
+
+api/index.py                   # Point d'entrée serverless Vercel (expose `app`)
+frontend/index.html            # Landing page de démo + widget de chat
 ```
+
+Pour la vue d'ensemble détaillée : `docs/comprendre-le-projet.md`.
 
 ---
 
@@ -55,7 +87,7 @@ async def semantic_search(
     match_count: Optional[int] = None
 ) -> list[SearchResult]:
     """
-    Perform pure semantic search using vector similarity.
+    Perform pure semantic search using pgvector cosine similarity.
 
     Args:
         ctx: Agent runtime context with dependencies
@@ -66,10 +98,14 @@ async def semantic_search(
         List of search results ordered by similarity
 
     Raises:
-        ConnectionFailure: If MongoDB connection fails
+        asyncpg.PostgresError: If PostgreSQL operation fails
         ValueError: If match_count exceeds maximum allowed
     """
 ```
+
+Les modules d'ingestion documentent **la mesure qui a dicté la conception**, pas
+seulement le comportement (cf. l'en-tête de `pdf_audit.py` ou `mistral_ocr.py`).
+Garder cette habitude : c'est ce qui rend les choix de routage défendables.
 
 ---
 
@@ -77,37 +113,38 @@ async def semantic_search(
 
 **Setup environment:**
 ```bash
-# Install UV (if not installed)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Create virtual environment
 uv venv
-
-# Activate environment
-source .venv/bin/activate  # Unix
 .venv\Scripts\activate     # Windows
+# source .venv/bin/activate  # Unix
 
-# Install dependencies
-uv pip install -e .
+uv pip install -e .                    # runtime API seul
+uv pip install -e ".[ingestion,ui]"    # + ingestion locale et interfaces
+```
+
+Les extras comptent : Docling / Whisper / Streamlit ne doivent **jamais** entrer
+dans `[project].dependencies`, sinon le build serverless Vercel dépasse la limite
+de taille.
+
+**Créer / vérifier le schéma :**
+```bash
+uv run python apply_supabase_setup.py    # applique supabase_setup_cagecfi.sql
 ```
 
 **Run ingestion:**
 ```bash
-uv run python -m examples.ingestion.ingest -d ./documents
-
-# With options
-uv run python -m examples.ingestion.ingest -d ./documents --chunk-size 1000 --no-clean
+uv run python -m src.ingestion.ingest_supabase -d ./documents
+uv run python -m src.ingestion.verify_ingestion    # recette bloquante
 ```
 
-**Run CLI agent:**
+**Run interfaces:**
 ```bash
-uv run python -m examples.cli
+uv run python -m src.cli_supabase                       # CLI
+uv run streamlit run src/streamlit_app_supabase.py      # Streamlit
+uv run uvicorn src.api:app --reload --port 8000         # API + landing page
 ```
 
-**Common CLI commands:**
-- `info` - Show system configuration
-- `clear` - Clear screen
-- `exit` / `quit` / `q` - Exit agent
+> 🪟 Windows : préfixer par `$env:PYTHONUTF8='1';` pour éviter les
+> `UnicodeEncodeError` (la console cp1252 ne sait pas afficher les emojis).
 
 ---
 
@@ -115,50 +152,75 @@ uv run python -m examples.cli
 
 ### Environment Variables
 
-**ALL configuration in .env file:**
-```bash
-# MongoDB
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/
-MONGODB_DATABASE=rag_db
-MONGODB_COLLECTION_DOCUMENTS=documents
-MONGODB_COLLECTION_CHUNKS=chunks
-MONGODB_VECTOR_INDEX=vector_index
-MONGODB_TEXT_INDEX=text_index
+**ALL configuration in .env file** (jamais commité ; en production, ce sont les
+variables d'environnement du dashboard Vercel) :
 
-# LLM Provider
-LLM_PROVIDER=openrouter
-LLM_API_KEY=sk-or-v1-...
-LLM_MODEL=anthropic/claude-haiku-4.5
-LLM_BASE_URL=https://openrouter.ai/api/v1
+```bash
+# Supabase / PostgreSQL
+SUPABASE_URL=https://xxxx.supabase.co
+SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+DATABASE_URL=postgresql://...
+POSTGRES_TABLE_DOCUMENTS=cagecfi_documents
+POSTGRES_TABLE_CHUNKS=cagecfi_chunks
+
+# LLM Provider (API compatible OpenAI)
+LLM_PROVIDER=openai
+LLM_API_KEY=sk-...
+LLM_MODEL=gpt-4o-mini
+LLM_BASE_URL=https://api.openai.com/v1
+LLM_TEMPERATURE=0.1          # bas = déterministe = moins d'hallucinations
 
 # Embedding Provider
 EMBEDDING_PROVIDER=openai
-EMBEDDING_API_KEY=sk-...
 EMBEDDING_MODEL=text-embedding-3-small
-EMBEDDING_BASE_URL=https://api.openai.com/v1
+EMBEDDING_DIMENSION=1536     # DOIT correspondre à vector(N) en base
+
+# OCR (ingestion locale uniquement, jamais appelé depuis Vercel)
+MISTRAL_API_KEY=...
 ```
+
+Le code est **agnostique au fournisseur** : tout passe par une API compatible
+OpenAI. Basculer vers Ollama, OpenRouter ou Anthropic ne demande que de changer
+le `.env` — à condition de ré-ingérer si la dimension des embeddings change.
 
 ### Pydantic Settings
 
-**Use Pydantic Settings for type-safe configuration:**
-```python
-from pydantic_settings import BaseSettings
-from pydantic import Field, ConfigDict
+**Use Pydantic Settings for type-safe configuration** (`src/settings_supabase.py`) :
 
-class Settings(BaseSettings):
-    """Application settings with environment variable support."""
+```python
+class SupabaseSettings(BaseSettings):
+    """Application settings with environment variable support for Supabase."""
 
     model_config = ConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=False
+        env_file=".env", env_file_encoding="utf-8",
+        case_sensitive=False, extra="ignore"
     )
 
-    mongodb_uri: str = Field(..., description="MongoDB connection string")
-    mongodb_database: str = Field(default="rag_db")
-    llm_api_key: str = Field(..., description="LLM provider API key")
-    embedding_model: str = Field(default="text-embedding-3-small")
+    database_url: str = Field(..., description="PostgreSQL connection string")
+    llm_model: str = Field(default="gpt-4o-mini")
+    embedding_dimension: int = Field(default=1536)
 ```
+
+Une clé obligatoire manquante fait échouer le démarrage avec un message explicite
+(`load_settings()`), plutôt qu'un plantage obscur plus tard.
+
+---
+
+## Database Schema
+
+Deux tables, définies dans `supabase_setup_cagecfi.sql` :
+
+| Table | Rôle |
+|---|---|
+| `cagecfi_documents` | texte intégral découpé en **parties** de ~2000 caractères, reliées par `file_id` |
+| `cagecfi_chunks` | morceaux vectorisés (`embedding vector(1536)`), reliés au fichier par `file_id` |
+
+Index : **HNSW** (`vector_cosine_ops`) pour le vectoriel, **GIN** sur
+`to_tsvector('french', content)` pour le plein texte.
+
+La jointure de recherche se fait sur `file_id` **avec `d.part_number = 1`** pour ne
+récupérer qu'une seule ligne de titre/source par fichier.
 
 ---
 
@@ -170,27 +232,29 @@ class Settings(BaseSettings):
 try:
     result = await operation()
 except SpecificError as e:
-    logger.exception("operation_failed", context="value", error=str(e))
+    logger.exception(f"operation_failed: context=value, error={e}")
     raise
 ```
 
-### MongoDB Operations
+### PostgreSQL Operations
 
 ```python
-from pymongo.errors import ConnectionFailure, OperationFailure
+import asyncpg
 
 try:
-    results = await collection.aggregate(pipeline).to_list(length=limit)
-except ConnectionFailure:
-    logger.exception("mongodb_connection_failed")
-    raise
-except OperationFailure as e:
-    if e.code == 291:  # Index not found
-        logger.error("mongodb_index_missing", index="vector_index")
-        raise ValueError("Vector search index not configured in Atlas")
-    logger.exception("mongodb_operation_failed", code=e.code)
-    raise
+    rows = await deps.execute_query(sql, *args, fetch_mode="all")
+except asyncpg.PostgresError as e:
+    logger.error(f"search_failed: query={query}, error={e}")
+    return []   # dégradation gracieuse : la recherche ne doit jamais crasher le chat
 ```
+
+Les outils de recherche renvoient une **liste vide** en cas d'échec plutôt que de
+propager : `hybrid_search` continue avec la moitié des résultats si l'une des deux
+recherches échoue, et `rag_chat.answer` répond la phrase de repli si tout échoue.
+
+En revanche, l'**ingestion** doit échouer bruyamment : `verify_ingestion.py` est
+bloquant par conception — une base qui paraît remplie mais qui est vide est le
+mode de défaillance que tout le pipeline vise à empêcher.
 
 ### API Calls (Embeddings, LLM)
 
@@ -198,13 +262,12 @@ except OperationFailure as e:
 from openai import APIError, RateLimitError
 
 try:
-    result = await client.api_call(params)
+    result = await client.embeddings.create(model=model, input=texts)
 except RateLimitError as e:
-    logger.warning("api_rate_limited", retry_after=e.retry_after)
+    logger.warning(f"api_rate_limited: retry_after={e.retry_after}")
     await asyncio.sleep(e.retry_after or 5)
-    # Retry logic here
 except APIError as e:
-    logger.exception("api_error", status_code=e.status_code)
+    logger.exception(f"api_error: status_code={e.status_code}")
     raise
 ```
 
@@ -214,11 +277,7 @@ except APIError as e:
 try:
     result = converter.convert(file_path)
 except Exception as e:
-    logger.exception(
-        "document_conversion_failed",
-        file=file_path,
-        format=os.path.splitext(file_path)[1]
-    )
+    logger.exception(f"document_conversion_failed: file={file_path}")
     # Continue processing other documents, don't crash pipeline
     return None
 ```
@@ -227,91 +286,71 @@ except Exception as e:
 
 ## Testing
 
-**Tests mirror the examples directory structure:**
+**Tests mirror the src directory structure:**
 
 ```
-examples/agent.py        →  tests/test_agent.py
-examples/tools.py        →  tests/test_tools.py
-examples/ingestion/      →  tests/ingestion/
+src/ingestion/pdf_audit.py    →  tests/ingestion/test_pdf_audit.py
+src/ingestion/product_sheet.py →  tests/ingestion/test_product_sheet.py
+src/settings_supabase.py       →  tests/test_settings_mistral.py
 ```
 
 ### Unit Tests
 
 ```python
 import pytest
-from examples.ingestion.chunker import DoclingHybridChunker, ChunkingConfig
+from src.ingestion.pdf_audit import classify
 
 @pytest.mark.unit
-async def test_chunker_creates_valid_chunks():
-    """Test that chunker creates properly formatted chunks."""
-    config = ChunkingConfig(max_tokens=512)
-    chunker = DoclingHybridChunker(config)
-
-    content = "# Heading\n\nSome content here..."
-    chunks = await chunker.chunk_document(
-        content=content,
-        title="Test Doc",
-        source="test.md"
-    )
-
-    assert len(chunks) > 0
-    assert all(chunk.token_count <= 512 for chunk in chunks)
-    assert all(chunk.content for chunk in chunks)
+def test_classify_routes_low_text_to_image():
+    """Un PDF sous le seuil MIXTE est classé IMAGE."""
+    assert classify(chars_per_page=10) == "IMAGE"
+    assert classify(chars_per_page=100) == "MIXTE"
+    assert classify(chars_per_page=800) == "TEXTE"
 ```
 
 ### Integration Tests
 
 ```python
 @pytest.mark.integration
-async def test_mongodb_vector_search(mongo_client):
-    """Test vector search against live MongoDB."""
-    # Insert test data
-    await mongo_client.chunks.insert_one({
-        "content": "Test content",
-        "embedding": [0.1] * 1536,
-        "document_id": ObjectId()
-    })
-
-    # Perform search
-    results = await semantic_search(
-        ctx=test_context,
-        query="test",
-        match_count=5
-    )
-
+async def test_pgvector_semantic_search(pg_pool):
+    """Test vector search against live Supabase."""
+    results = await semantic_search(ctx=test_context, query="test", match_count=5)
     assert len(results) > 0
 ```
 
 **Run tests:**
 ```bash
 uv run pytest tests/ -v
-
-# Run specific markers
-uv run pytest tests/ -m unit
-uv run pytest tests/ -m integration
+uv run pytest tests/ -m unit          # sans I/O réseau
+uv run pytest tests/ -m integration   # avec service externe
 ```
+
+`docs/tests-chatbot-cagecfi.md` complète les tests automatisés par une **recette
+manuelle** : des questions ancrées sur des faits réellement présents en base
+(année de création, capital social, certifications). Une réponse qui s'en écarte
+signale une extraction fautive, un problème de recherche, ou une hallucination.
 
 ---
 
 ## Common Pitfalls
 
-### 1. Embedding Format Confusion
+### 1. Embedding Format for pgvector
 ```python
-# ❌ WRONG - String formatting is for Postgres pgvector
-embedding_str = '[' + ','.join(map(str, embedding)) + ']'
+# ❌ WRONG - asyncpg ne convertit pas automatiquement une liste en type vector
+await conn.fetch(sql, embedding_list)
 
-# ✅ CORRECT - Python list for MongoDB
-embedding = [0.1, 0.2, 0.3, ...]
-await collection.insert_one({"embedding": embedding})
+# ✅ CORRECT - sérialiser en littéral pgvector, et caster en SQL
+embedding_str = '[' + ','.join(str(x) for x in embedding) + ']'
+# ... ORDER BY c.embedding <=> $1::vector
 ```
 
 ### 2. Async/Await Mistakes
 ```python
 # ❌ WRONG - Forgot await
-result = collection.find_one({"_id": doc_id})
+result = deps.execute_query(sql)
 
 # ✅ CORRECT
-result = await collection.find_one({"_id": doc_id})
+result = await deps.execute_query(sql)
 ```
 
 ### 3. Missing DoclingDocument for HybridChunker
@@ -324,109 +363,112 @@ result = converter.convert(file_path)
 chunks = chunker.chunk(dl_doc=result.document)
 ```
 
-### 4. Creating Vector Indexes Programmatically
-```python
-# ❌ WRONG - Cannot create vector/search indexes via Motor
-await collection.create_index([("embedding", "vector")])
+### 4. Changer de modèle d'embedding sans migrer la base
+La colonne est déclarée `vector(1536)`. Passer à un modèle de dimension
+différente (ex. `nomic-embed-text` en 768) rend **tous les vecteurs existants
+inutilisables**. Il faut `DROP TABLE cagecfi_chunks CASCADE`, réappliquer le SQL,
+puis ré-ingérer entièrement.
 
-# ✅ CORRECT - Must create in Atlas UI or via Atlas API
-# See .claude/reference/mongodb-patterns.md for index setup
+### 5. Supabase pooler et prepared statements
+```python
+# ❌ WRONG - le pooler (pgbouncer) de Supabase ne supporte pas les prepared statements
+pool = await asyncpg.create_pool(database_url)
+
+# ✅ CORRECT
+pool = await asyncpg.create_pool(database_url, statement_cache_size=0)
 ```
 
-### 5. Missing $lookup for Document Metadata
+### 6. Effets de bord à l'import (casse le build Vercel)
 ```python
-# ❌ WRONG - Search without document metadata
-pipeline = [{"$vectorSearch": {...}}]
+# ❌ WRONG - exige les variables d'environnement dès l'import du module
+agent = Agent(get_llm_model(), system_prompt=PROMPT)
 
-# ✅ CORRECT - Join with documents collection
-pipeline = [
-    {"$vectorSearch": {...}},
-    {"$lookup": {
-        "from": "documents",
-        "localField": "document_id",
-        "foreignField": "_id",
-        "as": "document_info"
-    }},
-    {"$unwind": "$document_info"}
-]
+# ✅ CORRECT - construction paresseuse au premier appel (cf. src/rag_chat.py)
+def _get_agent() -> Agent:
+    global _answer_agent
+    if _answer_agent is None:
+        _answer_agent = Agent(get_llm_model(), system_prompt=PROMPT)
+    return _answer_agent
 ```
+
+### 7. Dépendances lourdes dans `[project].dependencies`
+Docling, Whisper et Streamlit doivent rester dans les extras `[ingestion]` /
+`[ui]`. Vercel installe depuis `pyproject.toml` : une dépendance de trop et le
+build dépasse la limite de 250 Mo.
 
 ---
 
 ## Quick Reference
 
-**MongoDB Operations:**
+**PostgreSQL / pgvector:**
 ```python
-# Insert document
-doc_id = await db.documents.insert_one(doc_dict).inserted_id
+# Recherche vectorielle (distance cosinus → similarité 0-1)
+sql = """
+    SELECT c.id::text, c.content,
+           1 - (c.embedding <=> $1::vector) / 2 AS similarity
+    FROM cagecfi_chunks c
+    JOIN cagecfi_documents d ON c.file_id = d.file_id AND d.part_number = 1
+    ORDER BY c.embedding <=> $1::vector
+    LIMIT $2
+"""
 
-# Insert many chunks
-await db.chunks.insert_many(chunk_dicts)
-
-# Vector search with aggregation
-results = await db.chunks.aggregate(pipeline).to_list(length=limit)
-
-# Find by ID
-doc = await db.documents.find_one({"_id": ObjectId(doc_id)})
+# Recherche plein texte française (racinisation + mots vides gérés)
+sql = """
+    SELECT ts_rank(to_tsvector('french', c.content),
+                   plainto_tsquery('french', $1)) AS similarity
+    FROM cagecfi_chunks c
+    WHERE to_tsvector('french', c.content) @@ plainto_tsquery('french', $1)
+"""
 ```
+
+**Recherche hybride (RRF):**
+```python
+# Les deux recherches en parallèle, puis fusion par rang
+semantic, text = await asyncio.gather(
+    semantic_search(ctx, query, fetch_count),
+    text_search(ctx, query, fetch_count),
+    return_exceptions=True,
+)
+merged = reciprocal_rank_fusion([semantic, text], k=60)
+```
+Le RRF n'utilise que le **rang**, jamais le score brut — c'est ce qui permet de
+combiner une similarité cosinus (0-1) et un `ts_rank` (échelle sans rapport).
 
 **Embedding Generation:**
 ```python
-# Single
-embedding = await client.embeddings.create(model=model, input=text)
-
-# Batch (ALWAYS prefer batching)
-embeddings = await client.embeddings.create(model=model, input=texts)
+# Batch (ALWAYS prefer batching — l'ingestion traite par lots de 100)
+response = await client.embeddings.create(model=model, input=texts)
 ```
 
 **Docling Conversion:**
 ```python
-# Convert any supported format
 result = converter.convert(file_path)
 markdown = result.document.export_to_markdown()
-docling_doc = result.document  # Keep for HybridChunker
-
-# Chunk with context preservation
-chunks = list(chunker.chunk(dl_doc=docling_doc))
+chunks = list(chunker.chunk(dl_doc=result.document))
 ```
 
 **Pydantic AI Agent:**
 ```python
-# Define agent with StateDeps
 agent = Agent(model, deps_type=StateDeps[State], system_prompt=prompt)
 
-# Add tool
 @agent.tool
 async def tool_func(ctx: RunContext[StateDeps[State]], arg: str) -> str:
-    """Tool description."""
-    pass
+    """Tool description — le LLM la lit pour décider d'appeler l'outil."""
 
-# Run with streaming
 async with agent.iter(input, deps=deps, message_history=history) as run:
     async for node in run:
-        # Handle nodes (see .claude/reference/agent-tools.md)
-        pass
+        ...
 ```
 
 ---
 
 ## Implementation-Specific References
 
-For detailed implementation patterns, see:
-
-- **MongoDB patterns**: `.claude/reference/mongodb-patterns.md`
-  - Collection design (two-collection pattern)
-  - Aggregation pipelines ($vectorSearch, $rankFusion)
-  - Connection management, index setup
-
-- **Docling ingestion**: `.claude/reference/docling-ingestion.md`
-  - Document conversion for all formats
-  - HybridChunker usage and configuration
-  - Audio transcription with Whisper ASR
-
-- **Agent & tools**: `.claude/reference/agent-tools.md`
-  - Pydantic AI agent patterns
-  - Tool definitions and best practices
-  - Streaming implementation details
-
-These references are loaded on-demand when working on specific features.
+- **Vue d'ensemble** : `docs/comprendre-le-projet.md` — architecture de A à Z,
+  concepts expliqués (RAG, embeddings, RRF, serverless)
+- **Docling ingestion** : `.claude/reference/docling-ingestion.md` — conversion
+  multi-format, HybridChunker, transcription audio Whisper
+- **Agent & tools** : `.claude/reference/agent-tools.md` — patterns Pydantic AI,
+  définition d'outils, streaming
+- **Déploiement** : `DEPLOY_VERCEL.md`
+- **Recette fonctionnelle** : `docs/tests-chatbot-cagecfi.md`
