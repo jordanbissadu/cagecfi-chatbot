@@ -13,7 +13,7 @@ Sur toute question **concernant CAGECFI** (produits, services, tarifs, coordonn�
 | Brique | Technologie |
 |---|---|
 | **Base vectorielle** | Supabase (PostgreSQL + `pgvector`, index HNSW **1536-dim**) |
-| **LLM** | **RodiumAI** `openai/gpt-4o-mini` (gateway compatible OpenAI) |
+| **LLM** | **RodiumAI** `openai/gpt-5-mini` (gateway compatible OpenAI) |
 | **Embeddings** | **RodiumAI** `openai/text-embedding-3-small` (**1536 dimensions**) |
 | **Recherche** | Hybride — vectorielle + full-text français (RRF en Python) |
 | **Agent** | Pydantic AI |
@@ -41,7 +41,7 @@ Documents (site cagecfi.com + FAQ + plaquettes)
  Supabase (pgvector)  ◀── recherche hybride (RRF) ──┐
                                                     │
 Visiteur ──▶ Widget web / CLI / Streamlit ──▶ rag_chat + Pydantic AI
-   (Vercel serverless FastAPI)                 (RodiumAI · gpt-4o-mini)
+   (Vercel serverless FastAPI)                 (RodiumAI · gpt-5-mini)
                                                     │
        ┌────────────────────────────────────────────┘
        ├─▶ question CAGECFI  → réponse ANCRÉE sur la base
@@ -62,7 +62,7 @@ Visiteur ──▶ Widget web / CLI / Streamlit ──▶ rag_chat + Pydantic AI
 > elle interroge toujours la base puis rédige en une seule passe — **aucun function
 > calling requis**, donc n'importe quel modèle convient. Les interfaces CLI/Streamlit,
 > elles, passent par l'agent à outils (`src/agent_supabase.py`) et requièrent un
-> modèle qui supporte les *tools* (ex. `gpt-4o-mini`, `qwen2.5:7b` ; pas `gemma3:4b`).
+> modèle qui supporte les *tools* (ex. `gpt-5-mini`, `qwen2.5:7b` ; pas `gemma3:4b`).
 
 ---
 
@@ -154,7 +154,7 @@ gateway compatible OpenAI. Crée une clé sur [rodiumai.io/dashboard/api-keys](h
 ```bash
 LLM_PROVIDER=openai
 LLM_API_KEY=rd_sk_...            # ta clé RodiumAI
-LLM_MODEL=openai/gpt-4o-mini
+LLM_MODEL=openai/gpt-5-mini
 LLM_BASE_URL=https://api.rodiumai.io/v1
 
 EMBEDDING_PROVIDER=openai
@@ -344,7 +344,7 @@ uv run python -m http.server 8080 --directory frontend
 | `UnicodeEncodeError` sous Windows | Préfixer la commande par `$env:PYTHONUTF8='1';`. |
 | `prepared statement does not exist` / erreur pgbouncer | Déjà géré dans le code (`statement_cache_size=0`). Vérifier que `DATABASE_URL` pointe bien vers le pooler Supabase. |
 | Dimensions d'embedding incompatibles | La table est en `vector(1536)` (= `text-embedding-3-small`). Changer de modèle d'embedding de dimension différente impose `DROP TABLE cagecfi_chunks CASCADE`, recréer le schéma, puis **ré-ingérer**. |
-| `model_not_allowed` (403 RodiumAI) | La clé n'est pas autorisée pour ce modèle. Dans le dashboard RodiumAI, autoriser `openai/gpt-4o-mini` **et** `openai/text-embedding-3-small` pour la clé. |
+| `model_not_allowed` (403 RodiumAI) | La clé n'est pas autorisée pour ce modèle. Dans le dashboard RodiumAI, autoriser `openai/gpt-5-mini` **et** `openai/text-embedding-3-small` pour la clé. |
 | `billing_not_active` / `account is not active` (429) | Le compte du fournisseur (OpenAI/RodiumAI) n'a pas de facturation active ou de crédits. Recharger le wallet / activer la facturation. |
 | La prod ne reflète pas mes changements | Vérifier que le déploiement vise **le bon projet Vercel** (plusieurs projets peuvent coexister) et que le build a réussi (bundle < 500 Mo). |
 | `bundle size exceeds 500 MB` (build Vercel) | Une dep lourde a fui dans le runtime. Vérifier que `requirements.txt` reste slim et que `.vercelignore` exclut bien `uv.lock`. |
@@ -410,7 +410,7 @@ MongoDB-RAG-Agent/
 - [x] **API FastAPI** (`/chat`) connectant le widget à l'agent (`src/api.py`)
 - [x] **Recherche forcée + streaming** (réponses fiables, affichées mot à mot — `src/rag_chat.py`)
 - [x] **Retrait du legacy MongoDB** (`examples/`, `test_scripts/`, doublons de dépendances)
-- [x] **Bascule fournisseur cloud** : RodiumAI (`openai/gpt-4o-mini` + `openai/text-embedding-3-small`, 1536)
+- [x] **Bascule fournisseur cloud** : RodiumAI (`openai/gpt-5-mini` + `openai/text-embedding-3-small`, 1536)
 - [x] **Déploiement production sur Vercel** (serverless, bundle slim)
 - [x] **Réponses générales** hors périmètre CAGECFI (garde-fou anti-hallucination conservé)
 - [ ] Canonicalisation des noms de fichiers `*_supabase.py` → `*.py`

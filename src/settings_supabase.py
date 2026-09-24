@@ -47,8 +47,8 @@ class SupabaseSettings(BaseSettings):
     llm_api_key: str = Field(default="ollama", description="API key for the LLM provider")
 
     llm_model: str = Field(
-        default="qwen2.5:7b-instruct-q4_K_M",
-        description="Model to use for search and summarization (must support tool calling)",
+        default="openai/gpt-5-mini",
+        description="Model to use for search and summarization (via API compatible OpenAI)",
     )
 
     llm_base_url: Optional[str] = Field(

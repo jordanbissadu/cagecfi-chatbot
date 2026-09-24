@@ -167,7 +167,7 @@ POSTGRES_TABLE_CHUNKS=cagecfi_chunks
 # LLM Provider (API compatible OpenAI)
 LLM_PROVIDER=openai
 LLM_API_KEY=sk-...
-LLM_MODEL=gpt-4o-mini
+LLM_MODEL=gpt-5-mini
 LLM_BASE_URL=https://api.openai.com/v1
 LLM_TEMPERATURE=0.1          # bas = déterministe = moins d'hallucinations
 
@@ -198,7 +198,7 @@ class SupabaseSettings(BaseSettings):
     )
 
     database_url: str = Field(..., description="PostgreSQL connection string")
-    llm_model: str = Field(default="gpt-4o-mini")
+    llm_model: str = Field(default="gpt-5-mini")
     embedding_dimension: int = Field(default=1536)
 ```
 
