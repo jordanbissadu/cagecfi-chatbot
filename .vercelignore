@@ -1,0 +1,14 @@
+# Force Vercel à installer depuis requirements.txt (slim) et NON depuis uv.lock
+# (qui embarque les dépendances lourdes des extras -> bundle > 500 Mo).
+uv.lock
+
+# Rien de tout cela n'est nécessaire au runtime de l'API serverless :
+.venv
+documents
+tests
+docs
+.claude
+.git
+*.md
+!frontend
+scratchpad

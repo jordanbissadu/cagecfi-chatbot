@@ -48,8 +48,13 @@ embeddings **OpenAI** pour matcher la production :
 ```bash
 cp .env.production.example .env        # puis remplir les vraies valeurs
 uv pip install -e ".[ingestion]"      # Docling + deps d'ingestion (local uniquement)
-uv run python -m src.ingestion.ingest_supabase -d ./documents
+uv run python -m src.ingestion.ingest_supabase -d documents/plaquettes_md
 ```
+
+> L'ingestion cible toujours `documents/plaquettes_md/` (le markdown déjà
+> extrait et validé), **jamais** les PDF bruts de `documents/plaquettes/` :
+> une partie de ces PDF n'a aucune couche texte exploitable, et le pipeline
+> produirait des chunks illisibles sans qu'aucune erreur ne le signale.
 
 > Les dépendances lourdes (Docling, Whisper, Streamlit) sont en **extras**
 > (`[ingestion]`, `[ui]`) pour que le build Vercel reste léger : Vercel installe

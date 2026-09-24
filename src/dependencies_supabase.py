@@ -68,9 +68,14 @@ class AgentDependencies:
 
         # Initialize OpenAI client for embeddings (using Ollama)
         if not self.openai_client:
+            # max_retries : le client OpenAI retente automatiquement les erreurs
+            # transitoires (429 / 5xx, ex. 503 "billing_unavailable" de RodiumAI)
+            # avec backoff exponentiel -> embeddings plus fiables.
             self.openai_client = openai.AsyncOpenAI(
                 api_key=self.settings.embedding_api_key,
                 base_url=self.settings.embedding_base_url,
+                max_retries=5,
+                timeout=60.0,
             )
             logger.info(
                 f"openai_client_initialized: model={self.settings.embedding_model}, "

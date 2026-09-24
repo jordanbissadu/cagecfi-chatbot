@@ -1,6 +1,8 @@
 """Model providers for Supabase RAG Agent."""
 
 from typing import Optional
+
+import openai
 from pydantic_ai.providers.openai import OpenAIProvider
 
 # pydantic-ai >= 1.x a renommé `OpenAIModel` en `OpenAIChatModel`. On supporte
@@ -11,6 +13,23 @@ except ImportError:  # pragma: no cover
     from pydantic_ai.models.openai import OpenAIChatModel as OpenAIModel
 
 from src.settings_supabase import load_settings
+
+# Le client OpenAI officiel retente automatiquement les erreurs transitoires
+# (429 et 5xx, ex. le 503 "billing_unavailable" de RodiumAI) avec un backoff
+# exponentiel. On relève max_retries pour absorber les micro-pannes fournisseur
+# sans qu'elles remontent comme "erreur technique" côté visiteur.
+_MAX_RETRIES = 5
+_TIMEOUT_S = 60.0
+
+
+def _build_client(base_url: Optional[str], api_key: str) -> openai.AsyncOpenAI:
+    """Construit un client OpenAI-compatible avec retries sur erreurs transitoires."""
+    return openai.AsyncOpenAI(
+        base_url=base_url,
+        api_key=api_key,
+        max_retries=_MAX_RETRIES,
+        timeout=_TIMEOUT_S,
+    )
 
 
 def get_llm_model(model_choice: Optional[str] = None) -> OpenAIModel:
@@ -27,11 +46,10 @@ def get_llm_model(model_choice: Optional[str] = None) -> OpenAIModel:
     settings = load_settings()
 
     llm_choice = model_choice or settings.llm_model
-    base_url = settings.llm_base_url
-    api_key = settings.llm_api_key
 
-    # Create provider based on configuration
-    provider = OpenAIProvider(base_url=base_url, api_key=api_key)
+    # Client dédié avec retries automatiques (429/5xx transitoires).
+    client = _build_client(settings.llm_base_url, settings.llm_api_key)
+    provider = OpenAIProvider(openai_client=client)
 
     return OpenAIModel(llm_choice, provider=provider)
 
