@@ -93,7 +93,8 @@ async def chat(req: ChatRequest) -> PlainTextResponse:
     frontend nécessaire.
     """
     try:
-        answer = await rag_chat.answer(req.message)
+        history = [m.model_dump() for m in req.history]
+        answer = await rag_chat.answer(req.message, history)
     except Exception as exc:  # noqa: BLE001
         logger.exception("chat_failed: %s", exc)
         answer = (

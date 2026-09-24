@@ -77,6 +77,13 @@ class SupabaseSettings(BaseSettings):
         ),
     )
 
+    # Modèle rapide utilisé pour reformuler (historique + message) -> requête de
+    # recherche autonome. Non-raisonnant et bon marché pour ne pas alourdir la latence.
+    condense_model: str = Field(
+        default="openai/gpt-4o-mini",
+        description="Modèle rapide pour la reformulation de requête (mémoire conversationnelle)",
+    )
+
     # Embedding Configuration - GARDE OLLAMA
     embedding_provider: str = Field(default="ollama", description="Embedding provider")
 
