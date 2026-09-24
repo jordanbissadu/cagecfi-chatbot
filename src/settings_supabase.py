@@ -68,8 +68,13 @@ class SupabaseSettings(BaseSettings):
     )
 
     llm_max_tokens: int = Field(
-        default=1024,
-        description="Maximum tokens in response",
+        default=4000,
+        description=(
+            "Budget de tokens de la génération (raisonnement + réponse). Les modèles "
+            "de raisonnement (gpt-5-mini/nano) consomment des tokens de raisonnement "
+            "AVANT d'écrire : un budget trop bas (ex. 1024) échoue sur les questions "
+            "complexes avec 'token limit exceeded before any response'."
+        ),
     )
 
     # Embedding Configuration - GARDE OLLAMA
